@@ -1,0 +1,58 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8">
+    <meta lang="en">
+    <meta name="description" content="Umu-Tawa Dynasty">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'BS5/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'BS-icons/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Umu-tawa.com{% block  title %} {% endblock %}</title>
+</head>
+{% include 'navbar.html' %}
+<body>
+<i class="bi bi-align-start bi-reddit btn-danger"></i>
+<div id="content">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+    {% endif %}
+    {% if user.is_authenticated %}
+        <p>Hi {{ user.username }}!</p>
+        <p><a href="{% url 'logout' %}">Log out</a></p>
+    {% endif %}
+    <div>
+        <a href="{% url 'home:index' %}"><h1>HOME</h1></a>
+        <nav class="navbar-static-top">
+            <form name="searchform" data-i18n_placeholder="Search" method="get" action="{% url 'home:search' %}">
+                <input type="text" name="q" id="srchbox">
+                <input type="submit" value="Search">
+            </form>
+        </nav>
+    </div>
+    {% block content %}
+
+
+    {% endblock %}
+</div>
+{# Footer Section #}
+<div id="footer" class="bg-primary justify-content-center select2-container--admin-autocomplete">
+    {% now "Y" as current_year %}
+    <p>Copyright &copy; {{ current_year }}</p>
+</div>
+<script src="{% static 'fontawesome/js/all.js' %}"></script>
+<script src="{% static 'BS5\js\bootstrap.bundle.js' %}"></script>
+<script src="{% static 'script/script.js' %}"></script>
+</body>
+</html>
