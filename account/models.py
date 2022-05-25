@@ -183,7 +183,7 @@ class Occupation(models.Model):
 
 class PhoneRecord(models.Model):
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    phone_number = models.CharField(default='+234', max_length=20)
+    phone_number = models.CharField(default='+234', max_length=20, unique=True)
 
     class Meta:
         verbose_name = "Phone"
@@ -195,7 +195,7 @@ class PhoneRecord(models.Model):
 
 class AdditionalEmail(models.Model):
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    email = models.EmailField(default='tawa@mail.com')
+    email = models.EmailField(blank=True, unique=True)
 
     class Meta:
         verbose_name = "Additional Email"

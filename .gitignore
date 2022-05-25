@@ -132,3 +132,6 @@ dmypy.json
 media/
 static/
 .static
+/static/BS-icons/
+/static/BS5/
+/static/fontawesome/
