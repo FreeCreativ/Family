@@ -1,0 +1,68 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    My Dashboard
+{% endblock %}
+
+{% block content %}
+    <h2>Profile</h2>
+    <ul>
+        <li>{{ object.username }}</li>
+        <li>{{ user.first_name }}</li>
+        <li>{{ user.middle_name }}</li>
+        <li>{{ user.last_name }}</li>
+        <li>{{ user.email }}</li>
+    </ul>
+    <h4>Details</h4>
+    <ul>
+        <li>{{ user_detail.user }}</li>
+        <li>{{ user_detail.date_of_birth }}</li>
+{#        <li>{{ user_detail.age }}</li>#}
+        <li>{{ user_detail.gender }}</li>
+        <li>{{ user_detail.height }}</li>
+        <li>{{ user_detail.blood_group }}</li>
+        <li>{{ user_detail.genotype }}</li>
+        <li>{{ user_detail.date_of_death }}</li>
+        <li>{{ user_detail.cause_of_death }}</li>
+    </ul>
+    <h4>Additional emails</h4>
+    {% for email in emails %}
+        <ul>
+            <li>{{ email.email }}</li>
+        </ul>
+    {% endfor %}
+    <h4>Phones</h4>
+    {% for number in phone_record %}
+        <ul>
+            <li>{{ number.phone_number }}</li>
+        </ul>
+    {% endfor %}
+
+    <h3>Education</h3>
+    <table>
+    <tr>
+        <thead>Name of School</thead>
+        <thead>Duration</thead>
+        <thead>Year of entrance - year of graduation</thead>
+    </tr>
+        {% for school in education %}
+            <tr>
+            <td>{{ school.name_of_school }}</td>
+            <td>{{ school.duration }}</td>
+            <td>{{ school.year_of_entrance }} - {{ school.year_of_graduation }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Hereditary Diseases</h3>
+    <table>
+        <thead>Disease</thead>
+        <thead>date of infection</thead>
+        <thead>type</thead>
+        {% for disease in diseases %}
+            <tr>{{ disease.disease_name }}</tr>
+            <tr>{{ disease.date_of_infection }}</tr>
+            <tr>{{ disease.type }}</tr>
+        {% endfor %}
+    </table>
+{% endblock %}

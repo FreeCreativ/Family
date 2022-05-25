@@ -15,6 +15,15 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/static/BS5/js" />
+      <excludeFolder url="file://$MODULE_DIR$/static/fontawesome/css" />
+      <excludeFolder url="file://$MODULE_DIR$/static/fontawesome/js" />
+      <excludeFolder url="file://$MODULE_DIR$/static/fontawesome/less" />
+      <excludeFolder url="file://$MODULE_DIR$/static/fontawesome/webfonts" />
+      <excludeFolder url="file://$MODULE_DIR$/static/css" />
+      <excludeFolder url="file://$MODULE_DIR$/static/script" />
+      <excludeFolder url="file://$MODULE_DIR$/media" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10 (Family)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

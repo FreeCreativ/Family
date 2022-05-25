@@ -5,7 +5,7 @@ from account.models import UserAccount, UserDetail, Education, Occupation, Phone
 
 
 class UserRegisterForm(UserCreationForm):
-    class Meta:
+    class Meta(UserCreationForm.Meta):
         model = UserAccount
         fields = '__all__'
 

@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>Umu-tawa.com{% block  title %} {% endblock %}</title>
 </head>
-{% include 'navbar.html' %}
 <body>
 <i class="bi bi-align-start bi-reddit btn-danger"></i>
 <div id="content">
@@ -32,15 +31,6 @@
         <p>Hi {{ user.username }}!</p>
         <p><a href="{% url 'logout' %}">Log out</a></p>
     {% endif %}
-    <div>
-        <a href="{% url 'home:index' %}"><h1>HOME</h1></a>
-        <nav class="navbar-static-top">
-            <form name="searchform" data-i18n_placeholder="Search" method="get" action="{% url 'home:search' %}">
-                <input type="text" name="q" id="srchbox">
-                <input type="submit" value="Search">
-            </form>
-        </nav>
-    </div>
     {% block content %}
 
 
@@ -52,7 +42,7 @@
     <p>Copyright &copy; {{ current_year }}</p>
 </div>
 <script src="{% static 'fontawesome/js/all.js' %}"></script>
-<script src="{% static 'BS5\js\bootstrap.bundle.js' %}"></script>
+<script src="{% static 'BS5/js/bootstrap.bundle.js' %}"></script>
 <script src="{% static 'script/script.js' %}"></script>
 </body>
 </html>
