@@ -1,5 +1,3 @@
-from django.utils.translation import gettext_lazy as _
-
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
@@ -22,7 +20,7 @@ class CustomUserManager(UserManager):
     def _create_user(self, username, email, password, **extra_fields):
         manager = super(CustomUserManager, self)._create_user()
 
-    def oldestalive(self):
+    def oldest_alive(self):
         return self.annotate(
             num_responses=models.Count("response")
         )
@@ -30,19 +28,6 @@ class CustomUserManager(UserManager):
 
 class UserAccount(AbstractUser):
     username_validator = UnicodeUsernameValidator()
-    # username = models.CharField(
-    #     _("username"),
-    #     max_length=150,
-    #     unique=True,
-    #     help_text=_(
-    #         "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
-    #     ),
-    #     validators=[username_validator],
-    #     error_messages={
-    #         "unique": _("A user with that username already exists."),
-    #     },
-    #     primary_key=True
-    # )
     middle_name = models.CharField(max_length=20)
     REQUIRED_FIELDS = ["email", "first_name", "middle_name", "last_name"]
 
@@ -51,7 +36,7 @@ class UserDetail(models.Model):
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
     date_of_birth = models.DateField(verbose_name='Date of birth')
     date_of_death = models.DateField(verbose_name='date of death', null=True, blank=True)
-    cause_of_death = models.TextField()
+    cause_of_death = models.TextField(null=True)
     gender_choices = [('M', 'Male'), ('F', 'Female')]
     gender = models.CharField(default='Male', max_length=7, choices=gender_choices)
     heights = (
@@ -79,8 +64,8 @@ class UserDetail(models.Model):
             length = calculate_age(self.date_of_death)
             if length == 0:
                 days_in_year = 365.2425
-                dob = UserAccount.objects.get(id=self.user).date_of_birth
-                length = (date.today() - dob).days % days_in_year
+
+                length = (date.today() - self.date_of_birth).days % days_in_year
                 length = length * 30
                 return f"Died {length} months ago"
             else:
@@ -89,17 +74,20 @@ class UserDetail(models.Model):
             return 'This person has been recorded dead, but date of death is unavailable'
 
     def age(self):
-        dob = UserAccount.objects.get(username=self.user).date_of_birth
         if self.alive:
-            age = calculate_age(dob)
-            if age.year == 0:
-                if age == 0:
-                    days_in_year = 365.2425
-                    age = (date.today() - dob).days % days_in_year
-                    age = age * 30
-                    return age
-                return f"{age} months old"
-            elif age.year == 1:
+            age = calculate_age(self.date_of_birth)
+            if age == 0:
+                # days_in_year = 365.2425
+                age_in_days = (date.today() - self.date_of_birth).days
+                if age_in_days < 30:
+                    return f"{age_in_days} days old"
+                else:
+                    age_in_months = age_in_days / 30
+                    if age_in_months == 1:
+                        return f"{age_in_months} month old"
+                    else:
+                        return f"{age_in_months} months old"
+            elif age == 1:
                 return f"{age} Year old"
             else:
                 return f"{age} Years old"
@@ -110,28 +98,30 @@ class UserDetail(models.Model):
     #     return f"{self.surname}, {self.fN}, {self.middleName}"
     #     return '%s %s %s' % (self.last_name, self.first_name, self.middle_name)
 
-    def lineage(self, user_id=None):
-        line = {}
-        if user_id:
-            u = UserDetail.objects.get(user=user_id)
-            parent = u.parentId
-            if parent:
-                line[u.id] = u
-                self.lineage(parent)
-            else:
-                return line
-        else:
-            u = UserDetail.objects.get(user=self.user)
-            parent = u.parentId
-            if parent:
-                line[u.id] = u
-                self.lineage(parent)
-            else:
-                return line
+    # def lineage(self, user_id=None):
+    #     line = {}
+    #     if user_id:
+    #         u = UserDetail.objects.get(user=user_id)
+    #         parent = u.parent
+    #         if parent:
+    #             line[u.id] = u
+    #             self.lineage(parent)
+    #         else:
+    #             return line
+    #     else:
+    #         u = UserDetail.objects.get(user=self.user)
+    #         parent = u.parent
+    #         if parent:
+    #             line[u.id] = u
+    #             self.lineage(parent)
+    #         else:
+    #             return line
+    def get_parent(self):
+        return self.parent
 
-    def children(self):
-        kids = UserAccount.objects.filter(memberdetail__parentId__user=self.user)
-        return kids
+    def lineage(self):
+        pass
+    
 
 
 class Education(models.Model):

@@ -17,7 +17,11 @@
     <ul>
         <li>{{ user_detail.user }}</li>
         <li>{{ user_detail.date_of_birth }}</li>
-{#        <li>{{ user_detail.age }}</li>#}
+        <li>{{ user_detail.age }}</li>
+        {#        {% for child in children %}#}
+        {#            {{ child }}#}
+        {#        {% endfor %}#}
+        <li>{{ user_detail.get_parent }}</li>
         <li>{{ user_detail.gender }}</li>
         <li>{{ user_detail.height }}</li>
         <li>{{ user_detail.blood_group }}</li>
@@ -40,16 +44,16 @@
 
     <h3>Education</h3>
     <table>
-    <tr>
-        <thead>Name of School</thead>
-        <thead>Duration</thead>
-        <thead>Year of entrance - year of graduation</thead>
-    </tr>
+        <tr style="width: 100%; display: flex;">
+            <th>Name of School</th>
+            <th>Duration</th>
+            <th>Year of entrance - year of graduation</th>
+        </tr>
         {% for school in education %}
             <tr>
-            <td>{{ school.name_of_school }}</td>
-            <td>{{ school.duration }}</td>
-            <td>{{ school.year_of_entrance }} - {{ school.year_of_graduation }}</td>
+                <td>{{ school.name_of_school }}</td>
+                <td>{{ school.duration }}</td>
+                <td>{{ school.year_of_entrance }} - {{ school.year_of_graduation }}</td>
             </tr>
         {% endfor %}
     </table>
