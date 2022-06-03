@@ -9,6 +9,14 @@ from django.utils.datetime_safe import date
 
 # from Family.settings import UserAccount
 
+def get_parent(user):
+    u = UserDetail.objects.filter(user_id__username=user)
+    return u.first().get_parent()
+
+
+# def get_parent(identifier):
+#     return UserDetail.objects.get(user_id=identifier).parent
+
 
 def calculate_age(birth_date):
     today = date.today()
@@ -51,7 +59,7 @@ class UserDetail(models.Model):
     genotype = models.CharField(default='AA', max_length=4, blank=True, choices=geno_type_choices)
     image = models.ImageField(upload_to='media/image', blank=True)
     alive = models.BooleanField(default=True)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='children', null=True, blank=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.user}"
@@ -94,35 +102,27 @@ class UserDetail(models.Model):
         else:
             return str(self.died())
 
-    # def __str__(self):
-    #     return f"{self.surname}, {self.fN}, {self.middleName}"
-    #     return '%s %s %s' % (self.last_name, self.first_name, self.middle_name)
+    def lineage(self):
+        if self.parent:
+            lineage = [self.get_parent()]
+            try:
+                u = get_parent(self.parent)
+            except:
+                lineage = ['You are the oldest know progenitor']
 
-    # def lineage(self, user_id=None):
-    #     line = {}
-    #     if user_id:
-    #         u = UserDetail.objects.get(user=user_id)
-    #         parent = u.parent
-    #         if parent:
-    #             line[u.id] = u
-    #             self.lineage(parent)
-    #         else:
-    #             return line
-    #     else:
-    #         u = UserDetail.objects.get(user=self.user)
-    #         parent = u.parent
-    #         if parent:
-    #             line[u.id] = u
-    #             self.lineage(parent)
-    #         else:
-    #             return line
+            while u is not None:
+                lineage.append(u)
+                u = get_parent(u)
+                return lineage
+        else:
+            lineage = ['You are the oldest know progenitor']
+            return lineage
+
     def get_parent(self):
         return self.parent
-
-    def lineage(self):
-        pass
     
-
+    def children(self):
+        return UserDetail.objects.filter(parent=self.id)
 
 class Education(models.Model):
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)

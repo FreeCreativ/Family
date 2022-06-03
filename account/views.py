@@ -1,13 +1,15 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, DetailView, UpdateView
+from django.views.generic import TemplateView, DetailView, UpdateView, FormView
 from account.models import *
 
 
 # Create your views here.
 
-class RegisterUser(UserCreationForm):
-    pass
+class RegisterUser(FormView):
+    template_name = 'account/register.html'
+    form_class = UserCreationForm
+    # success_url = reverse('account:dashboard')
 
 
 class Dashboard(LoginRequiredMixin, DetailView):
