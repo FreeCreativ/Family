@@ -14,13 +14,17 @@ def get_parent(user):
     return u.first().get_parent()
 
 
+def get_spouse(user):
+    return UserDetail.objects.filter(user_id__username=user).first().get_parent()
+
 # def get_parent(identifier):
 #     return UserDetail.objects.get(user_id=identifier).parent
 
 
 def calculate_age(birth_date):
     today = date.today()
-    age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+    age = today.year - birth_date.year - \
+        ((today.month, today.day) < (birth_date.month, birth_date.day))
     return age
 
 
@@ -43,23 +47,29 @@ class UserAccount(AbstractUser):
 class UserDetail(models.Model):
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
     date_of_birth = models.DateField(verbose_name='Date of birth')
-    date_of_death = models.DateField(verbose_name='date of death', null=True, blank=True)
+    date_of_death = models.DateField(
+        verbose_name='date of death', null=True, blank=True)
     cause_of_death = models.TextField(null=True)
     gender_choices = [('M', 'Male'), ('F', 'Female')]
-    gender = models.CharField(default='Male', max_length=7, choices=gender_choices)
+    gender = models.CharField(
+        default='Male', max_length=7, choices=gender_choices)
     heights = (
         ('S', 'Small'),
         ('M', 'Medium'),
         ('L', 'Large'),
     )
-    height = models.CharField(default='5 feet', max_length=10, blank=True, choices=heights)
+    height = models.CharField(
+        default='5 feet', max_length=10, blank=True, choices=heights)
     blood_group_choices = [('A', 'A'), ('B', 'B'), ('AB', 'AB'), ('O', 'O')]
-    blood_group = models.CharField(default='A', max_length=4, blank=True, choices=blood_group_choices)
+    blood_group = models.CharField(
+        default='A', max_length=4, blank=True, choices=blood_group_choices)
     geno_type_choices = [('AA', 'AA'), ('AS', 'AS'), ('SS', 'SS')]
-    genotype = models.CharField(default='AA', max_length=4, blank=True, choices=geno_type_choices)
+    genotype = models.CharField(
+        default='AA', max_length=4, blank=True, choices=geno_type_choices)
     image = models.ImageField(upload_to='media/image', blank=True)
     alive = models.BooleanField(default=True)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    parent = models.ForeignKey(
+        'self', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.user}"
@@ -115,20 +125,32 @@ class UserDetail(models.Model):
                 u = get_parent(u)
                 return lineage
         else:
-            lineage = ['You are the oldest know progenitor']
+            lineage = ['Oldest known progenitor']
             return lineage
 
     def get_parent(self):
         return self.parent
-    
+
     def children(self):
         return UserDetail.objects.filter(parent=self.id)
 
+
+class Marriage(models.Model):
+    year_of_marriage = models.DateField()
+    date_registered = models.DateTimeField(auto_now_add=True)
+    husband = models.ForeignKey(
+        "UserDetail", verbose_name="husband", on_delete=models.CASCADE)
+    wife = models.ForeignKey(
+        "UserDetail", verbose_name="wife", on_delete=models.CASCADE)
+
+
 class Education(models.Model):
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    name_of_school = models.TextField(verbose_name='Name of school', default='School')
+    name_of_school = models.TextField(
+        verbose_name='Name of school', default='School')
     year_of_entrance = models.DateField(verbose_name='Year of Entrance')
-    year_of_graduation = models.DateField(verbose_name='Year Graduated', blank=True)
+    year_of_graduation = models.DateField(
+        verbose_name='Year Graduated', blank=True)
     level_choice = (
         ('E', 'Elementary'),
         ('S', 'Secondary'),
@@ -141,7 +163,6 @@ class Education(models.Model):
         verbose_name_plural = "Education"
 
     def __str__(self):
-        # return self.name_of_school, self.year_of_graduation
         return f"{self.name_of_school}, {self.year_of_graduation}"
 
     def duration(self):
@@ -197,7 +218,8 @@ class AdditionalEmail(models.Model):
 
 class OldestAlive(models.Model):
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    rank = models.IntegerField(verbose_name='Rank', primary_key=True, auto_created=True)
+    rank = models.IntegerField(
+        verbose_name='Rank', primary_key=True, auto_created=True)
     elected = models.DateField(verbose_name='Date Elected')
     retired = models.DateField(verbose_name='Date Retired', blank=True)
     current = models.BooleanField(default=True)
