@@ -7,13 +7,13 @@ from account.models import UserAccount, UserDetail, Education, Occupation, Phone
 class UserRegisterForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = UserAccount
-        fields = '__all__'
+        fields = ['username', 'email', 'first_name', 'middle_name', 'last_name']
 
 
 class UserDetailForm(forms.ModelForm):
     class Meta:
         model = UserDetail
-        fields = '__all__'
+        fields = ['date_of_birth', 'gender', 'parent']
 
 
 class EducationForm(forms.ModelForm):

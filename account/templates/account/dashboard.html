@@ -5,67 +5,87 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Profile</h2>
-    <ul>
-        <li>{{ object.username }}</li>
-        <li>{{ user.first_name }}</li>
-        <li>{{ user.middle_name }}</li>
-        <li>{{ user.last_name }}</li>
-        <li>{{ user.email }}</li>
-    </ul>
-    <h4>Details</h4>
-    <ul>
-        <li>{{ user_detail.user }}</li>
-        <li>{{ user_detail.date_of_birth }}</li>
-        <li>{{ user_detail.age }}</li>
-        <li>{{ user_detail.lineage }}</li>
-        <li>{{ user_detail.children }}</li>
-        <li>{{ user_detail.get_parent }}</li>
-        <li>{{ user_detail.gender }}</li>
-        <li>{{ user_detail.height }}</li>
-        <li>{{ user_detail.blood_group }}</li>
-        <li>{{ user_detail.genotype }}</li>
-        <li>{{ user_detail.date_of_death }}</li>
-        <li>{{ user_detail.cause_of_death }}</li>
-    </ul>
-    <h4>Additional emails</h4>
-    {% for email in emails %}
-        <ul>
-            <li>{{ email.email }}</li>
-        </ul>
-    {% endfor %}
-    <h4>Phones</h4>
-    {% for number in phone_record %}
-        <ul>
-            <li>{{ number.phone_number }}</li>
-        </ul>
-    {% endfor %}
 
-    <h3>Education</h3>
-    <table>
-        <tr style="width: 100%; display: flex;">
+    <div>
+        <h2>Profile</h2>
+        <ul>
+            <li>{{ object.username }}</li>
+            <li>{{ user.first_name }}</li>
+            <li>{{ user.middle_name }}</li>
+            <li>{{ user.last_name }}</li>
+            <li>{{ user.email }}</li>
+        </ul>
+    </div>
+    <div>
+        <h4>Details</h4>
+        <ul>
+            <li>{{ user_detail.user }}</li>
+            <li>{{ user_detail.date_of_birth }}</li>
+            <li>{{ user_detail.age }}</li>
+            <li>{{ user_detail.genealogy }}</li>
+            <li>{{ user_detail.children }}</li>
+            <li>{{ user_detail.get_parent }}</li>
+            <li>{{ user_detail.gender }}</li>
+            <li>{{ user_detail.height }}</li>
+            <li>{{ user_detail.blood_group }}</li>
+            <li>{{ user_detail.genotype }}</li>
+            <li>{{ user_detail.date_of_death }}</li>
+            <li>{{ user_detail.cause_of_death }}</li>
+        </ul>
+    </div>
+
+    <div>
+        <h4>Additional emails</h4>
+        {% for email in emails %}
+            <ul>
+                <li>{{ email.email }}</li>
+            </ul>
+        {% endfor %}
+        <h4>Phones</h4>
+        {% for number in phone_record %}
+            <ul>
+                <li>{{ number.phone_number }}</li>
+            </ul>
+        {% endfor %}
+    </div>
+
+    <div>
+        <h4>Education</h4>
+        <table border="2">
+            <thead>
             <th>Name of School</th>
             <th>Duration</th>
             <th>Year of entrance - year of graduation</th>
-        </tr>
-        {% for school in education %}
-            <tr>
-                <td>{{ school.name_of_school }}</td>
-                <td>{{ school.duration }}</td>
-                <td>{{ school.year_of_entrance }} - {{ school.year_of_graduation }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+            </thead>
+            <tbody>
+            {% for school in education %}
+                <tr>
+                    <td>{{ school.name_of_school }}</td>
+                    <td>{{ school.duration }}</td>
+                    <td>{{ school.year_of_entrance }} - {{ school.year_of_graduation }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    <h3>Hereditary Diseases</h3>
-    <table>
-        <thead>Disease</thead>
-        <thead>date of infection</thead>
-        <thead>type</thead>
-        {% for disease in diseases %}
-            <tr>{{ disease.disease_name }}</tr>
-            <tr>{{ disease.date_of_infection }}</tr>
-            <tr>{{ disease.type }}</tr>
-        {% endfor %}
-    </table>
+    <div>
+        <h4>Hereditary Diseases</h4>
+        <table border="2">
+            <thead>
+            <th>Disease</th>
+            <th>date of infection</th>
+            <th>type</th>
+            </thead>
+            <tbody>
+            {% for disease in diseases %}
+                <tr>
+                    <td>{{ disease.disease_name }}</td>
+                    <td>{{ disease.date_of_infection }}</td>
+                    <td>{{ disease.type }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

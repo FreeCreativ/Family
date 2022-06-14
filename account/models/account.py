@@ -1,13 +1,10 @@
-from django.contrib.auth.models import AbstractUser, UserManager
-from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-
-# Create your models here.
 from django.urls import reverse
 from django.utils.datetime_safe import date
 
+from Family.settings import AUTH_USER_MODEL
 
-# from Family.settings import UserAccount
 
 def get_parent(user):
     u = UserDetail.objects.filter(user_id__username=user)
@@ -17,6 +14,7 @@ def get_parent(user):
 def get_spouse(user):
     return UserDetail.objects.filter(user_id__username=user).first().get_parent()
 
+
 # def get_parent(identifier):
 #     return UserDetail.objects.get(user_id=identifier).parent
 
@@ -24,32 +22,25 @@ def get_spouse(user):
 def calculate_age(birth_date):
     today = date.today()
     age = today.year - birth_date.year - \
-        ((today.month, today.day) < (birth_date.month, birth_date.day))
+          ((today.month, today.day) < (birth_date.month, birth_date.day))
     return age
 
 
-class CustomUserManager(UserManager):
-    def _create_user(self, username, email, password, **extra_fields):
-        manager = super(CustomUserManager, self)._create_user()
-
-    def oldest_alive(self):
-        return self.annotate(
-            num_responses=models.Count("response")
-        )
-
-
 class UserAccount(AbstractUser):
-    username_validator = UnicodeUsernameValidator()
     middle_name = models.CharField(max_length=20)
     REQUIRED_FIELDS = ["email", "first_name", "middle_name", "last_name"]
 
+    class Meta:
+        verbose_name = "user account"
+        verbose_name_plural = "user accounts"
+
 
 class UserDetail(models.Model):
-    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
+    user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_of_birth = models.DateField(verbose_name='Date of birth')
     date_of_death = models.DateField(
         verbose_name='date of death', null=True, blank=True)
-    cause_of_death = models.TextField(null=True)
+    cause_of_death = models.TextField(null=True, blank=True)
     gender_choices = [('M', 'Male'), ('F', 'Female')]
     gender = models.CharField(
         default='Male', max_length=7, choices=gender_choices)
@@ -112,18 +103,25 @@ class UserDetail(models.Model):
         else:
             return str(self.died())
 
-    def lineage(self):
+    def family_tree(self):
+        tree = []
+        me = self
+        father = get_parent(self.parent)
+        grand_father = get_parent(father.parent)
+        return tree.append((grand_father, father, me))
+
+    def genealogy(self):
         if self.parent:
             lineage = [self.get_parent()]
             try:
                 u = get_parent(self.parent)
-            except:
+            except LookupError:
                 lineage = ['You are the oldest know progenitor']
-
-            while u is not None:
-                lineage.append(u)
-                u = get_parent(u)
-                return lineage
+            finally:
+                while u is not None:
+                    lineage.append(u)
+                    u = get_parent(u)
+                    return lineage
         else:
             lineage = ['Oldest known progenitor']
             return lineage
@@ -135,89 +133,8 @@ class UserDetail(models.Model):
         return UserDetail.objects.filter(parent=self.id)
 
 
-class Marriage(models.Model):
-    year_of_marriage = models.DateField()
-    date_registered = models.DateTimeField(auto_now_add=True)
-    husband = models.ForeignKey(
-        "UserDetail", verbose_name="husband", on_delete=models.CASCADE)
-    wife = models.ForeignKey(
-        "UserDetail", verbose_name="wife", on_delete=models.CASCADE)
-
-
-class Education(models.Model):
-    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    name_of_school = models.TextField(
-        verbose_name='Name of school', default='School')
-    year_of_entrance = models.DateField(verbose_name='Year of Entrance')
-    year_of_graduation = models.DateField(
-        verbose_name='Year Graduated', blank=True)
-    level_choice = (
-        ('E', 'Elementary'),
-        ('S', 'Secondary'),
-        ('T', 'Tertiary'),
-        ('P', 'Post Grad'),
-    )
-    school_type = models.CharField(max_length=15, choices=level_choice)
-
-    class Meta:
-        verbose_name_plural = "Education"
-
-    def __str__(self):
-        return f"{self.name_of_school}, {self.year_of_graduation}"
-
-    def duration(self):
-        if self.year_of_graduation:
-            return self.year_of_graduation - self.year_of_entrance
-        else:
-            return 'You are yet to graduate'
-
-
-class SpouseOf(models.Model):
-    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    spouse_id = models.CharField(null=True, blank=True, max_length=20)
-    when = models.DateField('wedding date')
-    maiden_name = models.CharField(max_length=30, unique=False)
-
-    def __str__(self):
-        return f"The spouse of {self.user} is {self.spouse_id}"
-
-
-class Occupation(models.Model):
-    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    occupation_name = models.TextField(null=False)
-    description = models.TextField()
-    address = models.TextField(null=False)
-
-    def __str__(self):
-        return self.occupation_name
-
-
-class PhoneRecord(models.Model):
-    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    phone_number = models.CharField(default='+234', max_length=20, unique=True)
-
-    class Meta:
-        verbose_name = "Phone"
-        verbose_name_plural = "Phones"
-
-    def __str__(self):
-        return self.phone_number
-
-
-class AdditionalEmail(models.Model):
-    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    email = models.EmailField(blank=True, unique=True)
-
-    class Meta:
-        verbose_name = "Additional Email"
-        verbose_name_plural = "Additional Emails"
-
-    def __str__(self):
-        return self.email
-
-
 class OldestAlive(models.Model):
-    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     rank = models.IntegerField(
         verbose_name='Rank', primary_key=True, auto_created=True)
     elected = models.DateField(verbose_name='Date Elected')
@@ -230,14 +147,3 @@ class OldestAlive(models.Model):
 
     def __str__(self):
         return self.user
-
-
-class GeneticDisease(models.Model):
-    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    disease_name = models.CharField(max_length=100)
-    date_of_infection = models.DateField('date infected')
-    type_choices = [('H', 'Hereditary'), ('C', 'Contacted')]
-    type = models.CharField(max_length=11, choices=type_choices)
-
-    def __str__(self):
-        return self.disease_name

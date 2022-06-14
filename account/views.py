@@ -1,6 +1,8 @@
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, DetailView, UpdateView, FormView
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, UpdateView, FormView
+
+from account.forms import UserRegisterForm, UserDetailForm
 from account.models import *
 
 
@@ -8,8 +10,18 @@ from account.models import *
 
 class RegisterUser(FormView):
     template_name = 'account/register.html'
-    form_class = UserCreationForm
-    # success_url = reverse('account:dashboard')
+    form_class = UserRegisterForm
+    success_url = reverse_lazy('account:r_continue')
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.save()
+
+
+class RegisterUserDetail(FormView):
+    template_name = 'account/register.html'
+    form_class = UserDetailForm
+    success_url = reverse_lazy('account:dashboard')
 
 
 class Dashboard(LoginRequiredMixin, DetailView):
