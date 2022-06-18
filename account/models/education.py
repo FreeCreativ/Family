@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 from Family.settings import AUTH_USER_MODEL
 
 
@@ -13,15 +15,18 @@ class Education(models.Model):
         ('E', 'Elementary'),
         ('S', 'Secondary'),
         ('T', 'Tertiary'),
-        ('P', 'Post Grad'),
+        ('P', 'Post Graduation'),
     )
-    school_type = models.CharField(max_length=15, choices=level_choice)
+    school_level = models.CharField(max_length=15, choices=level_choice)
 
     class Meta:
         verbose_name_plural = "Education"
 
+    def get_absolute_url(self):
+        return reverse('account:education_detail', kwargs={'pk': self.id})
+
     def __str__(self):
-        return f"{self.name_of_school}, {self.year_of_graduation}"
+        return f"{self.name_of_school}, {self.year_of_graduation}, {self.school_level}"
 
     def duration(self):
         if self.year_of_graduation:

@@ -114,7 +114,7 @@ class Migration(migrations.Migration):
                 ('name_of_school', models.TextField(default='School', verbose_name='Name of school')),
                 ('year_of_entrance', models.DateField(verbose_name='Year of Entrance')),
                 ('year_of_graduation', models.DateField(blank=True, verbose_name='Year Graduated')),
-                ('school_type', models.CharField(choices=[('E', 'Elementary'), ('S', 'Secondary'), ('T', 'Tertiary'), ('P', 'Post Grad')], max_length=15)),
+                ('school_level', models.CharField(choices=[('E', 'Elementary'), ('S', 'Secondary'), ('T', 'Tertiary'), ('P', 'Post Grad')], max_length=15)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={

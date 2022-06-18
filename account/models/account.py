@@ -21,8 +21,7 @@ def get_spouse(user):
 
 def calculate_age(birth_date):
     today = date.today()
-    age = today.year - birth_date.year - \
-          ((today.month, today.day) < (birth_date.month, birth_date.day))
+    age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
     return age
 
 
@@ -33,6 +32,9 @@ class UserAccount(AbstractUser):
     class Meta:
         verbose_name = "user account"
         verbose_name_plural = "user accounts"
+
+    def get_absolute_url(self):
+        return reverse('account:dashboard', kwargs={'pk': self.username})
 
 
 class UserDetail(models.Model):

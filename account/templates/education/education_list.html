@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <table>
+        <tr>
+            <td>Name of School</td>
+            <td>Level</td>
+            <td>Duration</td>
+            <td>Year of Entrance</td>
+            <td>Year of Graduation</td>
+        </tr>
+        {% for education in education_list %}
+            <a href="{% url 'account:education_detail' education.id %}">
+                <tr>
+                    <td>{{ education.name_of_school }}</td>
+                    <td>{{ education.school_level }}</td>
+                    <td>{{ education.duration }}</td>
+                    <td>{{ education.year_of_entrance }}</td>
+                    <td>{{ education.year_of_graduation }}</td>
+                </tr>
+            </a>
+        {% endfor %}
+        <tfoot><a href="{% url 'account:new_education' %}">New educational institution</a></tfoot>
+    </table>
+{% endblock %}

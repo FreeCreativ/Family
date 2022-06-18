@@ -1,11 +1,29 @@
-from django.urls import path
-from .views import Dashboard, RegisterUser, RegisterUserDetail
-
-# from views import Dashboard
+from django.urls import path, include
+from account.views import Dashboard, AccountRegistrationView, AddUserDetailView, UserListView, EditProfile, \
+    EducationDetailView, EducationListView, RegisterEducationView
 
 app_name = 'account'
+
+edu = [
+    path('list', EducationListView.as_view(), name='education_list'),
+    path('<int:pk>', EducationDetailView.as_view(), name='education_detail'),
+    path('new', RegisterEducationView.as_view(), name='new_education'),
+
+]
+email = []
+job = []
+phone = []
+dash = [
+    path('', Dashboard.as_view(), name='dashboard'),
+    path('dashboard/update', EditProfile.as_view(), name='update'),
+    path('education/', include(edu)),
+    path('email/', include(email)),
+    path('occuation/', include(job)),
+    path('phonenumber/', include(phone)),
+]
 urlpatterns = [
-    path('dashboard/', Dashboard.as_view(), name='dashboard'),
-    path('account/register/', RegisterUser.as_view(), name='register'),
-    path('account/register/continue', RegisterUserDetail.as_view(), name='r_continue'),
+    path('dashboard/', include(dash)),
+    path('account/register/', AccountRegistrationView.as_view(), name='register'),
+    path('account/register/continue', AddUserDetailView.as_view(), name='r_continue'),
+    path('account/list', UserListView.as_view(), name='user_list'),
 ]

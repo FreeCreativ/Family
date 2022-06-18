@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from account.forms import UserRegisterForm
+from account.forms import NewUserForm
 from account.models import UserAccount, UserDetail, Education, Occupation, PhoneRecord, AdditionalEmail, GeneticDisease
 
 
@@ -17,11 +17,9 @@ class UserAdmin(BaseUserAdmin):
 
 
 class CustomUserAdmin(UserAdmin):
-    add_form = UserRegisterForm
+    add_form = NewUserForm
 
 
-admin.site.register(UserAccount)
-admin.site.unregister(UserAccount)
 admin.site.register(UserAccount, CustomUserAdmin)
 admin.site.register(UserDetail)
 admin.site.register(Education)

@@ -1,27 +1,27 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, UpdateView, FormView
+from django.views.generic import DetailView, UpdateView, CreateView, ListView
 
-from account.forms import UserRegisterForm, UserDetailForm
-from account.models import *
+from account.forms import NewUserForm, AddUserDetailForm
+from account.models import UserDetail, UserAccount
 
 
-# Create your views here.
-
-class RegisterUser(FormView):
+class AccountRegistrationView(CreateView):
+    model = UserAccount
     template_name = 'account/register.html'
-    form_class = UserRegisterForm
+    form_class = NewUserForm
     success_url = reverse_lazy('account:r_continue')
 
-    def form_valid(self, form):
-        user = form.save(commit=False)
-        user.save()
 
-
-class RegisterUserDetail(FormView):
+class AddUserDetailView(LoginRequiredMixin, CreateView):
     template_name = 'account/register.html'
-    form_class = UserDetailForm
+    model = UserDetail
+    form_class = AddUserDetailForm
     success_url = reverse_lazy('account:dashboard')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class Dashboard(LoginRequiredMixin, DetailView):
@@ -44,6 +44,20 @@ class Dashboard(LoginRequiredMixin, DetailView):
         return context
 
 
-class EditProfile(LoginRequiredMixin, UpdateView):
-    model = UserAccount
+class EditProfile(UpdateView):
+    model = UserDetail
     template_name = 'account/update.html'
+
+
+class UserListView(LoginRequiredMixin, ListView):
+    model = UserAccount
+    template_name = 'account/member_list.html'
+    context_object_name = 'user_list'
+    paginate_by = 40
+    page_kwarg = 'page'
+
+    extra_context = {
+        'page_robots': u'INDEX, NOFOLLOW',
+        'page_description': u'Napravi novi nalog',
+        'page_keywords': u'registracija, registriranje, novi nalog, napravi nalog',
+    }

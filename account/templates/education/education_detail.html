@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <ul>
+        <li>Name of School: {{ education_detail.name_of_school }}</li>
+        <li>Level: {{ education_detail.school_level }}</li>
+        <li>Duration: {{ education_detail.duration }}</li>
+        <li>Year of Entrance: {{ education_detail.year_of_entrance }}</li>
+        <li>Year of Graduation: {{ education_detail.year_of_graduation }}</li>
+    </ul>
+    <a href="{% url 'account:education_list' %}">Educational List</a>
+{% endblock %}
