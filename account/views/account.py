@@ -19,8 +19,10 @@ class AddUserDetailView(LoginRequiredMixin, CreateView):
     form_class = AddUserDetailForm
     success_url = reverse_lazy('account:dashboard')
 
+    # reverse('user_public_profile', args=(self.request.user,))
+
     def form_valid(self, form):
-        form.cleaned_data['user'] = self.request.user
+        form.cleaned_data['user_id'] = self.request.user
         return super().form_valid(form)
 
 
