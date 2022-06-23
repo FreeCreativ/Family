@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.urls import reverse
 from django.utils.datetime_safe import date
@@ -37,6 +37,11 @@ class UserAccount(AbstractUser):
         return reverse('account:dashboard', kwargs={'pk': self.username})
 
 
+class OneToTen(models.Manager):
+    def get_queryset(self):
+        return super(OneToTen, self).get_queryset().filter(age_lt=11)
+
+
 class UserDetail(models.Model):
     user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_of_birth = models.DateField(verbose_name='Date of birth')
@@ -61,6 +66,7 @@ class UserDetail(models.Model):
         default='AA', max_length=4, blank=True, choices=geno_type_choices)
     image = models.ImageField(upload_to='media/image', blank=True)
     alive = models.BooleanField(default=True)
+    dad = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='father')
     parent = models.ForeignKey(
         'self', on_delete=models.CASCADE, null=True, blank=True)
 

@@ -1,13 +1,15 @@
 from django.urls import path, include
 from account.views import Dashboard, AccountRegistrationView, AddUserDetailView, UserListView, EditProfile, \
-    EducationDetailView, EducationListView, RegisterEducationView
+    EducationDetailView, EducationListView, RegisterEducationView, UpdateEducationView, DeleteEducationView
 
 app_name = 'account'
 
 edu = [
-    path('list', EducationListView.as_view(), name='education_list'),
-    path('<int:pk>', EducationDetailView.as_view(), name='education_detail'),
     path('new', RegisterEducationView.as_view(), name='new_education'),
+    path('list', EducationListView.as_view(), name='education_list'),
+    path('<pk>', EducationDetailView.as_view(), name='education_detail'),
+    path('<pk>/update', UpdateEducationView.as_view(), name='education_update'),
+    path('<pk>/delete', DeleteEducationView.as_view(), name='education_delete'),
 
 ]
 email = []

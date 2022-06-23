@@ -5,6 +5,7 @@ from Family.settings import AUTH_USER_MODEL
 
 
 class Education(models.Model):
+    id = models.CharField(max_length=50, primary_key=True)
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     name_of_school = models.TextField(
         verbose_name='Name of school', default='School')
@@ -19,11 +20,11 @@ class Education(models.Model):
     )
     school_level = models.CharField(max_length=15, choices=level_choice)
 
-    class Meta:
-        verbose_name_plural = "Education"
-
     def get_absolute_url(self):
         return reverse('account:education_detail', kwargs={'pk': self.id})
+
+    class Meta:
+        verbose_name_plural = "Education"
 
     def __str__(self):
         return f"{self.name_of_school}, {self.year_of_graduation}, {self.school_level}"

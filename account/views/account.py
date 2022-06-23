@@ -20,7 +20,7 @@ class AddUserDetailView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('account:dashboard')
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.cleaned_data['user'] = self.request.user
         return super().form_valid(form)
 
 
