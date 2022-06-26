@@ -50,12 +50,12 @@ class Adult(models.Manager):
 
 class Male(models.Manager):
     def get_queryset(self):
-        return super(Adult, self).get_queryset().filter(alive=True).filter(age_gte=25)
+        return super(Male, self).get_queryset().filter(alive=True).filter(gender='male')
 
 
 class Female(models.Manager):
     def get_queryset(self):
-        return super(Adult, self).get_queryset().filter(alive=True).filter(age_gte=25)
+        return super(Female, self).get_queryset().filter(alive=True).filter(gender='female')
 
 
 class Oldest(models.Manager):
