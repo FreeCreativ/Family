@@ -13,7 +13,7 @@ class NewUserForm(UserCreationForm):
 class AddUserDetailForm(forms.ModelForm):
     class Meta:
         model = UserDetail
-        fields = ['date_of_birth', 'gender', 'blood_group', 'genotype', 'image', 'parent']
+        fields = ['date_of_birth', 'gender', 'blood_group', 'genotype', 'image', 'dad']
 
 
 class EducationForm(forms.ModelForm):
@@ -24,14 +24,14 @@ class EducationForm(forms.ModelForm):
 
 class OccupationForm(forms.ModelForm):
     class Meta:
-        fields = '__all__'
         model = Occupation
+        exclude = ('user',)
 
 
 class PhoneRecordForm(forms.ModelForm):
     class Meta:
-        fields = ('phone_number',)
         model = PhoneRecord
+        exclude = ('user',)
 
 
 class EmailForm(forms.ModelForm):
@@ -42,5 +42,5 @@ class EmailForm(forms.ModelForm):
 
 class GeneticDiseaseForm(forms.ModelForm):
     class Meta:
-        fields = '__all__'
         model = GeneticDisease
+        exclude = ('user',)

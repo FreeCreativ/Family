@@ -32,6 +32,9 @@
             <li>{{ user_detail.genotype }}</li>
             <li>{{ user_detail.date_of_death }}</li>
             <li>{{ user_detail.cause_of_death }}</li>
+            {% if not user_detail %}
+                <a href="{% url 'account:r_continue' %}">Click Here! to add profile data</a>
+            {% endif %}
         </ul>
     </div>
 

@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
-from django.views.generic import DetailView, UpdateView, CreateView, ListView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import DetailView, UpdateView, CreateView, ListView, FormView
 
 from account.forms import NewUserForm, AddUserDetailForm
 from account.models import UserDetail, UserAccount
@@ -13,17 +13,17 @@ class AccountRegistrationView(CreateView):
     success_url = reverse_lazy('account:r_continue')
 
 
-class AddUserDetailView(LoginRequiredMixin, CreateView):
+class AddUserDetailView(LoginRequiredMixin, FormView):
     template_name = 'account/register.html'
-    model = UserDetail
     form_class = AddUserDetailForm
-    success_url = reverse_lazy('account:dashboard')
 
-    # reverse('user_public_profile', args=(self.request.user,))
+    def get_success_url(self):
+        return reverse('account:dashboard', args=(self.request.user,))
 
     def form_valid(self, form):
-        form.cleaned_data['user_id'] = self.request.user
-        return super().form_valid(form)
+        form.instance.user = self.request.user
+        form.save()
+        super(AddUserDetailView, self).form_valid(form)
 
 
 class Dashboard(LoginRequiredMixin, DetailView):
@@ -37,17 +37,22 @@ class Dashboard(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(Dashboard, self).get_context_data()
         user = UserAccount.objects.get(username=self.request.user)
-        context['user_detail'] = user.userdetail
-        context['education'] = user.education_set.all()
-        context['occupation'] = user.occupation_set.all()
-        context['phone_record'] = user.phonerecord_set.all()
-        context['emails'] = user.additionalemail_set.all()
-        context['diseases'] = user.geneticdisease_set.all()
-        return context
+        print(UserDetail.objects.filter(user=user).exists())
+        if UserDetail.objects.filter(user=user).exists():
+            context['user_detail'] = user.userdetail
+            context['education'] = user.education_set.all()
+            context['occupation'] = user.occupation_set.all()
+            context['phone_record'] = user.phonerecord_set.all()
+            context['emails'] = user.additionalemail_set.all()
+            context['diseases'] = user.geneticdisease_set.all()
+            return context
+        else:
+            return context
 
 
-class EditProfile(UpdateView):
+class EditProfile(LoginRequiredMixin, UpdateView):
     model = UserDetail
+    fields = ['height', 'image']
     template_name = 'account/update.html'
 
 

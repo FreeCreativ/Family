@@ -57,7 +57,7 @@ class Migration(migrations.Migration):
                 ('genotype', models.CharField(blank=True, choices=[('AA', 'AA'), ('AS', 'AS'), ('SS', 'SS')], default='AA', max_length=4)),
                 ('image', models.ImageField(blank=True, upload_to='media/image')),
                 ('alive', models.BooleanField(default=True)),
-                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='account.userdetail')),
+                ('dad', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='account.userdetail')),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
