@@ -101,32 +101,25 @@ def capitalize(val):
 def generate_id(number):
     select_case = 0
     number_string = str(number)
-    # num_length = len(number_string)
-    # step = num_length % 3
-    # if step < 2:
-    #     step += 2
-    print(number_string)
-    # num_slicer = slice(0, num_length, step)
-    # number_string = number_string[num_slicer]
-    passkey = ""
+    identifier = ""
     for n in number_string:
 
         if select_case == 0:
             alphabet = str(number_dictionary1[n])
-            passkey += alphabet
+            identifier += alphabet
             select_case = select_case + 1
         elif select_case == 1:
             alphabet = str(number_dictionary2[n])
-            passkey = passkey + alphabet
+            identifier = identifier + alphabet
             select_case = select_case + 1
         elif select_case == 2:
             alphabet = number_dictionary3[n]
             processed_alphabet = str(num_convert(alphabet))
-            passkey = passkey + processed_alphabet
+            identifier = identifier + processed_alphabet
             select_case = select_case + 1
         else:
             alphabet = number_dictionary3[n]
             processed_alphabet = capitalize(alphabet)
-            passkey = passkey + processed_alphabet
+            identifier = identifier + processed_alphabet
             select_case = select_case - 3
-    return passkey
+    return identifier

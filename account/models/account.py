@@ -1,6 +1,9 @@
-from django.contrib.auth.models import AbstractUser, UserManager
+import datetime
+
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.datetime_safe import date
 
 from Family.settings import AUTH_USER_MODEL
@@ -8,11 +11,11 @@ from Family.settings import AUTH_USER_MODEL
 
 def get_parent(user):
     u = UserDetail.objects.filter(user_id__username=user)
-    return u.first().get_parent()
+    return u.first().get_father()
 
 
 def get_spouse(user):
-    return UserDetail.objects.filter(user_id__username=user).first().get_parent()
+    return UserDetail.objects.filter(user_id__username=user).first().get_father()
 
 
 def calculate_age(birth_date):
@@ -25,46 +28,61 @@ class UserAccount(AbstractUser):
     middle_name = models.CharField(max_length=20)
     REQUIRED_FIELDS = ["email", "first_name", "middle_name", "last_name"]
 
-    # def get_absolute_url(self):
-    #   return reverse('account:dashboard', kwargs={'pk': self.pk})
-
-    class Meta:
-        verbose_name = "user account"
-        verbose_name_plural = "user accounts"
+    def get_absolute_url(self):
+        return reverse('account:dashboard', kwargs={'username': self.username})
 
 
-class UnderAge(models.Manager):
+class Meta:
+    verbose_name = "user account"
+    verbose_name_plural = "user accounts"
+
+
+class Alive(models.Manager):
     def get_queryset(self):
-        return super(UnderAge, self).get_queryset().filter(age_lte=17).filter(alive=True)
+        return super(Alive, self).get_queryset().filter(alive=True)
 
+    def get_user(self, user=None):
+        if user != "" or None:
+            return self.get(user=user)
 
-class YoungAdult(models.Manager):
-    def get_queryset(self):
-        return super(YoungAdult, self).get_queryset().filter(alive=True).filter(age_gte=18).filter(age_lte=24)
+    def under_age(self):
+        return self.filter(date_of_birth__gte=timezone.now() - datetime.timedelta(days=6574.5))
 
+    def young_adult(self):
+        return self.filter(date_of_birth__lt=timezone.now() - datetime.timedelta(days=6574.5)).filter(
+            date_of_birth__gte=timezone.now() - datetime.timedelta(days=9131.25))
 
-class Adult(models.Manager):
-    def get_queryset(self):
-        return super(Adult, self).get_queryset().filter(alive=True).filter(age_gte=25)
+    def adult(self):
+        return self.filter(date_of_birth__lt=timezone.now() - datetime.timedelta(days=9131.25))
 
+    def male(self):
+        return self.filter(gender='male')
 
-class Male(models.Manager):
-    def get_queryset(self):
-        return super(Male, self).get_queryset().filter(alive=True).filter(gender='male')
+    def female(self):
+        return self.filter(gender='female')
 
-
-class Female(models.Manager):
-    def get_queryset(self):
-        return super(Female, self).get_queryset().filter(alive=True).filter(gender='female')
+    def count(self):
+        return self.count()
 
 
 class Oldest(models.Manager):
     def get_queryset(self):
-        return super(Oldest, self).get_queryset().filter(alive=True).filter(-'age').first()
+        old_list = super(Oldest, self).get_queryset().filter(alive=True).order_by('date_of_birth')[:10]
+        new_old_list = super(Oldest, self).get_queryset().filter(alive=True).order_by('date_of_birth')[1:10]
 
-    def set_oldest(self):
-        oldest = OldestAlive(self.get_queryset())
-        oldest.save()
+        for person in new_old_list:
+            if person.date_of_birth == old_list.first().date_of_birth:
+                return old_list.order_by('date_registered').first()
+
+    def get_oldest(self):
+        current_oldest = OldestAlive.objects.get_current_oldest()
+        if current_oldest.user_id != self.get_queryset().user:
+            new_oldest = OldestAlive()
+            new_oldest.user = self.get_queryset().user
+            new_oldest.save()
+            return OldestAlive.objects.get_current_oldest()
+        else:
+            return current_oldest
 
 
 class UserDetail(models.Model):
@@ -73,6 +91,8 @@ class UserDetail(models.Model):
     image = models.ImageField(upload_to='media/image', blank=True)
     date_of_birth = models.DateField(verbose_name='Date of birth')
     date_of_death = models.DateField(verbose_name='date of death', null=True, blank=True)
+    date_registered = models.DateTimeField(verbose_name='date registered', auto_now_add=True)
+    date_modified = models.DateTimeField(verbose_name='date registered', auto_now=True)
     cause_of_death = models.TextField(null=True, blank=True)
     gender_choices = [('M', 'Male'), ('F', 'Female')]
     gender = models.CharField(default='Male', max_length=7, choices=gender_choices)
@@ -88,12 +108,15 @@ class UserDetail(models.Model):
     genotype = models.CharField(default='AA', max_length=4, blank=True, choices=geno_type_choices)
     dad = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='father')
     mum = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='mother')
-
     objects = models.Manager()
     oldest = Oldest()
+    living = Alive()
 
     def __str__(self):
         return f"{self.user}"
+
+    def get_absolute_url(self):
+        return reverse('account:dashboard', kwargs={'username': self.user_id})
 
     def died(self):
         if self.date_of_death:
@@ -113,7 +136,6 @@ class UserDetail(models.Model):
         if self.alive:
             age = calculate_age(self.date_of_birth)
             if age == 0:
-                # days_in_year = 365.2425
                 age_in_days = (date.today() - self.date_of_birth).days
                 if age_in_days < 30:
                     return f"{age_in_days} days old"
@@ -139,7 +161,7 @@ class UserDetail(models.Model):
 
     def genealogy(self):
         if self.dad:
-            lineage = [self.get_parent()]
+            lineage = [self.get_father()]
             try:
                 u = get_parent(self.dad)
             except LookupError:
@@ -153,8 +175,11 @@ class UserDetail(models.Model):
             lineage = ['Oldest known progenitor']
             return lineage
 
-    def get_parent(self):
+    def get_father(self):
         return self.dad
+
+    def get_mother(self):
+        return self.mum
 
     def children(self):
         if self.gender == 'male':
@@ -163,12 +188,17 @@ class UserDetail(models.Model):
             return UserDetail.objects.filter(mother=self.id)
 
 
+class OldestManager(models.Manager):
+    def get_current_oldest(self):
+        return self.order_by('date_elected').first()
+
+
 class OldestAlive(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     rank = models.IntegerField(verbose_name='Rank', primary_key=True, auto_created=True)
-    elected = models.DateField(verbose_name='Date Elected', auto_now_add=True)
-    retired = models.DateField(verbose_name='Date Retired', blank=True)
-    current = models.BooleanField(default=True)
+    date_elected = models.DateField(verbose_name='Date Elected', auto_now_add=True)
+    date_retired = models.DateField(verbose_name='Date Retired', blank=True)
+    objects = OldestManager()
 
     class Meta:
         verbose_name = "Oldest Alive"
@@ -176,3 +206,16 @@ class OldestAlive(models.Model):
 
     def __str__(self):
         return self.user
+
+    def duration(self):
+        duration = (self.date_retired - self.date_elected)
+        years = duration // timezone.timedelta(days=365.2425)
+        days = duration % timezone.timedelta(days=365.2425)
+        if days < timezone.timedelta(days=30):
+            return f"{years} years, {days} days old"
+        else:
+            months = days / 30
+            if months == 1:
+                return f"{years} years, {months} month old"
+            else:
+                return f"{years} years, {months} months old"

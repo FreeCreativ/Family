@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 from Family.settings import AUTH_USER_MODEL
+from account.id_generator import generate_id
 
 
 class Education(models.Model):
@@ -19,6 +20,13 @@ class Education(models.Model):
         ('P', 'Post Graduation'),
     )
     school_level = models.CharField(max_length=15, choices=level_choice)
+
+    def create_id(self):
+        return str(self.user) + self.school_level + generate_id(self.year_of_entrance)[:3]
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        self.id = self.create_id()
+        super(Education, self).save()
 
     def get_absolute_url(self):
         return reverse('account:education_detail', kwargs={'pk': self.id})

@@ -25,7 +25,7 @@
             <li>{{ user_detail.age }}</li>
             <li>{{ user_detail.genealogy }}</li>
             <li>{{ user_detail.children }}</li>
-            <li>{{ user_detail.get_parent }}</li>
+            <li>{{ user_detail.get_father }}</li>
             <li>{{ user_detail.gender }}</li>
             <li>{{ user_detail.height }}</li>
             <li>{{ user_detail.blood_group }}</li>
@@ -71,6 +71,7 @@
             {% endfor %}
             </tbody>
         </table>
+        <li><a href="{% url 'account:education_list' user.username %}">View all</a></li>
     </div>
 
     <div>

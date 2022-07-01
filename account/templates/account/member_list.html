@@ -1,1 +1,10 @@
-{% ex %}
+{% extends 'base.html' %}
+{% include 'navbar.html' %}
+
+{% block content %}
+    {% for user in user_list %}
+        {{ user }}
+    {% endfor %}
+
+
+{% endblock %}

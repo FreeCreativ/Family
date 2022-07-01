@@ -14,27 +14,27 @@
     <link rel="stylesheet" href="{% static 'BS-icons/bootstrap-icons.css' %}">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>Umu-tawa.com{% block  title %} {% endblock %}</title>
+    <title>Umu-tawa.com{% block title %} {% endblock %}</title>
 </head>
 <body>
-<i class="bi bi-align-start bi-reddit btn-danger"></i>
 <div id="content">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-            </div>
-        {% endfor %}
 
-    {% endif %}
     {% if user.is_authenticated %}
-        <p>Hi {{ user.username }}!</p>
-        <p><a href="{% url 'logout' %}">Log out</a></p>
+    <p>Hi {{ user.username }}!</p>
+    <p><a href="{% url 'logout' %}">Log out</a></p>
+    {% endif %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
     {% endif %}
     {% block content %}
 
 
     {% endblock %}
+
 </div>
 {# Footer Section #}
 <div id="footer" class="bg-primary justify-content-center select2-container--admin-autocomplete">

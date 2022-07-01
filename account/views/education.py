@@ -24,30 +24,23 @@ class EducationDetailView(LoginRequiredMixin, DetailView):
     pk_url_kwarg = 'pk'
 
 
-class RegisterEducationView(LoginRequiredMixin, CreateView):
+class EducationCreateView(LoginRequiredMixin, CreateView):
     form_class = EducationForm
     template_name = 'education/register_education_detail.html'
 
-    # def form_valid(self, form):
-    #     education = form.save(commit=False)
-    #     education.user = self.request.user
-    #     education.save()
-    #     return super(RegisterEducationView, self).form_valid(form)
-
     def form_valid(self, form):
-        # form.cleaned_data['user'] = self.request.user
-        education = form.save(commit=False)
-        education.user = self.request.user
-        super(RegisterEducationView, self).form_valid(education)
+        form.instance.user = self.request.user
+        form.save()
+        return super(EducationCreateView, self).form_valid(form)
 
 
-class UpdateEducationView(LoginRequiredMixin, UpdateView):
+class EducationUpdateView(LoginRequiredMixin, UpdateView):
     model = Education
     template_name = 'education/education_update.html'
-    fields = ["name_of_school", "year_of_entrance", "year_of_graduation", "school_level"]
+    fields = ["name_of_school", "school_level", "year_of_entrance", "year_of_graduation"]
     success_url = '/'
 
 
-class DeleteEducationView(LoginRequiredMixin, DeleteView):
+class EducationDeleteView(LoginRequiredMixin, DeleteView):
     model = Education
-    success_url = reverse_lazy('account:education_delete')
+    success_url = reverse_lazy('account:education_list')
