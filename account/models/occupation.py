@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 from Family.settings import AUTH_USER_MODEL
-from account.id_generator import generate_id
+from account.generator import generate_id
 
 
 class Occupation(models.Model):

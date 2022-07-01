@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 alphabetDictionary = {
     "A": 222,
     "B": 308,
@@ -123,3 +125,17 @@ def generate_id(number):
             identifier = identifier + processed_alphabet
             select_case = select_case - 3
     return identifier
+
+
+def duration(time1, time2):
+    time = (time1 - time2)
+    years = time // timezone.timedelta(days=365.2425)
+    days = time % timezone.timedelta(days=365.2425)
+    if days < timezone.timedelta(days=30):
+        return f"{years} years, {days} days"
+    else:
+        months = days / 30
+        if months == 1:
+            return f"{years} years, {months} month"
+        else:
+            return f"{years} years, {months} months"

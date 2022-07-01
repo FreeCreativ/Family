@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.utils.datetime_safe import date
 
 from Family.settings import AUTH_USER_MODEL
+from account.generator import duration
 
 
 def get_parent(user):
@@ -208,14 +209,7 @@ class OldestAlive(models.Model):
         return self.user
 
     def duration(self):
-        duration = (self.date_retired - self.date_elected)
-        years = duration // timezone.timedelta(days=365.2425)
-        days = duration % timezone.timedelta(days=365.2425)
-        if days < timezone.timedelta(days=30):
-            return f"{years} years, {days} days old"
+        if self.date_retired:
+            return duration(self.date_retired - self.date_elected)
         else:
-            months = days / 30
-            if months == 1:
-                return f"{years} years, {months} month old"
-            else:
-                return f"{years} years, {months} months old"
+            return 'You are the current oldest person, in the family.'

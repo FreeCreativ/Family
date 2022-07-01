@@ -130,7 +130,7 @@ MEDIA_ROOT = [BASE_DIR / 'media']
 AUTH_USER_MODEL = 'account.UserAccount'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'account:dashboard'
-# LOGOUT_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = 'login'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 

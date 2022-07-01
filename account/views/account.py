@@ -27,8 +27,9 @@ class Dashboard(LoginRequiredMixin, DetailView):
     template_name = 'account/dashboard.html'
     model = UserAccount
     context_object_name = 'user'
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
+
+    def get_object(self, queryset=None):
+        return UserAccount.objects.get(username=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super(Dashboard, self).get_context_data()

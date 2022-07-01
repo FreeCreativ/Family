@@ -37,7 +37,7 @@ dash = [
     path('phonenumber/', include(phone)),
 ]
 urlpatterns = [
-    path('<str:username>/dashboard/', include(dash)),
+    path('dashboard/', include(dash)),
     path('account/register/', AccountCreateView.as_view(), name='register'),
     path('account/register/continue', UserDetailCreateView.as_view(), name='r_continue'),
     path('account/list', UserListView.as_view(), name='user_list'),

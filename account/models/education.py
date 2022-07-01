@@ -1,8 +1,10 @@
+from datetime import timezone
+
 from django.db import models
 from django.urls import reverse
 
 from Family.settings import AUTH_USER_MODEL
-from account.id_generator import generate_id
+from account.generator import generate_id, duration
 
 
 class Education(models.Model):
@@ -39,6 +41,6 @@ class Education(models.Model):
 
     def duration(self):
         if self.year_of_graduation:
-            return self.year_of_graduation - self.year_of_entrance
+            return duration(self.year_of_graduation, self.year_of_entrance)
         else:
             return 'You are yet to graduate'

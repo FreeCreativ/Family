@@ -12,7 +12,7 @@
         {% for education in education_list %}
 
             <tr>
-                <td><a href="{% url 'account:education_detail' username=user.username pk=education.id %}"
+                <td><a href="{% url 'account:education_detail' pk=education.id %}"
                        height="20px">{{ education.name_of_school }}</a></td>
                 <td>{{ education.school_level }}</td>
                 <td>{{ education.duration }}</td>
@@ -21,6 +21,6 @@
             </tr>
 
         {% endfor %}
-        <tr><a href="{% url 'account:new_education' username=user.username %}">New educational institution</a></tr>
+        <tr><a href="{% url 'account:new_education' %}">New educational institution</a></tr>
     </table>
 {% endblock %}
