@@ -3,7 +3,8 @@ from django.urls import path, include
 from account.views import EducationCreateView, EducationListView, EducationDetailView, EducationUpdateView, \
     EducationDeleteView, EmailCreateView, EmailListView, EmailDetailView, EmailDeleteView, OccupationCreateView, \
     OccupationListView, OccupationDetailView, OccupationUpdateView, OccupationDeleteView, Dashboard, ProfileUpdateView, \
-    AccountCreateView, UserDetailCreateView, UserListView
+    AccountCreateView, UserDetailCreateView, UserListView, DiseaseDetailView, DiseaseUpdateView, DiseaseDeleteView, \
+    DiseaseCreateView, DiseaseListView
 
 app_name = 'account'
 
@@ -27,6 +28,13 @@ job = [
     path('<pk>/update', OccupationUpdateView.as_view(), name='occupation_update'),
     path('<pk>/delete', OccupationDeleteView.as_view(), name='occupation_delete'),
 ]
+disease = [
+    path('new', DiseaseCreateView.as_view(), name='disease_create'),
+    path('list', DiseaseListView.as_view(), name='disease_list'),
+    path('<str:pk>', DiseaseDetailView.as_view(), name='disease_detail'),
+    path('<pk>/update', DiseaseUpdateView.as_view(), name='disease_update'),
+    path('<pk>/delete', DiseaseDeleteView.as_view(), name='disease_delete'),
+]
 phone = []
 dash = [
     path('', Dashboard.as_view(), name='dashboard'),
@@ -35,6 +43,7 @@ dash = [
     path('email/', include(email)),
     path('occuation/', include(job)),
     path('phonenumber/', include(phone)),
+    path('disease/', include(phone)),
 ]
 urlpatterns = [
     path('dashboard/', include(dash)),

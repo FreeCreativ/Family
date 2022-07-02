@@ -4,3 +4,4 @@ from .education import EducationListView, EducationDetailView, EducationCreateVi
 from .email import EmailListView, EmailDeleteView, EmailDetailView, EmailCreateView
 from .occupation import OccupationListView, OccupationCreateView, OccupationDeleteView, OccupationDetailView, \
     OccupationUpdateView
+from .disease import DiseaseDeleteView, DiseaseCreateView, DiseaseDetailView, DiseaseListView, DiseaseUpdateView
