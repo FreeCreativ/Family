@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    - blog : new post
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-6" style="margin: 0 auto;">
+        {% if success == True %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ successmsg | crispy }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+        {#        <form action="{% url 'blog:new_post' %}" method="POST">#}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+    </div>
+{% endblock %}

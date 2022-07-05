@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}
+    - blog: {{ post.headline }}
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'blog:detail' slug=post.slug %}">
+        <h1>{{ post.headline }}</h1>
+    </a>
+    <p>{{ post.content }}
+        <li>
+            {% for comment in comments %}
+                <li>{{ comment }}</li>
+            {% endfor %}
+    </li>
+    <form action="{% url 'blog:detail' slug=post.slug %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {#        {{ comment_form }}#}
+        <input type="submit" value="Send">
+    </form>
+    </p>
+{% endblock %}

@@ -25,7 +25,7 @@ class EducationForm(forms.ModelForm):
 class OccupationForm(forms.ModelForm):
     class Meta:
         model = Occupation
-        exclude = ('user',)
+        exclude = ('user', 'id',)
 
 
 class PhoneRecordForm(forms.ModelForm):
@@ -37,10 +37,10 @@ class PhoneRecordForm(forms.ModelForm):
 class EmailForm(forms.ModelForm):
     class Meta:
         model = AdditionalEmail
-        exclude = ('user',)
+        exclude = ('user', 'id',)
 
 
 class GeneticDiseaseForm(forms.ModelForm):
     class Meta:
         model = GeneticDisease
-        exclude = ('user',)
+        exclude = ('user', 'id',)

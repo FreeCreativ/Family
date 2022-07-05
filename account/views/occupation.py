@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, DetailView, CreateView
 
 from account.forms import OccupationForm
@@ -27,6 +27,8 @@ class OccupationCreateView(LoginRequiredMixin, CreateView):
 class OccupationUpdateView(LoginRequiredMixin, CreateView):
     form_class = OccupationForm
     template_name = 'occupation/occupation_update.html'
+    slug_field = 'id'
+    slug_url_kwarg = 'pk'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -45,3 +47,6 @@ class OccupationDetailView(LoginRequiredMixin, DetailView):
 class OccupationDeleteView(LoginRequiredMixin, DeleteView):
     model = Occupation
     template_name = 'occupation/occupation_delete.html'
+    slug_field = 'id'
+    slug_url_kwarg = 'pk'
+    success_url = reverse_lazy('account:occupation_list')

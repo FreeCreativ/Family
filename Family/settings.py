@@ -40,7 +40,11 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'account.apps.AccountConfig',
-
+    'blog.apps.BlogConfig',
+    'chat.apps.ChatConfig',
+    'home.apps.HomeConfig',
+    'image.apps.ImageConfig',
+    'video.apps.VideoConfig',
 ]
 
 MIDDLEWARE = [
@@ -127,6 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = [BASE_DIR / 'media']
 
+# AUTHENTICATION
 AUTH_USER_MODEL = 'account.UserAccount'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'account:dashboard'

@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, DetailView, CreateView
 
 from account.forms import EmailForm
@@ -34,3 +35,6 @@ class EmailDetailView(LoginRequiredMixin, DetailView):
 class EmailDeleteView(LoginRequiredMixin, DeleteView):
     model = AdditionalEmail
     template_name = 'email/email_delete.html'
+    slug_field = 'id'
+    slug_url_kwarg = 'pk'
+    success_url = reverse_lazy('account:email_list')

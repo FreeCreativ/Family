@@ -26,7 +26,7 @@ class EducationDetailView(LoginRequiredMixin, DetailView):
 
 class EducationCreateView(LoginRequiredMixin, CreateView):
     form_class = EducationForm
-    template_name = 'education/register_education_detail.html'
+    template_name = 'education/education_create.html'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -38,9 +38,14 @@ class EducationUpdateView(LoginRequiredMixin, UpdateView):
     model = Education
     template_name = 'education/education_update.html'
     fields = ["name_of_school", "school_level", "year_of_entrance", "year_of_graduation"]
+    slug_field = 'id'
+    slug_url_kwarg = 'pk'
     success_url = '/'
 
 
 class EducationDeleteView(LoginRequiredMixin, DeleteView):
     model = Education
     success_url = reverse_lazy('account:education_list')
+    slug_field = 'id'
+    slug_url_kwarg = 'pk'
+    template_name = 'education/education_delete.html'

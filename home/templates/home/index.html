@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% for image in latest_images %}
+        <div class="container-xl">
+            <li>{{ image.image_file }}</li>
+            <li>{{ image.name }}</li>
+            <li>{{ image.description }}</li>
+            <li>{{ image.date_of_upload }}</li>
+        </div>
+    {% endfor %}
+
+    {% for post in latest_posts %}
+        <div class="container-xl">
+            <li>{{ post.headline }}</li>
+            <li>{{ post.content }}</li>
+            <li>{{ post.author }}</li>
+            <li>{{ post.date_created }}</li>
+        </div>
+    {% endfor %}
+
+    {% for video in latest_videos %}
+        <div class="container-xl">
+            <li>{{ video.video_file }}</li>
+            <li>{{ video.name }}</li>
+            <li>{{ video.description }}</li>
+            <li>{{ video.date_of_upload }}</li>
+        </div>
+    {% endfor %}
+{% endblock %}

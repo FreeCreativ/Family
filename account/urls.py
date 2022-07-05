@@ -2,8 +2,7 @@ from django.urls import path, include
 
 from account.views import EducationCreateView, EducationListView, EducationDetailView, EducationUpdateView, \
     EducationDeleteView, EmailCreateView, EmailListView, EmailDetailView, EmailDeleteView, OccupationCreateView, \
-    OccupationListView, OccupationDetailView, OccupationUpdateView, OccupationDeleteView, Dashboard, ProfileUpdateView, \
-    AccountCreateView, UserDetailCreateView, UserListView, DiseaseDetailView, DiseaseUpdateView, DiseaseDeleteView, \
+    OccupationListView, OccupationDetailView, OccupationUpdateView, OccupationDeleteView, Dashboard, ProfileUpdateView,AccountCreateView, UserDetailCreateView, UserListView, DiseaseDetailView, DiseaseUpdateView, DiseaseDeleteView, \
     DiseaseCreateView, DiseaseListView
 
 app_name = 'account'
@@ -46,7 +45,7 @@ dash = [
     path('disease/', include(phone)),
 ]
 urlpatterns = [
-    path('dashboard/', include(dash)),
+    path('account/dashboard/', include(dash)),
     path('account/register/', AccountCreateView.as_view(), name='register'),
     path('account/register/continue', UserDetailCreateView.as_view(), name='r_continue'),
     path('account/list', UserListView.as_view(), name='user_list'),

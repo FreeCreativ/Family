@@ -11,8 +11,15 @@ from account.generator import duration
 
 
 def get_parent(user):
-    u = UserDetail.objects.filter(user_id__username=user)
-    return u.first().get_father()
+    # u = UserDetail.objects.filter(user_id__username=user)
+    #
+    # parent = UserDetail.objects.filter(user_id__username=user)
+    # if u.first().get_father().exists():
+    #     return u.first().get_father()
+    # else:
+    #     return None
+    u = UserDetail.objects.get(user=user)
+    return u.get_father()
 
 
 def get_spouse(user):
@@ -119,6 +126,12 @@ class UserDetail(models.Model):
     def get_absolute_url(self):
         return reverse('account:dashboard', kwargs={'username': self.user_id})
 
+    def children(self):
+        if self.gender == 'male':
+            return UserDetail.objects.filter(father=self.id)
+        else:
+            return UserDetail.objects.filter(mother=self.id)
+
     def died(self):
         if self.date_of_death:
             length = calculate_age(self.date_of_death)
@@ -153,6 +166,12 @@ class UserDetail(models.Model):
         else:
             return str(self.died())
 
+    def get_father(self):
+        return self.dad
+
+    def get_mother(self):
+        return self.mum
+
     def family_tree(self):
         tree = []
         me = self
@@ -162,31 +181,17 @@ class UserDetail(models.Model):
 
     def genealogy(self):
         if self.dad:
-            lineage = [self.get_father()]
-            try:
-                u = get_parent(self.dad)
-            except LookupError:
-                lineage = ['You are the oldest know progenitor']
-            finally:
-                while u is not None:
-                    lineage.append(u)
-                    u = get_parent(u)
-                    return lineage
+            lineage = [self, self.get_father()]
+            parent = get_parent(self.dad)
+            while parent is not None:
+                lineage.append(parent)
+                parent = get_parent(parent)
+            else:
+                lineage.append('Oldest known progenitor', )
+                return lineage
         else:
-            lineage = ['Oldest known progenitor']
+            lineage = ['You are the oldest know progenitor']
             return lineage
-
-    def get_father(self):
-        return self.dad
-
-    def get_mother(self):
-        return self.mum
-
-    def children(self):
-        if self.gender == 'male':
-            return UserDetail.objects.filter(father=self.id)
-        else:
-            return UserDetail.objects.filter(mother=self.id)
 
 
 class OldestManager(models.Manager):
@@ -210,6 +215,6 @@ class OldestAlive(models.Model):
 
     def duration(self):
         if self.date_retired:
-            return duration(self.date_retired - self.date_elected)
+            return duration(self.date_retired, self.date_elected)
         else:
             return 'You are the current oldest person, in the family.'
