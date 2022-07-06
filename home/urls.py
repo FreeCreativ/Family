@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from .views import Index, AboutView, Search
 
@@ -8,5 +8,4 @@ urlpatterns = [
     path('', Index.as_view(), name='index'),
     path('search/', Search.as_view(), name='search'),
     path('about/', AboutView.as_view(), name='about'),
-
 ]

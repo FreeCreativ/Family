@@ -93,4 +93,21 @@
             </tbody>
         </table>
     </div>
+    <h1>OST SECTION</h1>
+    {% for post in post_list %}
+        <a href="{% url 'blog:detail' slug=post.slug %}">
+            <h1>{{ post.headline }}</h1>
+        </a>
+        <p>
+            {{ post.content }}
+            <li>
+                {% for comment in post.comment_set.all %}
+                    <li>{{ comment }}</li>
+                {% endfor %}
+        </li>
+        </p>
+    {% empty %}
+        No posts available
+    {% endfor %}
+
 {% endblock %}

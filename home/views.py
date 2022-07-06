@@ -24,7 +24,7 @@ class Index(TemplateView):
         return context
 
 
-class Search(ListView, LoginRequiredMixin):
+class Search(LoginRequiredMixin, ListView):
     template_name = 'home/search.html'
     paginate_by = 20
     context_object_name = 'result_list'
@@ -40,5 +40,3 @@ class AboutView(TemplateView):
 
     def get_context_data(self, **kwargs):
         return super(AboutView, self).get_context_data()
-
-

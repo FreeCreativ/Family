@@ -1,45 +1,56 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, DetailView
-from django.views.generic.edit import FormMixin, DeleteView
+from django.views.generic.edit import DeleteView, BaseFormView
 
-from blog.forms import *
-from blog.models import *
+from blog.forms import PostForm, CommentForm
+from blog.models import Post
 
 
-# Create your views here.
 class PostList(ListView):
     model = Post
-    template_name = 'blog/blog.html'
+    template_name = 'blog/blog_list.html'
     context_object_name = 'post_list'
     paginate_by = 20
 
 
-class PostCreate(CreateView):
+class PostCreate(LoginRequiredMixin, CreateView):
     model = Post
-    template_name = 'blog/create/post.html'
+    template_name = 'blog/blog_create.html'
     form_class = PostForm
     success_url = '/blog/'
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.save()
+        return super(PostCreate, self).form_valid(form)
 
-class PostDetail(DetailView, FormMixin):
+
+class PostDetail(DetailView, BaseFormView):
     model = Post
-    template_name = 'blog/detail.html'
+    template_name = 'blog/blog_detail.html'
     context_object_name = 'post'
     form_class = CommentForm
-    success_url = 'blog:detail'
-    slug_field = 'slug'
-    slug_url_kwarg = 'slug'
 
     def get_context_data(self, **kwargs):
-        context = super(PostDetail, self).get_context_data()
-        # context['form'] = self.form_class
+        context = super(PostDetail, self).get_context_data(**kwargs)
+        context['post_comments'] = Post.objects.get(slug=self.object.slug).postcomment_set.all()[:20]
         return context
+
+    def get_success_url(self):
+        return ''
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.post = self.get_object()
+        form.save()
+        return super(PostDetail, self).form_valid(form)
 
 
 class PostDelete(DeleteView):
     model = Post
-    template_name = 'blog/delete.html'
+    template_name = 'blog/blog_delete.html'
     success_url = '/blog/'
     extra_context = {
         'message': 'Are you sure you want to delete this post?',

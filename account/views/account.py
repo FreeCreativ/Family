@@ -51,6 +51,9 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     fields = ['height', 'image']
     template_name = 'account/update.html'
 
+    def get_object(self, queryset=None):
+        return UserDetail.objects.get(user=self.request.user)
+
 
 class UserListView(LoginRequiredMixin, ListView):
     model = UserAccount

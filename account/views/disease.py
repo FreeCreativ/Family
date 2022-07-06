@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DeleteView, DetailView, CreateView
+from django.views.generic import ListView, DeleteView, DetailView, CreateView, UpdateView
 
 from account.forms import GeneticDiseaseForm
 from account.models import GeneticDisease
@@ -36,7 +36,7 @@ class DiseaseDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'disease/disease_delete.html'
 
 
-class DiseaseUpdateView(LoginRequiredMixin, CreateView):
+class DiseaseUpdateView(LoginRequiredMixin, UpdateView):
     form_class = GeneticDiseaseForm
     template_name = 'occupation/occupation_update.html'
 

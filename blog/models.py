@@ -10,7 +10,7 @@ from home.models import Comment
 class Post(models.Model):
     author = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     headline = models.CharField(max_length=300)
-    slug = models.SlugField(headline, max_length=300)
+    slug = models.SlugField(headline, max_length=300, primary_key=True)
     content = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)

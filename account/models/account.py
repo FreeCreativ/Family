@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -33,16 +34,23 @@ def calculate_age(birth_date):
 
 
 class UserAccount(AbstractUser):
+    username_validator = UnicodeUsernameValidator()
+
+    username = models.CharField(max_length=150, unique=True, primary_key=True,
+                                help_text=(
+                                    "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+                                ),
+                                validators=[username_validator],
+                                error_messages={
+                                    "unique": "A user with that user already exists.",
+                                },
+                                )
     middle_name = models.CharField(max_length=20)
     REQUIRED_FIELDS = ["email", "first_name", "middle_name", "last_name"]
 
-    def get_absolute_url(self):
-        return reverse('account:dashboard', kwargs={'username': self.username})
-
-
-class Meta:
-    verbose_name = "user account"
-    verbose_name_plural = "user accounts"
+    class Meta:
+        verbose_name = "user account"
+        verbose_name_plural = "user accounts"
 
 
 class Alive(models.Manager):
@@ -109,7 +117,7 @@ class UserDetail(models.Model):
         ('M', 'Medium'),
         ('L', 'Large'),
     )
-    height = models.CharField(default='5 feet', max_length=10, blank=True, choices=heights)
+    height = models.CharField(default='M', max_length=10, blank=True, choices=heights)
     blood_group_choices = [('A', 'A'), ('B', 'B'), ('AB', 'AB'), ('O', 'O')]
     blood_group = models.CharField(default='A', max_length=4, blank=True, choices=blood_group_choices)
     geno_type_choices = [('AA', 'AA'), ('AS', 'AS'), ('SS', 'SS')]
@@ -124,7 +132,7 @@ class UserDetail(models.Model):
         return f"{self.user}"
 
     def get_absolute_url(self):
-        return reverse('account:dashboard', kwargs={'username': self.user_id})
+        return reverse('account:dashboard', )
 
     def children(self):
         if self.gender == 'male':
