@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('alive', models.BooleanField(default=True)),
-                ('image', models.ImageField(blank=True, upload_to='media/image')),
+                ('image', models.ImageField(blank=True, upload_to='public/image')),
                 ('date_of_birth', models.DateField(verbose_name='Date of birth')),
                 ('date_of_death', models.DateField(blank=True, null=True, verbose_name='date of death')),
                 ('date_registered', models.DateTimeField(auto_now_add=True, verbose_name='date registered')),

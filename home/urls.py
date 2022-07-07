@@ -1,6 +1,6 @@
-from django.urls import path, include
+from django.urls import path
 
-from .views import Index, AboutView, Search
+from home.views import Index, Search, AboutView
 
 app_name = 'home'
 

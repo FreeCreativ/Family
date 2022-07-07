@@ -6,11 +6,15 @@ from blog.forms import PostForm, CommentForm
 from blog.models import Post
 
 
-class PostList(ListView):
+class PostList(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'blog/blog_list.html'
     context_object_name = 'post_list'
     paginate_by = 20
+    ordering = '-date_created'
+
+    def get_queryset(self):
+        return super(PostList, self).get_queryset().filter(author=self.request.user)
 
 
 class PostCreate(LoginRequiredMixin, CreateView):
@@ -27,7 +31,7 @@ class PostCreate(LoginRequiredMixin, CreateView):
         return super(PostCreate, self).form_valid(form)
 
 
-class PostDetail(DetailView, BaseFormView):
+class PostDetail(LoginRequiredMixin, DetailView, BaseFormView):
     model = Post
     template_name = 'blog/blog_detail.html'
     context_object_name = 'post'
@@ -48,10 +52,16 @@ class PostDetail(DetailView, BaseFormView):
         return super(PostDetail, self).form_valid(form)
 
 
-class PostDelete(DeleteView):
+class PostDelete(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'blog/blog_delete.html'
     success_url = '/blog/'
     extra_context = {
         'message': 'Are you sure you want to delete this post?',
     }
+
+    def form_valid(self, form):
+        if self.object.author == self.request.user:
+            return super(PostDelete, self).form_valid(form)
+        else:
+            return self.form_invalid(form)
