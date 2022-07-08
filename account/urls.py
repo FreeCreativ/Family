@@ -47,6 +47,7 @@ dash = [
 ]
 urlpatterns = [
     path('account/dashboard/', include(dash)),
+    path('account/blog/', include('blog.urls')),
     path('account/register/', AccountCreateView.as_view(), name='register'),
     path('account/register/continue', UserDetailCreateView.as_view(), name='r_continue'),
     path('account/list', UserListView.as_view(), name='user_list'),
