@@ -128,8 +128,8 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # EXTRA
-MEDIA_URL = 'public/'
-MEDIA_ROOT = [BASE_DIR / 'public']
+MEDIA_URL = 'is_public/'
+MEDIA_ROOT = [BASE_DIR / 'is_public']
 
 # AUTHENTICATION
 AUTH_USER_MODEL = 'account.UserAccount'

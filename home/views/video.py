@@ -8,7 +8,7 @@ class PublicVideoListView(ListView):
     template_name = 'public/media_list.html'
 
     def get_queryset(self):
-        super(PublicVideoListView, self).get_queryset().filter(public=True)
+        return super(PublicVideoListView, self).get_queryset().filter(public=True)
 
 
 class PublicVideoDetailView(DetailView):

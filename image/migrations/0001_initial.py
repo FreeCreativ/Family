@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('date_of_upload', models.DateTimeField(auto_now_add=True)),
                 ('name', models.CharField(default=datetime.datetime(2022, 7, 6, 18, 38, 32, 261578, tzinfo=utc), max_length=300)),
                 ('description', models.TextField()),
-                ('public', models.BooleanField(default=True)),
+                ('is_public', models.BooleanField(default=True)),
                 ('image_file', models.ImageField(upload_to='imagef/')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],

@@ -1,13 +1,14 @@
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import BaseFormView
 
+from account.models import UserAccount
 from blog.forms import CommentForm
 from blog.models import Post
 
 
 class PublicPostList(ListView):
     model = Post
-    template_name = 'blog/blog_list.html'
+    template_name = 'public/blog_list.html'
     context_object_name = 'post_list'
     paginate_by = 20
     ordering = '-date_created'
@@ -15,7 +16,7 @@ class PublicPostList(ListView):
 
 class PublicPostDetail(DetailView, BaseFormView):
     model = Post
-    template_name = 'blog/blog_detail.html'
+    template_name = 'public/blog_detail.html'
     context_object_name = 'post'
     form_class = CommentForm
 
@@ -28,13 +29,13 @@ class PublicPostDetail(DetailView, BaseFormView):
         return ''
 
     def form_valid(self, form):
-        if self.request.user:
+        if self.request.user.is_authenticated:
             form.instance.user = self.request.user
             form.instance.post = self.get_object()
             form.save()
             return super(PublicPostDetail, self).form_valid(form)
         else:
-            form.instance.user = 'anonymous'
+            form.instance.user = UserAccount.objects.get(username='anonymous')
             form.instance.post = self.get_object()
             form.save()
             return super(PublicPostDetail, self).form_valid(form)

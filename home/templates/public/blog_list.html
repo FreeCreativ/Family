@@ -5,7 +5,7 @@
 {% block content %}
     <a href="{% url 'account:blog:blog_create' %}">NEW POST</a>
     {% for post in post_list %}
-        <a href="{% url 'account:blog:blog_detail' slug=post.slug %}">
+        <a href="{% url 'home:blog_detail' slug=post.slug %}">
             <h1>{{ post.headline }}</h1>
         </a>
         <p>

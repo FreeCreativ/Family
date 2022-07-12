@@ -19,7 +19,7 @@ class Log(models.Model):
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     comment = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
@@ -32,12 +32,19 @@ class Comment(models.Model):
         return self.comment
 
 
+class MediaManager(models.Manager):
+    def get_queryset(self):
+        return super(MediaManager, self).get_queryset().filter(is_public=True)
+
+
 class Media(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_of_upload = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=300, default=timezone.now())
     description = models.TextField()
-    public = models.BooleanField(default=True)
+    is_public = models.BooleanField(default=True)
+    public = MediaManager()
+    objects = models.Manager
 
     class Meta:
         abstract = True

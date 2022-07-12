@@ -59,9 +59,3 @@ class PostDelete(LoginRequiredMixin, DeleteView):
     extra_context = {
         'message': 'Are you sure you want to delete this post?',
     }
-
-    def form_valid(self, form):
-        if self.object.author == self.request.user:
-            return super(PostDelete, self).form_valid(form)
-        else:
-            return self.form_invalid(form)

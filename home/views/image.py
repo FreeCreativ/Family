@@ -8,7 +8,7 @@ class PublicImageListView(ListView):
     template_name = 'public/media_list.html'
 
     def get_queryset(self):
-        super(PublicImageListView, self).get_queryset().filter(public=True)
+        return super(PublicImageListView, self).get_queryset().filter(public=True)
 
 
 class PublicImageDetailView(ListView):
@@ -16,4 +16,4 @@ class PublicImageDetailView(ListView):
     template_name = 'public/media_detail.html'
 
     def get_queryset(self):
-        super(PublicImageDetailView, self).get_queryset().filter(public=True)
+        return super(PublicImageDetailView, self).get_queryset().filter(public=True)

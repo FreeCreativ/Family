@@ -15,8 +15,8 @@ class Index(TemplateView):
 
     def get_context_data(self, **kwargs):
         latest_posts = Post.objects.order_by('-date_created')[:10]
-        latest_images = Image.objects.order_by('-date_of_upload')[:10]
-        latest_videos = Video.objects.order_by('-date_of_upload')[:10]
+        latest_images = Image.public.order_by('-date_of_upload')[:10]
+        latest_videos = Video.public.order_by('-date_of_upload')[:10]
         context = super(Index, self).get_context_data()
         context['latest_posts'] = latest_posts
         context['latest_images'] = latest_images

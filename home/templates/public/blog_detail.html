@@ -4,12 +4,9 @@
 {% endblock %}
 
 {% block content %}
-    <a href="{% url 'account:blog:blog_detail' slug=post.slug %}"><h1>{{ post.headline }}</h1></a>
+    <a href="{% url 'home:blog_detail' slug=post.slug %}"><h1>{{ post.headline }}</h1></a>
     <div>
         <p>{{ post.content }}</p>
-        {% if post.author == user %}
-            <span><a href="{% url 'account:blog:blog_delete' slug=post.slug %}" class="btn btn-danger">Delete</a></span>
-        {% endif %}
         <ul>
             {% for post_comment in post_comments %}
                 <li>{{ post_comment }}</li>
