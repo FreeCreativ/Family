@@ -37,6 +37,12 @@ class MediaManager(models.Manager):
         return super(MediaManager, self).get_queryset().filter(is_public=True)
 
 
+class MyMedia(models.Manager):
+
+    def my_media(self, user):
+        return self.filter(user=user)
+
+
 class Media(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_of_upload = models.DateTimeField(auto_now_add=True)
@@ -44,7 +50,7 @@ class Media(models.Model):
     description = models.TextField()
     is_public = models.BooleanField(default=True)
     public = MediaManager()
-    objects = models.Manager
+    objects = MyMedia()
 
     class Meta:
         abstract = True
