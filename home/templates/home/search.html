@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+    <ul>
+        {% for result in result_list %}
+            <li>{% for item in result %}
+                <span>{{ item }}</span>
+            {% endfor %}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

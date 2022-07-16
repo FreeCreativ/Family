@@ -5,6 +5,7 @@ from account.views import EducationCreateView, EducationListView, EducationDetai
     OccupationListView, OccupationDetailView, OccupationUpdateView, OccupationDeleteView, Dashboard, ProfileUpdateView, \
     AccountCreateView, UserDetailCreateView, UserListView, DiseaseDetailView, DiseaseUpdateView, DiseaseDeleteView, \
     DiseaseCreateView, DiseaseListView
+from image.views import MyImageListView, ImageListView, MyImageDeleteView
 
 app_name = 'account'
 
@@ -36,6 +37,11 @@ disease = [
     path('<pk>/delete', DiseaseDeleteView.as_view(), name='disease_delete'),
 ]
 phone = []
+image = [
+    path('', ImageListView.as_view(), name='image_list'),
+    path('my-images', MyImageListView.as_view(), name='my_image_list'),
+    path('<pk>/delete', MyImageDeleteView.as_view(), name='my_image_delete'),
+]
 dash = [
     path('', Dashboard.as_view(), name='dashboard'),
     path('update', ProfileUpdateView.as_view(), name='update'),
@@ -44,6 +50,7 @@ dash = [
     path('occupation/', include(job)),
     path('phonenumber/', include(phone)),
     path('disease/', include(phone)),
+    path('img/', include(image)),
 ]
 urlpatterns = [
     path('account/dashboard/', include(dash)),

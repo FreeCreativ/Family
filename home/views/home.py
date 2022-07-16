@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
 from django.views.generic import TemplateView, ListView
 
+from account.models import UserAccount
 from blog.models import Post
 from image.models import Image
 from video.models import Video
@@ -24,14 +24,14 @@ class Index(TemplateView):
         return context
 
 
-class Search(LoginRequiredMixin, ListView):
+class Search(ListView):
     template_name = 'home/search.html'
     paginate_by = 20
     context_object_name = 'result_list'
 
     def get_queryset(self):
         q = self.request.GET.get('q')
-        result_list = [Post.objects.filter(headline__icontains=q), User.objects.filter(first_name__icontains=q)]
+        result_list = [Post.objects.filter(headline__contains=q), UserAccount.objects.filter(first_name__icontains=q)]
         return result_list
 
 

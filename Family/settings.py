@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'image.apps.ImageConfig',
     'video.apps.VideoConfig',
+    'django_seed',
 ]
 
 MIDDLEWARE = [

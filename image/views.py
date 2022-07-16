@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DeleteView
 
 from image.models import Image
@@ -22,4 +23,12 @@ class MyImageListView(LoginRequiredMixin, ListView):
 
 
 class MyImageDeleteView(LoginRequiredMixin, DeleteView):
-    pass
+    model = Image
+    template_name = 'image/image_delete.html'
+    success_url = reverse_lazy('account:my_image_list')
+
+    def form_valid(self, form):
+        if self.request.user == self.object.user:
+            return super(MyImageDeleteView, self).form_valid(form)
+        else:
+            return self.form_invalid(form)
