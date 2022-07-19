@@ -5,18 +5,18 @@
 {% block content %}
     <a href="{% url 'account:blog:blog_create' %}">NEW POST</a>
     {% for post in post_list %}
-        <a href="{% url 'account:blog:blog_detail' slug=post.slug %}">
-            <h1>{{ post.headline }}</h1>
+        <a href="{% url 'home:blog_detail' slug=post.slug %}">
+            <h6>{{ post.headline }}</h6>
         </a>
-        <p>
-            {{ post.content }}
-            <li>
-                {% for comment in post.comment_set.all %}
-                    <li>{{ comment }}</li>
-                {% endfor %}
-        </li>
-        </p>
-        <div class="pagination">
+        <p>{{ post.content }}</p>
+        {% for comment in post.comment_set.all %}
+            <p>{{ comment }}</p>
+        {% endfor %}
+
+    {% empty %}
+        No posts available
+    {% endfor %}
+    <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
             <a href="?page=1">&laquo; first</a>
@@ -32,9 +32,5 @@
             <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
     </span>
-        </div>
-    {% empty %}
-        No posts available
-    {% endfor %}
-
+    </div>
 {% endblock %}

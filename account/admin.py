@@ -11,7 +11,6 @@ class DetailInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'account'
 
-
 class UserAdmin(BaseUserAdmin):
     inlines = (DetailInline,)
 

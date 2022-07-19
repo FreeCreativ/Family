@@ -21,7 +21,7 @@ class PostCreate(LoginRequiredMixin, CreateView):
     model = Post
     template_name = 'blog/blog_create.html'
     form_class = PostForm
-    success_url = '/blog/'
+    success_url = '/account/blog/'
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
