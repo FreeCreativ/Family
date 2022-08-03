@@ -1,4 +1,3 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView
 
 from account.models import UserAccount
@@ -14,7 +13,7 @@ class Index(TemplateView):
     template_name = 'home/index.html'
 
     def get_context_data(self, **kwargs):
-        latest_posts = Post.objects.order_by('-date_created')[:10]
+        latest_posts = Post.objects.order_by('-date_created')[:5]
         latest_images = Image.public.order_by('-date_of_upload')[:10]
         latest_videos = Video.public.order_by('-date_of_upload')[:10]
         context = super(Index, self).get_context_data()

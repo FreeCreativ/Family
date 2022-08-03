@@ -1,0 +1,13 @@
+<form action="{% url 'home:search' %}" class="d-md-flex ms-1" role="search">
+    <input aria-label="Search" class="form-control" name="q" placeholder="Search" type="search">
+</form>
+
+<div class="visible-md">
+    <ul class="list-group">
+        <h3 class="h5 bg-danger text-light p-2 text-center rounded rounded-4">Recent Posts</h3>
+        {% for post in latest_posts %}
+        <li class="list-group-item"><a class="link-secondary" href="{% url 'account:blog:blog_detail' post.slug %}">
+            {{ post.headline }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

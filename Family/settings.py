@@ -120,7 +120,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Default primary key field type
@@ -129,8 +129,8 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # EXTRA
-MEDIA_URL = 'is_public/'
-MEDIA_ROOT = [BASE_DIR / 'is_public']
+MEDIA_URL = '/media/'
+MEDIA_ROOT = [BASE_DIR / 'media']
 
 # AUTHENTICATION
 AUTH_USER_MODEL = 'account.UserAccount'

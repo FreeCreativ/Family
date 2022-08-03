@@ -8,11 +8,8 @@
     <meta charset="utf-8"/>
     <meta lang="en"/>
     <meta content="Umu-Tawa Dynasty" name="description"/>
-    <link href="{% static 'css/reset.css' %}" rel="stylesheet"/>
     <link href="{% static 'BS5/css/bootstrap.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'BS-icons/bootstrap-icons.css' %}" rel="stylesheet"/>
-    <link href="{% static 'fontawesome/css/all.css' %}" rel="stylesheet"/>
-    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
     <title>Umu-tawa.com{% block title %} {% endblock %}</title>
 </head>
 <body>
@@ -23,34 +20,18 @@
     <div class="alert alert-{{ message.tags }}">{{ message }}</div>
     {% endfor %}
     {% endif %}
-    {% if user.is_authenticated %}
-    <nav class="container">
-        <span><a class="btn btn-outline-success" href="{% url 'home:index'%}">Home</a></span>
-        <span><a class="btn btn-outline-success" href="{% url 'account:blog:blog_list'%}">my posts</a></span>
-        <span><a class="btn btn-outline-success" href="{% url 'home:blog_list'%}">News</a></span>
-        <span>welcome {{ user.username }}</span>
-        <span> <a class="btn btn-outline-danger" href="{% url 'logout' %}">log out</a></span>
-    </nav>
-    {% else %}
-    <nav class="container">
-        <span><a class="btn btn-outline-success" href="{% url 'home:index'%}">Home</a></span>
-        <span><a class="btn btn-outline-success" href="{% url 'home:blog_list'%}">News</a></span>
-        <span><a class="btn btn-outline-primary" href="{% url 'login' %}">login</a></span>
-    </nav>
-    {% endif %}
+    {% include 'nav.html' %}
 
-
+    <!--  MAIN BODY SECTION  -->
     {% block content %}
 
     {% endblock %}
 </div>
 {# Footer Section #}
-<div class="bg-primary justify-content-center select2-container--admin-autocomplete" id="footer">
-    {% now "Y" as current_year %}
-    <p>Copyright &copy; {{ current_year }}</p>
-</div>
+
+<script src="{% static 'script/jquery.min.js' %}"></script>
 <script src="{% static 'fontawesome/js/all.js' %}"></script>
 <script src="{% static 'BS5/js/bootstrap.bundle.js' %}"></script>
-<script src="{% static 'script/script.js' %}"></script>
+<script src="{% static 'script/script.min.js' %}"></script>
 </body>
 </html>

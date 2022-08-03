@@ -3,9 +3,16 @@
     - blog
 {% endblock %}
 {% block content %}
-    <a href="{% url 'account:blog:blog_create' %}">NEW POST</a>
+   <div class="container mt-4">
+    {% if user.is_authenticated %}
+        <div class="d-flex button-group justify-content-md-center">
+        <a class="btn btn-outline-secondary mx-1" href="{% url 'account:blog:my_blog_list' %}">my posts</a>
+        <a class="btn btn-outline-secondary mx-1" href="{% url 'account:blog:blog_list' %}">all posts</a></li>
+        <a class="btn btn-outline-primary mx-1" href="{% url 'account:blog:blog_create' %}">NEW POST</a>
+        </div>
+    {% endif %}
     {% for post in post_list %}
-        <a href="{% url 'home:blog_detail' slug=post.slug %}">
+        <a href="{% url 'account:blog:blog_detail' slug=post.slug %}">
             <h6>{{ post.headline }}</h6>
         </a>
         <p>{{ post.content }}</p>
@@ -33,4 +40,5 @@
         {% endif %}
     </span>
     </div>
+   </div>
 {% endblock %}

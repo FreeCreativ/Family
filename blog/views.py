@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView
 from django.views.generic.edit import DeleteView, BaseFormView
 
@@ -13,8 +14,16 @@ class PostList(LoginRequiredMixin, ListView):
     paginate_by = 20
     ordering = '-date_created'
 
+
+class MyPostList(LoginRequiredMixin, ListView):
+    model = Post
+    template_name = 'blog/blog_list.html'
+    context_object_name = 'post_list'
+    paginate_by = 20
+    ordering = '-date_created'
+
     def get_queryset(self):
-        return super(PostList, self).get_queryset().filter(author=self.request.user)
+        return super(MyPostList, self).get_queryset().filter(author=self.request.user)
 
 
 class PostCreate(LoginRequiredMixin, CreateView):
@@ -55,7 +64,7 @@ class PostDetail(LoginRequiredMixin, DetailView, BaseFormView):
 class PostDelete(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'blog/blog_delete.html'
-    success_url = '/blog/'
+    success_url = reverse_lazy('account:blog:my_blog_list')
     extra_context = {
         'message': 'Are you sure you want to delete this post?',
     }

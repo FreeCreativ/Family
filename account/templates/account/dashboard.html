@@ -6,108 +6,129 @@
 {% endblock %}
 
 {% block content %}
+    <div class="container mt-2">
+        <div class="row">
+            <div class="col-md-2 px-1">
+                {% include "account/chat.html" %}
+            </div>
+            <div class="col-md-8 border border-1 px-1">
+            <h3 class="h3 font-weight-bold bg-primary py-1">My Dashboard</h3>
+                <div class="container">
+                    <div class="row row-cols-md-2">
+                        <div class="col-6 border border-3">
+                            <img src="{{ user.image }}" alt="profile picture" class="col">
+                        </div>
+                        <div class="col-6 border border-3">
 
-    <div>
-        <h2>Profile</h2>
-        <ul>
-            <li>{{ object.username }}</li>
-            <li>{{ user.first_name }}</li>
-            <li>{{ user.middle_name }}</li>
-            <li>{{ user.last_name }}</li>
-            <li>{{ user.email }}</li>
-        </ul>
-    </div>
-    <div>
-        <h4>Details</h4>
-        <ul>
-            <li>{{ user_detail.user }}</li>
-            <li>{{ user_detail.date_of_birth }}</li>
-            <li>{{ user_detail.age }}</li>
-            <li>{{ user_detail.genealogy }}</li>
-            <li>{{ user_detail.children }}</li>
-            <li>{{ user_detail.get_father }}</li>
-            <li>{{ user_detail.gender }}</li>
-            <li>{{ user_detail.height }}</li>
-            <li>{{ user_detail.blood_group }}</li>
-            <li>{{ user_detail.genotype }}</li>
-            <li>{{ user_detail.date_of_death }}</li>
-            <li>{{ user_detail.cause_of_death }}</li>
-            {% if not user_detail %}
-                <a href="{% url 'account:r_continue' %}">Click Here! to add profile data</a>
-            {% endif %}
-        </ul>
-    </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <h2 class="h3 bg-primary ps-3">Profile</h2>
+                    Username: {{ object.username }}
+                    Firstname: {{ user.first_name }}
+                    {{ user.middle_name }}
+                    {{ user.last_name }}
+                    {{ user.email }}
+                </div>
+                <div>
+                    <h4>Details</h4>
+                    <ul>
+                        <li>{{ user_detail.user }}</li>
+                        <li>{{ user_detail.date_of_birth }}</li>
+                        <li>{{ user_detail.age }}</li>
+                        <li>{{ user_detail.genealogy }}</li>
+                        <li>{{ user_detail.children }}</li>
+                        <li>{{ user_detail.get_father }}</li>
+                        <li>{{ user_detail.gender }}</li>
+                        <li>{{ user_detail.height }}</li>
+                        <li>{{ user_detail.blood_group }}</li>
+                        <li>{{ user_detail.genotype }}</li>
+                        <li>{{ user_detail.date_of_death }}</li>
+                        <li>{{ user_detail.cause_of_death }}</li>
+                        {% if not user_detail %}
+                            <a href="{% url 'account:r_continue' %}">Click Here! to add profile data</a>
+                        {% endif %}
+                    </ul>
+                </div>
 
-    <div>
-        <h4>Additional emails</h4>
-        {% for email in emails %}
-            <ul>
-                <li>{{ email.email }}</li>
-            </ul>
-        {% endfor %}
-        <h4>Phones</h4>
-        {% for number in phone_record %}
-            <ul>
-                <li>{{ number.phone_number }}</li>
-            </ul>
-        {% endfor %}
-    </div>
+                <div>
+                    <h4>Additional emails</h4>
+                    {% for email in emails %}
+                        <ul>
+                            <li>{{ email.email }}</li>
+                        </ul>
+                    {% endfor %}
+                    <h4>Phones</h4>
+                    {% for number in phone_record %}
+                        <ul>
+                            <li>{{ number.phone_number }}</li>
+                        </ul>
+                    {% endfor %}
+                </div>
 
-    <div>
-        <h4>Education</h4>
-        <table>
-            <thead>
-            <th>Name of School</th>
-            <th>Duration</th>
-            <th>Year of entrance - year of graduation</th>
-            </thead>
-            <tbody>
-            {% for school in education %}
-                <tr>
-                    <td>{{ school.name_of_school }}</td>
-                    <td>{{ school.duration }}</td>
-                    <td>{{ school.year_of_entrance }} - {{ school.year_of_graduation }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <li><a href="{% url 'account:education_list' %}">View all</a></li>
-    </div>
+                <div>
+                    <h4>Education</h4>
+                    <table>
+                        <thead>
+                        <th>Name of School</th>
+                        <th>Duration</th>
+                        <th>Year of entrance - year of graduation</th>
+                        </thead>
+                        <tbody>
+                        {% for school in education %}
+                            <tr>
+                                <td>{{ school.name_of_school }}</td>
+                                <td>{{ school.duration }}</td>
+                                <td>{{ school.year_of_entrance }} - {{ school.year_of_graduation }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <li><a href="{% url 'account:education_list' %}">View all</a></li>
+                </div>
 
-    <div>
-        <h4>Hereditary Diseases</h4>
-        <table>
-            <thead>
-            <th>Disease</th>
-            <th>date of infection</th>
-            <th>type</th>
-            </thead>
-            <tbody>
-            {% for disease in diseases %}
-                <tr>
-                    <td>{{ disease.disease_name }}</td>
-                    <td>{{ disease.date_of_infection }}</td>
-                    <td>{{ disease.type }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <h1>OST SECTION</h1>
-    {% for post in post_list %}
-        <a href="{% url 'blog:detail' slug=post.slug %}">
-            <h1>{{ post.headline }}</h1>
-        </a>
-        <p>
-            {{ post.content }}
-            <li>
-                {% for comment in post.comment_set.all %}
-                    <li>{{ comment }}</li>
+                <div>
+                    <h4>Hereditary Diseases</h4>
+                    <table>
+                        <thead>
+                        <th>Disease</th>
+                        <th>date of infection</th>
+                        <th>type</th>
+                        </thead>
+                        <tbody>
+                        {% for disease in diseases %}
+                            <tr>
+                                <td>{{ disease.disease_name }}</td>
+                                <td>{{ disease.date_of_infection }}</td>
+                                <td>{{ disease.type }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <h1>OST SECTION</h1>
+                {% for post in post_list %}
+                    <a href="{% url 'blog:detail' slug=post.slug %}">
+                        <h1>{{ post.headline }}</h1>
+                    </a>
+                    <p>
+                        {{ post.content }}
+                        <li>
+                            {% for comment in post.comment_set.all %}
+                                <li>{{ comment }}</li>
+                            {% endfor %}
+                    </li>
+                    </p>
+                {% empty %}
+                    No posts available
                 {% endfor %}
-        </li>
-        </p>
-    {% empty %}
-        No posts available
-    {% endfor %}
-
+            </div>
+            <div class="col-md-2 visible-md px-1">
+                {% include "sidebar.html" %}
+            </div>
+        </div>
+    </div>
+    {% include "footer.html" %}
 {% endblock %}
+

@@ -1,0 +1,39 @@
+{% if user.is_authenticated %}
+<nav class="navbar navbar-expand-md sticky-md-top bg-secondary">
+    <div class="container">
+        <a class="navbar-brand text-light d-flex align-items-center" href="{% url 'home:index' %}">
+            <i aria-hidden="true" class="fa fa-home"></i> Family</a>
+        <button class="navbar-toggler" data-bs-target="#navcol-1" data-bs-toggle="collapse"><span
+                class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navcol-1">
+            <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+                <li class="nav-item ms-1"><a class="btn btn-outline-success text-light" href="{% url 'account:dashboard' %}">welcome, {{ user.username }}</a></li>
+                <li class="nav-item ms-1"><a class="btn btn-outline-light" href="{% url 'home:index'%}">Home</a></li>
+                <li class="nav-item ms-1"><a class="btn btn-outline-light" href="{% url 'account:blog:blog_list'%}">Blog</a></li>
+                <li class="nav-item ms-1"><a class="btn btn-outline-light" href="{% url 'account:blog:my_blog_list'%}">Gallery</a></li>
+                <li class="nav-item ms-1"><a class="btn btn-outline-light" href="{% url 'account:blog:my_blog_list'%}">People</a></li>
+                <li class="nav-item ms-1"><a class="btn btn-danger" href="{% url 'logout' %}">log out</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% else %}
+<nav class="navbar navbar-expand-md sticky-md-top bg-secondary">
+    <div class="container">
+        <a class="navbar-brand text-light d-flex align-items-center" href="{% url 'home:index' %}"><i aria-hidden="true"
+                                                                                                      class="fa fa-home"></i>
+            Family</a>
+        <button class="navbar-toggler" data-bs-target="#navcol-2" data-bs-toggle="collapse"><span
+                class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navcol-2">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item ms-1"><a class="btn btn-outline-light" href="{% url 'home:index'%}">Home</a></li>
+                <li class="nav-item ms-1"><a class="btn btn-outline-light" href="{% url 'account:blog:blog_list'%}">Blog</a></li>
+                <li class="nav-item ms-1"><a class="btn btn-primary" href="{% url 'login' %}">Sign in</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endif %}

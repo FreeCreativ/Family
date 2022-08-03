@@ -54,6 +54,7 @@ class UserAccount(AbstractUser):
 
 
 class Alive(models.Manager):
+    # returns = UserDetail.objects.filter(alive=True)
     def get_queryset(self):
         return super(Alive, self).get_queryset().filter(alive=True)
 
@@ -198,7 +199,7 @@ class UserDetail(models.Model):
                 lineage.append('Oldest known progenitor', )
                 return lineage
         else:
-            lineage = ['You are the oldest know progenitor']
+            lineage = ['You are the oldest know progenitor', ]
             return lineage
 
 

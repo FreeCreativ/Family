@@ -4,6 +4,7 @@ from django.views.generic import DetailView, UpdateView, CreateView, ListView
 
 from account.forms import NewUserForm, AddUserDetailForm
 from account.models import UserDetail, UserAccount
+from account.views.recent import set_context_data
 
 
 class AccountCreateView(CreateView):
@@ -35,12 +36,14 @@ class Dashboard(LoginRequiredMixin, DetailView):
         context = super(Dashboard, self).get_context_data()
         user = UserAccount.objects.get(username=self.request.user)
         if UserDetail.objects.filter(user=user).exists():
+            context.update(set_context_data())
             context['user_detail'] = user.userdetail
             context['education'] = user.education_set.all()
             context['occupation'] = user.occupation_set.all()
             context['phone_record'] = user.phonerecord_set.all()
             context['emails'] = user.additionalemail_set.all()
             context['diseases'] = user.geneticdisease_set.all()
+            print(set_context_data())
             return context
         else:
             return context
