@@ -1,35 +1,43 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
 
 
 {% block title %}
-    My Dashboard
+    - Dashboard
 {% endblock %}
 
 {% block content %}
-    <div class="container mt-2">
+    <div class="container p-0 mt-2">
         <div class="row">
-            <div class="col-md-2 px-1">
-                {% include "account/chat.html" %}
+            <div class="col-md-2 px-0">
+                {% include "account/sidebar.html" %}
             </div>
             <div class="col-md-8 border border-1 px-1">
-            <h3 class="h3 font-weight-bold bg-primary py-1">My Dashboard</h3>
-                <div class="container">
+                <h3 class="h3 font-weight-bold text-bg-primary px-2 rounded-2">Dashboard</h3>
+                <div class="container mb-2">
                     <div class="row row-cols-md-2">
-                        <div class="col-6 border border-3">
-                            <img src="{{ user.image }}" alt="profile picture" class="col">
+                        <div class="col-md-3">
+                            {% if user_detail.image %}
+                                <img src="{{ user_detail.image.url }}" alt="profile picture"
+                                     class="img-fluid rounded-circle">
+                            {% else %}
+                                <a href="{% url 'account:p-update' %}" class="link text-center d-block">
+                                    click to add image
+                                </a>
+                            {% endif %}
                         </div>
-                        <div class="col-6 border border-3">
+                        <div class="col-md-9 border border-1 rounded-2">
+                            <p class="h6">Name: {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}</p>
+                            <p>Username: {{ object.username }}</p>
+                            <p>Email: {{ user.email }}</p>
 
                         </div>
                     </div>
                 </div>
                 <div class="container">
                     <h2 class="h3 bg-primary ps-3">Profile</h2>
-                    Username: {{ object.username }}
-                    Firstname: {{ user.first_name }}
-                    {{ user.middle_name }}
-                    {{ user.last_name }}
-                    {{ user.email }}
+
                 </div>
                 <div>
                     <h4>Details</h4>
@@ -124,7 +132,7 @@
                     No posts available
                 {% endfor %}
             </div>
-            <div class="col-md-2 visible-md px-1">
+            <div class="col-md-2 visible-md px-0">
                 {% include "sidebar.html" %}
             </div>
         </div>

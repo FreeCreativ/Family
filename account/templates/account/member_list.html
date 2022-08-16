@@ -2,9 +2,12 @@
 
 
 {% block content %}
-    {% for user in user_list %}
-        {{ user }}
-    {% endfor %}
+
+    <table class="table table-responsive">
+        {% for user in user_list %}
+            {{ user }}
+        {% endfor %}
+    </table>
 
 
 {% endblock %}

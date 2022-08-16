@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}
+    - images
+{% endblock %}
+
+{% block content %}
+    {% for image in image_list %}
+        {{ image.as_p }}
+    {% endfor %}
+
+{% endblock %}

@@ -105,7 +105,7 @@ class Oldest(models.Manager):
 class UserDetail(models.Model):
     user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
     alive = models.BooleanField(default=True)
-    image = models.ImageField(upload_to='is_public/image', blank=True)
+    image = models.ImageField(upload_to='img', blank=True)
     date_of_birth = models.DateField(verbose_name='Date of birth')
     date_of_death = models.DateField(verbose_name='date of death', null=True, blank=True)
     date_registered = models.DateTimeField(verbose_name='date registered', auto_now_add=True)
@@ -199,7 +199,7 @@ class UserDetail(models.Model):
                 lineage.append('Oldest known progenitor', )
                 return lineage
         else:
-            lineage = ['You are the oldest know progenitor', ]
+            lineage = ['You are the oldest known progenitor', ]
             return lineage
 
 

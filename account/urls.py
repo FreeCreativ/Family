@@ -4,10 +4,12 @@ from account.views import EducationCreateView, EducationListView, EducationDetai
     EducationDeleteView, EmailCreateView, EmailListView, EmailDetailView, EmailDeleteView, OccupationCreateView, \
     OccupationListView, OccupationDetailView, OccupationUpdateView, OccupationDeleteView, Dashboard, ProfileUpdateView, \
     AccountCreateView, UserDetailCreateView, UserListView, DiseaseDetailView, DiseaseUpdateView, DiseaseDeleteView, \
-    DiseaseCreateView, DiseaseListView
-from image.views import MyImageListView, ImageListView, MyImageDeleteView
+    DiseaseCreateView, DiseaseListView, ProfilePictureUpdateView, ProfileView
 
 app_name = 'account'
+people = [
+    path('', ProfileView.as_view(), name='profile'),
+]
 
 edu = [
     path('', EducationListView.as_view(), name='education_list'),
@@ -37,22 +39,19 @@ disease = [
     path('<pk>/delete', DiseaseDeleteView.as_view(), name='disease_delete'),
 ]
 phone = []
-image = [
-    path('', ImageListView.as_view(), name='image_list'),
-    path('my-images', MyImageListView.as_view(), name='my_image_list'),
-    path('<pk>/delete', MyImageDeleteView.as_view(), name='my_image_delete'),
-]
 dash = [
     path('', Dashboard.as_view(), name='dashboard'),
     path('update', ProfileUpdateView.as_view(), name='update'),
+    path('update-picture', ProfilePictureUpdateView.as_view(), name='p-update'),
     path('education/', include(edu)),
     path('email/', include(email)),
     path('occupation/', include(job)),
     path('phonenumber/', include(phone)),
     path('disease/', include(phone)),
-    path('img/', include(image)),
+    path('img/', include('image.urls')),
 ]
 urlpatterns = [
+    path('<str:username>/', include(people)),
     path('account/dashboard/', include(dash)),
     path('account/blog/', include('blog.urls')),
     path('account/register/', AccountCreateView.as_view(), name='register'),

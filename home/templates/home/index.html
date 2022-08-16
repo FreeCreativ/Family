@@ -13,9 +13,12 @@
                 <img src="{% static 'imgs/img1.jpeg' %}" alt="" class="d-block w-100 h-100">
                 <div class="container">
                     <div class="carousel-caption text-start">
-                        <h1 class="h4">The Okafor elders with Engr. Lawrence Okafor at Family compound at Amofia.</h1>
+                        <h1 class="h4">The Okafor elders with Engr. Lawrence Okafor at the Family compound at
+                            Amofia.</h1>
                         <p>From LTR John, Chris, Hillary, Richard, Peter, Patrick, James, Lawrence (Richard's Son)</p>
-                        <p><a class="btn btn-lg btn-primary" href="{% url 'login' %}">Sign in</a></p>
+                        {% if not user.is_authenticated %}
+                            <p><a class="btn btn-lg btn-primary" href="{% url 'login' %}">Sign in</a></p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -55,39 +58,14 @@
 
 
     <div class="container rounded rounded-5 px-md-5 mb-3">
-        <div class="row"><h3 class="h2 text-center">UmuTawa Clan</h3>
+        <div class="row"><h3 class="h2 text-center">UmuTawa Kindred</h3>
+            <a class="text-center link-primary btn" href="{% url 'home:about' %}">Click
+                to
+                view History</a>
         </div>
         <div class="row px-5 rounded rounded-5 border border-3">
-            <img src="{% static 'imgs/f_tree2.png' %}" alt="">
+            <img src="{% static 'imgs/f_tree2.png' %}" alt="" class="img-fluid">
         </div>
     </div>
-
-    {#    Extra #}
-    {% for image in latest_images %}
-        <div class="container-xl">
-            <li>{{ image.image_file }}</li>
-            <li>{{ image.name }}</li>
-            <li>{{ image.description }}</li>
-            <li>{{ image.date_of_upload }}</li>
-        </div>
-    {% endfor %}
-
-    {% for post in latest_posts %}
-        <div class="container-xl">
-            <li><a href="{% url 'account:blog:blog_detail' slug=post.slug %}">{{ post.headline }}</a></li>
-            <li>{{ post.content }}</li>
-            <li>{{ post.author }}</li>
-            <li>{{ post.date_created }}</li>
-        </div>
-    {% endfor %}
-
-    {% for video in latest_videos %}
-        <div class="container-xl">
-            <li>{{ video.video_file }}</li>
-            <li>{{ video.name }}</li>
-            <li>{{ video.description }}</li>
-            <li>{{ video.date_of_upload }}</li>
-        </div>
-    {% endfor %}
     {% include "footer.html" %}
 {% endblock %}

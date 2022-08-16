@@ -7,7 +7,7 @@ from home.models import Comment, Media
 
 
 class Image(Media):
-    image_file = models.ImageField(upload_to='imagef/')
+    image_file = models.ImageField(upload_to='photos/')
 
 
 class ImageComment(Comment):

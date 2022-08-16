@@ -1,4 +1,5 @@
-from .account import UserDetailCreateView, AccountCreateView, Dashboard, UserListView, ProfileUpdateView
+from .account import UserDetailCreateView, AccountCreateView, Dashboard, UserListView, ProfileUpdateView, \
+    ProfilePictureUpdateView, ProfileView
 from .education import EducationListView, EducationDetailView, EducationCreateView, EducationDeleteView, \
     EducationUpdateView
 from .email import EmailListView, EmailDeleteView, EmailDetailView, EmailCreateView

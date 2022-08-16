@@ -1,5 +1,3 @@
-from django.views.generic.base import ContextMixin
-
 from blog.models import Post
 from image.models import Image
 from video.models import Video

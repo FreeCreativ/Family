@@ -1,13 +1,27 @@
 <form action="{% url 'home:search' %}" class="d-md-flex ms-1" role="search">
-    <input aria-label="Search" class="form-control" name="q" placeholder="Search" type="search">
+    <input aria-label="Search" class="form-control" name="q" placeholder="Search members" type="search">
 </form>
 
 <div class="visible-md">
-    <ul class="list-group">
-        <h3 class="h5 bg-danger text-light p-2 text-center rounded rounded-4">Recent Posts</h3>
+    <div class="list-group list-group-flush border-bottom scrollarea">
+        <h3 class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom fs-5 fw-semibold">
+            Recent Posts</h3>
         {% for post in latest_posts %}
-        <li class="list-group-item"><a class="link-secondary" href="{% url 'account:blog:blog_detail' post.slug %}">
-            {{ post.headline }}</a></li>
+        <a class="list-group-item list-group-item-action py-3 lh-sm"
+           href="{% url 'account:blog:blog_detail' post.slug %}">
+            {{ post.headline }}</a>
         {% endfor %}
-    </ul>
+    </div>
+</div>
+
+<div class="visible-md">
+    <div class="list-group list-group-flush border-bottom scrollarea">
+        <h3 class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom fs-5 fw-semibold">
+            Recent Videos</h3>
+        {% for video in latest_videos %}
+        <a class="list-group-item list-group-item-action py-3 lh-sm"
+           href="{% url 'account:blog:blog_detail' post.slug %}">
+            {{ video.description }}</a>
+        {% endfor %}
+    </div>
 </div>
