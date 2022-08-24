@@ -21,6 +21,11 @@ class Statistics(models.Manager):
             return age_average
 
 
+class Disease(models.Model):
+    name_of_disease = models.CharField(max_length=50)
+    type_of_disease = models.CharField(max_length=50)
+
+
 class GeneticDisease(models.Model):
     id = models.CharField(max_length=50, primary_key=True)
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)

@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.views.generic import TemplateView, ListView
 
-from account.models import UserAccount, UserDetail
+from account.models import UserAccount
 from blog.models import Post
 from image.models import Image
 from video.models import Video
@@ -33,7 +33,7 @@ class Search(ListView):
         q = self.request.GET.get('q')
         result_list = [Post.objects.filter(Q(headline__contains=q)), UserAccount.objects.filter(
             Q(first_name__icontains=q) | Q(middle_name__icontains=q) | Q(last_name__icontains=q)),
-                       UserDetail.objects.filter(user__in=q)]
+                       UserAccount.objects.filter(user__in=q)]
 
         return result_list
 

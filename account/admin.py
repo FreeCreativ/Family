@@ -1,26 +1,16 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from account.forms import NewUserForm
-from account.models import UserAccount, UserDetail, Education, Occupation, PhoneRecord, AdditionalEmail, GeneticDisease
+from account.forms import SuperUserForm
+from account.models import UserAccount, Education, Occupation, PhoneRecord, AdditionalEmail, GeneticDisease
 
 
 # Register your models here.
-class DetailInline(admin.StackedInline):
-    model = UserDetail
-    can_delete = False
-    verbose_name_plural = 'account'
-
-class UserAdmin(BaseUserAdmin):
-    inlines = (DetailInline,)
-
-
-class CustomUserAdmin(UserAdmin):
-    add_form = NewUserForm
+class CustomUserAdmin(BaseUserAdmin):
+    add_form = SuperUserForm
 
 
 admin.site.register(UserAccount, CustomUserAdmin)
-admin.site.register(UserDetail)
 admin.site.register(Education)
 admin.site.register(Occupation)
 admin.site.register(PhoneRecord)

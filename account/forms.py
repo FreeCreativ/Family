@@ -1,19 +1,24 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
-from account.models import UserAccount, UserDetail, Education, Occupation, PhoneRecord, AdditionalEmail, GeneticDisease
+from account.models import UserAccount, Education, Occupation, PhoneRecord, AdditionalEmail, GeneticDisease
 
 
 class NewUserForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = UserAccount
-        fields = ['username', 'email', 'first_name', 'middle_name', 'last_name']
+        fields = ['email', 'first_name', 'middle_name', 'last_name']
+
+
+class SuperUserForm(NewUserForm):
+    class Meta(NewUserForm.Meta):
+        fields = ['email', 'first_name', 'middle_name', 'last_name', 'date_of_birth']
 
 
 class AddUserDetailForm(forms.ModelForm):
     class Meta:
-        model = UserDetail
-        fields = ['date_of_birth', 'gender', 'blood_group', 'genotype', 'image', 'dad']
+        model = UserAccount
+        fields = ['date_of_birth', 'gender', 'blood_group', 'genotype', 'profile_image', 'dad']
 
 
 class EducationForm(forms.ModelForm):

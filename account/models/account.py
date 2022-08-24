@@ -1,7 +1,6 @@
 import datetime
 
-from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -12,19 +11,12 @@ from account.generator import duration
 
 
 def get_parent(user):
-    # u = UserDetail.objects.filter(user_id__username=user)
-    #
-    # parent = UserDetail.objects.filter(user_id__username=user)
-    # if u.first().get_father().exists():
-    #     return u.first().get_father()
-    # else:
-    #     return None
-    u = UserDetail.objects.get(user=user)
+    u = UserAccount.objects.get(user=user)
     return u.get_father()
 
 
 def get_spouse(user):
-    return UserDetail.objects.filter(user_id__username=user).first().get_father()
+    return UserAccount.objects.filter(user_id__username=user).first().get_father()
 
 
 def calculate_age(birth_date):
@@ -33,28 +25,7 @@ def calculate_age(birth_date):
     return age
 
 
-class UserAccount(AbstractUser):
-    username_validator = UnicodeUsernameValidator()
-
-    username = models.CharField(max_length=150, unique=True, primary_key=True,
-                                help_text=(
-                                    "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
-                                ),
-                                validators=[username_validator],
-                                error_messages={
-                                    "unique": "A user with that user already exists.",
-                                },
-                                )
-    middle_name = models.CharField(max_length=20)
-    REQUIRED_FIELDS = ["email", "first_name", "middle_name", "last_name"]
-
-    class Meta:
-        verbose_name = "user account"
-        verbose_name_plural = "user accounts"
-
-
 class Alive(models.Manager):
-    # returns = UserDetail.objects.filter(alive=True)
     def get_queryset(self):
         return super(Alive, self).get_queryset().filter(alive=True)
 
@@ -82,31 +53,31 @@ class Alive(models.Manager):
         return self.count()
 
 
-class Oldest(models.Manager):
-    def get_queryset(self):
-        old_list = super(Oldest, self).get_queryset().filter(alive=True).order_by('date_of_birth')[:10]
-        new_old_list = super(Oldest, self).get_queryset().filter(alive=True).order_by('date_of_birth')[1:10]
+# class Oldest(models.Manager):
+#     def get_queryset(self):
+#         old_list = super(Oldest, self).get_queryset().filter(alive=True).order_by('date_of_birth')[:10]
+#         new_old_list = super(Oldest, self).get_queryset().filter(alive=True).order_by('date_of_birth')[1:10]
+#
+#         for person in new_old_list:
+#             if person.date_of_birth == old_list.first().date_of_birth:
+#                 return old_list.order_by('date_registered').first()
+#
+#     def get_oldest(self):
+#         current_oldest = OldestAlive.objects.get_current_oldest()
+#         if current_oldest.user_id != self.get_queryset().user:
+#             new_oldest = OldestAlive()
+#             new_oldest.user = self.get_queryset().user
+#             new_oldest.save()
+#             return OldestAlive.objects.get_current_oldest()
+#         else:
+#             return current_oldest
 
-        for person in new_old_list:
-            if person.date_of_birth == old_list.first().date_of_birth:
-                return old_list.order_by('date_registered').first()
 
-    def get_oldest(self):
-        current_oldest = OldestAlive.objects.get_current_oldest()
-        if current_oldest.user_id != self.get_queryset().user:
-            new_oldest = OldestAlive()
-            new_oldest.user = self.get_queryset().user
-            new_oldest.save()
-            return OldestAlive.objects.get_current_oldest()
-        else:
-            return current_oldest
-
-
-class UserDetail(models.Model):
-    user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
+class UserAccount(AbstractUser):
+    middle_name = models.CharField(max_length=20)
     alive = models.BooleanField(default=True)
-    image = models.ImageField(upload_to='img', blank=True)
-    date_of_birth = models.DateField(verbose_name='Date of birth')
+    profile_image = models.ImageField(upload_to='img', blank=True)
+    date_of_birth = models.DateField(verbose_name='Date of birth', default=timezone.now())
     date_of_death = models.DateField(verbose_name='date of death', null=True, blank=True)
     date_registered = models.DateTimeField(verbose_name='date registered', auto_now_add=True)
     date_modified = models.DateTimeField(verbose_name='date registered', auto_now=True)
@@ -125,21 +96,21 @@ class UserDetail(models.Model):
     genotype = models.CharField(default='AA', max_length=4, blank=True, choices=geno_type_choices)
     dad = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='father')
     mum = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='mother')
-    objects = models.Manager()
-    oldest = Oldest()
+    objects = UserManager()
     living = Alive()
+    REQUIRED_FIELDS = ["email", "date_of_birth", "first_name", "middle_name", "last_name"]
 
     def __str__(self):
-        return f"{self.user}"
+        return f"{self.first_name, self.middle_name, self.last_name}"
 
     def get_absolute_url(self):
-        return reverse('account:dashboard', )
+        return reverse('account:dashboard', self.username)
 
     def children(self):
         if self.gender == 'male':
-            return UserDetail.objects.filter(father=self.id)
+            return UserAccount.objects.filter(father=self.id)
         else:
-            return UserDetail.objects.filter(mother=self.id)
+            return UserAccount.objects.filter(mother=self.id)
 
     def died(self):
         if self.date_of_death:
@@ -201,6 +172,10 @@ class UserDetail(models.Model):
         else:
             lineage = ['You are the oldest known progenitor', ]
             return lineage
+
+    class Meta:
+        verbose_name = "user account"
+        verbose_name_plural = "user accounts"
 
 
 class OldestManager(models.Manager):
