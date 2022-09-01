@@ -4,15 +4,22 @@ from django import forms
 from account.models import UserAccount, Education, Occupation, PhoneRecord, AdditionalEmail, GeneticDisease
 
 
-class NewUserForm(UserCreationForm):
+class UpdateUserForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = UserAccount
-        fields = ['email', 'first_name', 'middle_name', 'last_name']
+        fields = (
+            "alive", "profile_image", "first_name", "middle_name", "last_name", "email", "date_of_birth", "gender",
+            "genotype", "dad", "mum", "height", "biography")
 
 
-class SuperUserForm(NewUserForm):
-    class Meta(NewUserForm.Meta):
+class SuperUserForm(UpdateUserForm):
+    class Meta(UpdateUserForm.Meta):
         fields = ['email', 'first_name', 'middle_name', 'last_name', 'date_of_birth']
+
+
+class BiographyForm(forms.ModelForm):
+    model = UserAccount
+    fields = ['biography', ]
 
 
 class AddUserDetailForm(forms.ModelForm):

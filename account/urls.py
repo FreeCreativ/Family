@@ -36,7 +36,7 @@ disease = [
 ]
 phone = []
 dash = [
-    path('<str:username>', Dashboard.as_view(), name='dashboard'),
+    path('', Dashboard.as_view(), name='dashboard'),
     path('update', ProfileUpdateView.as_view(), name='update'),
     path('update-picture', ProfilePictureUpdateView.as_view(), name='p-update'),
     path('education/', include(edu)),

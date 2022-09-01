@@ -14,47 +14,67 @@
                 {% include "account/sidebar.html" %}
             </div>
             <div class="col-md-8 border border-1 px-1">
-                <h3 class="h3 font-weight-bold text-bg-primary px-2 rounded-2">Dashboard</h3>
+                <h3 class="h3 font-weight-bold text-bg-primary px-2 rounded-2 text-md-center">Profile</h3>
                 <div class="container mb-2">
                     <div class="row row-cols-md-2">
                         <div class="col-md-3">
                             {% if user_detail.image %}
                                 <img src="{{ user_detail.image.url }}" alt="profile picture"
-                                     class="img-fluid rounded-circle">
+                                     class="img-fluid">
                             {% else %}
-                                <a href="{% url 'account:p-update' %}" class="link text-center d-block">
-                                    click to add image
-                                </a>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        click to add image
+                                    </button>
+                                    <form class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        {% csrf_token %}
+                                        {{ imageform.as_p }}
+                                        <input type="submit" value="Upload">
+                                    </form>
+                                </div>
+                                <a href="{% url 'account:p-update' %}" class="link text-center d-block">click to add
+                                    image</a>
+
+                                <form class="alert-danger alert">
+                                    <input type="button" value="Upload">
+                                </form>
                             {% endif %}
                         </div>
-                        <div class="col-md-9 border border-1 rounded-2">
-                            <p class="h6">Name: {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}</p>
-                            <p>Username: {{ object.username }}</p>
-                            <p>Email: {{ user.email }}</p>
+                        <div class="col-md-8 border border-1 rounded-2">
+                            <h4 class="h4 text-center">Biography</h4>
+                            <p class="fw-bold fw-100">{{ user.biography }}</p>
+                            {% if user.biography %}
+                                <a href="">edit biography</a>
+                            {% else %}
+                                <a href="">add biography</a>
+
+                            {% endif %}
 
                         </div>
                     </div>
                 </div>
-                <div class="container">
-                    <h2 class="h3 bg-primary ps-3">Profile</h2>
-
-                </div>
-                <div>
-                    <h4>Details</h4>
-                    <ul>
-                        <li>{{ user_detail.user }}</li>
-                        <li>{{ user_detail.date_of_birth }}</li>
-                        <li>{{ user_detail.age }}</li>
-                        <li>{{ user_detail.genealogy }}</li>
-                        <li>{{ user_detail.children }}</li>
-                        <li>{{ user_detail.get_father }}</li>
-                        <li>{{ user_detail.gender }}</li>
-                        <li>{{ user_detail.height }}</li>
-                        <li>{{ user_detail.blood_group }}</li>
-                        <li>{{ user_detail.genotype }}</li>
-                        <li>{{ user_detail.date_of_death }}</li>
-                        <li>{{ user_detail.cause_of_death }}</li>
-                        {% if not user_detail %}
+                <div class="container p-0">
+                    <ul class="list-group">
+                        <h4 class="list-group-item text-bg-primary">Details</h4>
+                        <li class="list-group-item list-group-item-dark">
+                            Name: {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}</li>
+                        <li class="list-group-item list-group-item-light">Username: {{ user.username }}</li>
+                        <li class="list-group-item list-group-item-dark">Email: {{ user.email }}</li>
+                        <li class="list-group-item list-group-item-light">Gender: {{ user.gender }}</li>
+                        <li class="list-group-item list-group-item-dark">Date of birth: {{ user.date_of_birth }}</li>
+                        <li class="list-group-item list-group-item-light">Age: {{ user.age }}</li>
+                        <li class="list-group-item list-group-item-dark">Father: {{ user.get_father }}</li>
+                        <li class="list-group-item list-group-item-light">{{ user.genealogy }}</li>
+                        <li class="list-group-item list-group-item-dark">{{ user.children }}</li>
+                        <li class="list-group-item list-group-item-light">{{ user.height }}</li>
+                        <li class="list-group-item list-group-item-dark">{{ user.blood_group }}</li>
+                        <li class="list-group-item list-group-item-light">{{ user.genotype }}</li>
+                        {% if not user.alive %}
+                            <li class="list-group-item list-group-item-dark">{{ user.date_of_death }}</li>
+                            <li class="list-group-item list-group-item-light">{{ user.cause_of_death }}</li>
+                        {% endif %}
+                        {% if not user %}
                             <a href="{% url 'account:r_continue' %}">Click Here! to add profile data</a>
                         {% endif %}
                     </ul>

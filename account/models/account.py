@@ -11,7 +11,7 @@ from account.generator import duration
 
 
 def get_parent(user):
-    u = UserAccount.objects.get(user=user)
+    u = UserAccount.objects.get(username=user)
     return u.get_father()
 
 
@@ -72,24 +72,31 @@ class Alive(models.Manager):
 #         else:
 #             return current_oldest
 
+def gen_height():
+    h = 30
+    heights = [
+        ('30', '30'),
+    ]
+
+    while h <= 244:
+        h += 1
+        heights.append((h, h))
+    return tuple(heights)
+
 
 class UserAccount(AbstractUser):
     middle_name = models.CharField(max_length=20)
     alive = models.BooleanField(default=True)
     profile_image = models.ImageField(upload_to='img', blank=True)
-    date_of_birth = models.DateField(verbose_name='Date of birth', default=timezone.now())
+    date_of_birth = models.DateField(verbose_name='Date of birth', blank=True, null=True)
     date_of_death = models.DateField(verbose_name='date of death', null=True, blank=True)
-    date_registered = models.DateTimeField(verbose_name='date registered', auto_now_add=True)
     date_modified = models.DateTimeField(verbose_name='date registered', auto_now=True)
-    cause_of_death = models.TextField(null=True, blank=True)
+    biography = models.TextField(blank=True)
+    cause_of_death = models.TextField(blank=True)
     gender_choices = [('M', 'Male'), ('F', 'Female')]
     gender = models.CharField(default='Male', max_length=7, choices=gender_choices)
-    heights = (
-        ('S', 'Small'),
-        ('M', 'Medium'),
-        ('L', 'Large'),
-    )
-    height = models.CharField(default='M', max_length=10, blank=True, choices=heights)
+    heights = gen_height()
+    height = models.IntegerField(verbose_name='height (cm)', default='30', blank=True, choices=heights)
     blood_group_choices = [('A', 'A'), ('B', 'B'), ('AB', 'AB'), ('O', 'O')]
     blood_group = models.CharField(default='A', max_length=4, blank=True, choices=blood_group_choices)
     geno_type_choices = [('AA', 'AA'), ('AS', 'AS'), ('SS', 'SS')]
@@ -101,10 +108,13 @@ class UserAccount(AbstractUser):
     REQUIRED_FIELDS = ["email", "date_of_birth", "first_name", "middle_name", "last_name"]
 
     def __str__(self):
-        return f"{self.first_name, self.middle_name, self.last_name}"
+        return self.username
 
     def get_absolute_url(self):
-        return reverse('account:dashboard', self.username)
+        return reverse('account:dashboard', kwargs={'username': self.username})
+
+    # def get_absolute_url(self):
+    #     return reverse('account:dashboard', )
 
     def children(self):
         if self.gender == 'male':
@@ -160,6 +170,7 @@ class UserAccount(AbstractUser):
         return tree.append((grand_father, father, me))
 
     def genealogy(self):
+
         if self.dad:
             lineage = [self, self.get_father()]
             parent = get_parent(self.dad)

@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django import forms
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView, CreateView, ListView
 
-from account.forms import NewUserForm, AddUserDetailForm
+from account.forms import UpdateUserForm, AddUserDetailForm
 from account.models import UserAccount
 from account.views.recent import set_context_data
 
@@ -10,32 +11,27 @@ from account.views.recent import set_context_data
 class AccountCreateView(CreateView):
     model = UserAccount
     template_name = 'account/register.html'
-    form_class = NewUserForm
+    form_class = UpdateUserForm
     success_url = reverse_lazy('account:r_continue')
 
 
-class UserDetailCreateView(LoginRequiredMixin, CreateView):
+class UserDetailCreateView(LoginRequiredMixin, UpdateView):
     template_name = 'account/register.html'
     form_class = AddUserDetailForm
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        form.save()
-        return super(UserDetailCreateView, self).form_valid(form)
+    def get_object(self, queryset=None):
+        return UserAccount.objects.get(username=self.request.user)
 
 
-class Dashboard(LoginRequiredMixin, DetailView):
+class Profile(LoginRequiredMixin, DetailView):
     template_name = 'account/dashboard.html'
     model = UserAccount
     context_object_name = 'user'
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
-    # def get_object(self, queryset=None):
-    #     return UserAccount.objects.get(username=self.request.user)
-
     def get_context_data(self, **kwargs):
-        context = super(Dashboard, self).get_context_data()
+        context = super(Profile, self).get_context_data()
         user = self.object
         context.update(set_context_data())
         context['education'] = user.education_set.all()
@@ -46,24 +42,40 @@ class Dashboard(LoginRequiredMixin, DetailView):
         return context
 
 
+class ImageForm(forms.ModelForm):
+    class Meta:
+        model = UserAccount
+        fields = ['profile_image']
+
+
+class Dashboard(Profile):
+    def get_context_data(self, **kwargs):
+        context = super(Dashboard, self).get_context_data(**kwargs)
+        context['imageform'] = ImageForm
+        return context
+
+    def get_object(self, queryset=None):
+        return UserAccount.objects.get(username=self.request.user)
+
+
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = UserAccount
-    fields = ['height', 'image']
+    fields = ['height', 'profile_image']
     template_name = 'account/update.html'
     success_url = reverse_lazy('account:dashboard')
 
     def get_object(self, queryset=None):
-        return UserAccount.objects.get(user=self.request.user)
+        return UserAccount.objects.get(username=self.request.user)
 
 
 class ProfilePictureUpdateView(LoginRequiredMixin, UpdateView):
     model = UserAccount
-    fields = ['image', ]
+    fields = ['profile_image', ]
     success_url = reverse_lazy('account:dashboard')
     template_name = 'account/update.html'
 
     def get_object(self, queryset=None):
-        return UserAccount.objects.get(user=self.request.user)
+        return UserAccount.objects.get(username=self.request.user)
 
 
 class UserListView(LoginRequiredMixin, ListView):
