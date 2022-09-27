@@ -18,8 +18,8 @@
                 <div class="container mb-2">
                     <div class="row row-cols-md-2">
                         <div class="col-md-3">
-                            {% if user_detail.image %}
-                                <img src="{{ user_detail.image.url }}" alt="profile picture"
+                            {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" alt="profile picture"
                                      class="img-fluid">
                             {% else %}
                                 <div class="dropdown">
@@ -33,51 +33,63 @@
                                         <input type="submit" value="Upload">
                                     </form>
                                 </div>
-                                <a href="{% url 'account:p-update' %}" class="link text-center d-block">click to add
+                                <a href="{% url 'account:p-update' user.username %}" class="link text-center d-block">click
+                                    to add
                                     image</a>
-
-                                <form class="alert-danger alert">
-                                    <input type="button" value="Upload">
-                                </form>
                             {% endif %}
                         </div>
-                        <div class="col-md-8 border border-1 rounded-2">
-                            <h4 class="h4 text-center">Biography</h4>
-                            <p class="fw-bold fw-100">{{ user.biography }}</p>
-                            {% if user.biography %}
-                                <a href="">edit biography</a>
-                            {% else %}
-                                <a href="">add biography</a>
+                        <div class="col-md-9 border border-1">
+                            <ul class="list-group">
+                                <li class="list-group-item"><span
+                                        class="fw-semibold">Name:</span> {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}
+                                </li>
+                                <li class="list-group-item"><span
+                                        class="fw-semibold">Username:</span> {{ user.username }}</li>
+                                <li class="list-group-item"><span class="fw-semibold">Email:</span> {{ user.email }}
+                                </li>
+                                <li class="list-group-item"><span class="fw-semibold">Gender:</span> {{ user.gender }}
+                                </li>
+                                <li class="list-group-item"><span
+                                        class="fw-semibold">Date of birth:</span> {{ user.date_of_birth }}</li>
+                                <li class="list-group-item"><span class="fw-semibold">Age:</span> {{ user.age }}</li>
+                                <li class="list-group-item"><span
+                                        class="fw-semibold">Father:</span> {{ user.get_father }}</li>
+                                <li class="list-group-item"><span
+                                        class="fw-semibold">Mother:</span> {{ user.get_mother }}</li>
+                                <p class="list-group-item"><span class="fw-semibold">Genealogy:</span>
+                                    {% for u in user.genealogy %} |
+                                        <a href="{% url 'account:dashboard' u %}">{{ u }}</a> |{% endfor %}
+                                </p>
 
-                            {% endif %}
+                                <li class="list-group-item"><span class="fw-semibold">Children:</span>
+                                    {% for chil in user.children %}
+                                        <a href="{% url 'account:dashboard' chil %}">{{ chil }}</a> ,{% endfor %}
+                                </li>
+
+                                <li class="list-group-item">{{ user.height }}</li>
+                                <li class="list-group-item">{{ user.blood_group }}</li>
+                                <li class="list-group-item">{{ user.genotype }}</li>
+                                {% if not user.alive %}
+                                    <li class="list-group-item">{{ user.date_of_death }}</li>
+                                    <li class="list-group-item">{{ user.cause_of_death }}</li>
+                                {% endif %}
+                                {% if not user %}
+                                    <a href="{% url 'account:r_continue' %}">Click Here! to add profile data</a>
+                                {% endif %}
+                            </ul>
 
                         </div>
                     </div>
                 </div>
                 <div class="container p-0">
-                    <ul class="list-group">
-                        <h4 class="list-group-item text-bg-primary">Details</h4>
-                        <li class="list-group-item list-group-item-dark">
-                            Name: {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}</li>
-                        <li class="list-group-item list-group-item-light">Username: {{ user.username }}</li>
-                        <li class="list-group-item list-group-item-dark">Email: {{ user.email }}</li>
-                        <li class="list-group-item list-group-item-light">Gender: {{ user.gender }}</li>
-                        <li class="list-group-item list-group-item-dark">Date of birth: {{ user.date_of_birth }}</li>
-                        <li class="list-group-item list-group-item-light">Age: {{ user.age }}</li>
-                        <li class="list-group-item list-group-item-dark">Father: {{ user.get_father }}</li>
-                        <li class="list-group-item list-group-item-light">{{ user.genealogy }}</li>
-                        <li class="list-group-item list-group-item-dark">{{ user.children }}</li>
-                        <li class="list-group-item list-group-item-light">{{ user.height }}</li>
-                        <li class="list-group-item list-group-item-dark">{{ user.blood_group }}</li>
-                        <li class="list-group-item list-group-item-light">{{ user.genotype }}</li>
-                        {% if not user.alive %}
-                            <li class="list-group-item list-group-item-dark">{{ user.date_of_death }}</li>
-                            <li class="list-group-item list-group-item-light">{{ user.cause_of_death }}</li>
-                        {% endif %}
-                        {% if not user %}
-                            <a href="{% url 'account:r_continue' %}">Click Here! to add profile data</a>
-                        {% endif %}
-                    </ul>
+                    <h4 class="h4 text-center">Biography</h4>
+                    <p class="fw-bold fw-100">{{ user.biography }}</p>
+                    {% if user.biography %}
+                        <a href="">edit biography</a>
+                    {% else %}
+                        <a href="">add biography</a>
+
+                    {% endif %}
                 </div>
 
                 <div>
@@ -113,7 +125,7 @@
                         {% endfor %}
                         </tbody>
                     </table>
-                    <li><a href="{% url 'account:education_list' %}">View all</a></li>
+                    <li><a href="{% url 'account:education_list' user.username %}">View all</a></li>
                 </div>
 
                 <div>

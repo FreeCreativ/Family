@@ -94,13 +94,13 @@ class UserAccount(AbstractUser):
     biography = models.TextField(blank=True)
     cause_of_death = models.TextField(blank=True)
     gender_choices = [('M', 'Male'), ('F', 'Female')]
-    gender = models.CharField(default='Male', max_length=7, choices=gender_choices)
+    gender = models.CharField(max_length=7, choices=gender_choices, blank=True)
     heights = gen_height()
-    height = models.IntegerField(verbose_name='height (cm)', default='30', blank=True, choices=heights)
+    height = models.IntegerField(verbose_name='height (cm)', blank=True, choices=heights)
     blood_group_choices = [('A', 'A'), ('B', 'B'), ('AB', 'AB'), ('O', 'O')]
-    blood_group = models.CharField(default='A', max_length=4, blank=True, choices=blood_group_choices)
+    blood_group = models.CharField(max_length=3, blank=True, choices=blood_group_choices)
     geno_type_choices = [('AA', 'AA'), ('AS', 'AS'), ('SS', 'SS')]
-    genotype = models.CharField(default='AA', max_length=4, blank=True, choices=geno_type_choices)
+    genotype = models.CharField(max_length=3, blank=True, choices=geno_type_choices)
     dad = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='father')
     mum = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='mother')
     objects = UserManager()
@@ -113,14 +113,11 @@ class UserAccount(AbstractUser):
     def get_absolute_url(self):
         return reverse('account:dashboard', kwargs={'username': self.username})
 
-    # def get_absolute_url(self):
-    #     return reverse('account:dashboard', )
-
     def children(self):
-        if self.gender == 'male':
-            return UserAccount.objects.filter(father=self.id)
+        if self.gender == 'M':
+            return UserAccount.objects.filter(dad=self.id)
         else:
-            return UserAccount.objects.filter(mother=self.id)
+            return UserAccount.objects.filter(mum=self.id)
 
     def died(self):
         if self.date_of_death:

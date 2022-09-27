@@ -3,7 +3,7 @@ from django import forms
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView, CreateView, ListView
 
-from account.forms import UpdateUserForm, AddUserDetailForm
+from account.forms import CreateUserForm, AddUserDetailForm
 from account.models import UserAccount
 from account.views.recent import set_context_data
 
@@ -11,8 +11,12 @@ from account.views.recent import set_context_data
 class AccountCreateView(CreateView):
     model = UserAccount
     template_name = 'account/register.html'
-    form_class = UpdateUserForm
+    form_class = CreateUserForm
     success_url = reverse_lazy('account:r_continue')
+
+    def form_valid(self, form):
+        form.instance.username = form.instance.first_name + str(form.instance.date_of_birth.year)
+        return super(AccountCreateView, self).form_valid(form)
 
 
 class UserDetailCreateView(LoginRequiredMixin, UpdateView):
@@ -54,8 +58,8 @@ class Dashboard(Profile):
         context['imageform'] = ImageForm
         return context
 
-    def get_object(self, queryset=None):
-        return UserAccount.objects.get(username=self.request.user)
+    # def get_object(self, queryset=None):
+    #     return UserAccount.objects.get(username=self.request.user)
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
@@ -82,6 +86,7 @@ class UserListView(LoginRequiredMixin, ListView):
     model = UserAccount
     template_name = 'account/member_list.html'
     context_object_name = 'user_list'
+    ordering = 'date_of_birth'
     paginate_by = 40
     page_kwarg = 'page'
 

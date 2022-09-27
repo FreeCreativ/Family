@@ -1,31 +1,39 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 
 from account.models import UserAccount, Education, Occupation, PhoneRecord, AdditionalEmail, GeneticDisease
 
 
-class UpdateUserForm(UserCreationForm):
+class CreateUserForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = UserAccount
-        fields = (
-            "alive", "profile_image", "first_name", "middle_name", "last_name", "email", "date_of_birth", "gender",
-            "genotype", "dad", "mum", "height", "biography")
+        fields = ['first_name', 'middle_name', 'last_name', 'date_of_birth']
+        # fields = [
+        # "alive", "profile_image", "first_name", "middle_name", "last_name", "email", "date_of_birth", "gender",
+        # "genotype", "dad", "mum", "height", "biography"
+        # ]
 
 
-class SuperUserForm(UpdateUserForm):
-    class Meta(UpdateUserForm.Meta):
+class AddUserDetailForm(forms.ModelForm):
+    class Meta:
+        model = UserAccount
+        fields = ["gender", "dad", "mum"]
+
+
+class UpdateSuperUserForm(UserChangeForm):
+    class Meta(UserChangeForm.Meta):
+        model = UserAccount
+        fields = '__all__'
+
+
+class CreateSuperUserForm(CreateUserForm):
+    class Meta(CreateUserForm.Meta):
         fields = ['email', 'first_name', 'middle_name', 'last_name', 'date_of_birth']
 
 
 class BiographyForm(forms.ModelForm):
     model = UserAccount
     fields = ['biography', ]
-
-
-class AddUserDetailForm(forms.ModelForm):
-    class Meta:
-        model = UserAccount
-        fields = ['date_of_birth', 'gender', 'blood_group', 'genotype', 'profile_image', 'dad']
 
 
 class EducationForm(forms.ModelForm):

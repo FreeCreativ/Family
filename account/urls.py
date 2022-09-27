@@ -36,7 +36,7 @@ disease = [
 ]
 phone = []
 dash = [
-    path('', Dashboard.as_view(), name='dashboard'),
+    path('dashboard', Dashboard.as_view(), name='dashboard'),
     path('update', ProfileUpdateView.as_view(), name='update'),
     path('update-picture', ProfilePictureUpdateView.as_view(), name='p-update'),
     path('education/', include(edu)),
@@ -47,7 +47,7 @@ dash = [
     path('img/', include('image.urls')),
 ]
 urlpatterns = [
-    path('account/dashboard/', include(dash)),
+    path('account/<str:username>/', include(dash)),
     path('account/blog/', include('blog.urls')),
     path('account/register/', AccountCreateView.as_view(), name='register'),
     path('account/register/continue', UserDetailCreateView.as_view(), name='r_continue'),

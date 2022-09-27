@@ -3,9 +3,9 @@
 {% block content %}
     <ul>
         {% for result in result_list %}
-            <li>{% for item in result %}
-                <span>{{ item }}</span>
-            {% endfor %}</li>
+            {% for item in result %}
+                <li>{{ item }}</li>
+            {% endfor %}
         {% endfor %}
     </ul>
 {% endblock %}

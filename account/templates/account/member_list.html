@@ -3,11 +3,20 @@
 
 {% block content %}
 
-    <table class="table table-responsive">
+    <table class="table table-responsive table-bordered container-md">
         {% for user in user_list %}
-            {{ user }}
+            <tr class="row">
+                <td class="col-3">
+                    {% if user.profile_image %}
+                        <img src="{{ user.profile_image.url }}" alt="{{ user.get_full_name }}"
+                             class="img-thumbnail">
+                    {% endif %}
+                </td>
+                <td class="col-6">{{ user.get_full_name }}</td>
+                <td class="col-3">{{ user.age }}</td>
+            </tr>
         {% endfor %}
     </table>
 
-
+    {% include "footer.html" %}
 {% endblock %}

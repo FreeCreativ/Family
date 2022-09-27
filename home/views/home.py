@@ -30,11 +30,20 @@ class Search(ListView):
     context_object_name = 'result_list'
 
     def get_queryset(self):
+        result_list = []
         q = self.request.GET.get('q')
-        result_list = [Post.objects.filter(Q(headline__contains=q)), UserAccount.objects.filter(
-            Q(first_name__icontains=q) | Q(middle_name__icontains=q) | Q(last_name__icontains=q)),
-                       UserAccount.objects.filter(user__in=q)]
 
+        def add_query_result(result):
+            if result.count() != 0:
+                return result_list.append(result)
+
+        post_query = Post.objects.filter(Q(headline__contains=q))
+        post_query.count()
+        user_query = UserAccount.objects.filter(
+            Q(first_name__icontains=q) | Q(middle_name__icontains=q) | Q(last_name__icontains=q) | Q(
+                username__icontains=q))
+        add_query_result(post_query)
+        add_query_result(user_query)
         return result_list
 
 
