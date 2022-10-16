@@ -8,10 +8,6 @@ class CreateUserForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = UserAccount
         fields = ['first_name', 'middle_name', 'last_name', 'date_of_birth']
-        # fields = [
-        # "alive", "profile_image", "first_name", "middle_name", "last_name", "email", "date_of_birth", "gender",
-        # "genotype", "dad", "mum", "height", "biography"
-        # ]
 
 
 class AddUserDetailForm(forms.ModelForm):

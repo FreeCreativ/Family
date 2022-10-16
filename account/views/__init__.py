@@ -1,5 +1,5 @@
 from .account import UserDetailCreateView, AccountCreateView, Dashboard, UserListView, ProfileUpdateView, \
-    ProfilePictureUpdateView
+    ProfilePictureUpdateView, BiographyUpdateView
 from .education import EducationListView, EducationDetailView, EducationCreateView, EducationDeleteView, \
     EducationUpdateView
 from .email import EmailListView, EmailDeleteView, EmailDetailView, EmailCreateView

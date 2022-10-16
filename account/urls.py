@@ -4,7 +4,7 @@ from account.views import EducationCreateView, EducationListView, EducationDetai
     EducationDeleteView, EmailCreateView, EmailListView, EmailDetailView, EmailDeleteView, OccupationCreateView, \
     OccupationListView, OccupationDetailView, OccupationUpdateView, OccupationDeleteView, Dashboard, ProfileUpdateView, \
     AccountCreateView, UserDetailCreateView, UserListView, DiseaseDetailView, DiseaseUpdateView, DiseaseDeleteView, \
-    DiseaseCreateView, DiseaseListView, ProfilePictureUpdateView
+    DiseaseCreateView, DiseaseListView, ProfilePictureUpdateView, BiographyUpdateView
 
 app_name = 'account'
 edu = [
@@ -39,6 +39,7 @@ dash = [
     path('dashboard', Dashboard.as_view(), name='dashboard'),
     path('update', ProfileUpdateView.as_view(), name='update'),
     path('update-picture', ProfilePictureUpdateView.as_view(), name='p-update'),
+    path('update-biography', BiographyUpdateView.as_view(), name='b-update'),
     path('education/', include(edu)),
     path('email/', include(email)),
     path('occupation/', include(job)),
@@ -48,8 +49,8 @@ dash = [
 ]
 urlpatterns = [
     path('account/<str:username>/', include(dash)),
-    path('account/blog/', include('blog.urls')),
     path('account/register/', AccountCreateView.as_view(), name='register'),
     path('account/register/continue', UserDetailCreateView.as_view(), name='r_continue'),
     path('account/list', UserListView.as_view(), name='user_list'),
+    path('blog/', include('blog.urls')),
 ]

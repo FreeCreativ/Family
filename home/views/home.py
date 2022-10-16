@@ -38,7 +38,6 @@ class Search(ListView):
                 return result_list.append(result)
 
         post_query = Post.objects.filter(Q(headline__contains=q))
-        post_query.count()
         user_query = UserAccount.objects.filter(
             Q(first_name__icontains=q) | Q(middle_name__icontains=q) | Q(last_name__icontains=q) | Q(
                 username__icontains=q))

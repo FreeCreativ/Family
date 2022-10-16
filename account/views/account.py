@@ -2,8 +2,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django import forms
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView, CreateView, ListView
+from django.views.generic.edit import BaseUpdateView
 
-from account.forms import CreateUserForm, AddUserDetailForm
+from account.forms import CreateUserForm, AddUserDetailForm, BiographyForm
 from account.models import UserAccount
 from account.views.recent import set_context_data
 
@@ -49,17 +50,24 @@ class Profile(LoginRequiredMixin, DetailView):
 class ImageForm(forms.ModelForm):
     class Meta:
         model = UserAccount
-        fields = ['profile_image']
+        fields = ['profile_image', ]
 
 
-class Dashboard(Profile):
+class Dashboard(Profile, BaseUpdateView):
+    fields = ['profile_image', ]
+
     def get_context_data(self, **kwargs):
         context = super(Dashboard, self).get_context_data(**kwargs)
-        context['imageform'] = ImageForm
+        context['image_form'] = ImageForm
+        context['biography_form'] = BiographyForm
         return context
 
     # def get_object(self, queryset=None):
     #     return UserAccount.objects.get(username=self.request.user)
+
+    def form_valid(self, form):
+        super(Dashboard, self).form_valid(form)
+        return reverse_lazy('account:dashboard', kwargs={'username=self.object'})
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
@@ -67,19 +75,30 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     fields = ['height', 'profile_image']
     template_name = 'account/update.html'
     success_url = reverse_lazy('account:dashboard')
-
-    def get_object(self, queryset=None):
-        return UserAccount.objects.get(username=self.request.user)
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
 
 
 class ProfilePictureUpdateView(LoginRequiredMixin, UpdateView):
     model = UserAccount
     fields = ['profile_image', ]
-    success_url = reverse_lazy('account:dashboard')
     template_name = 'account/update.html'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
 
-    def get_object(self, queryset=None):
-        return UserAccount.objects.get(username=self.request.user)
+    def get_success_url(self):
+        return reverse_lazy('account:dashboard', kwargs={'username': self.object})
+
+
+class BiographyUpdateView(LoginRequiredMixin, UpdateView):
+    model = UserAccount
+    fields = ['biography', ]
+    template_name = 'account/update.html'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+
+    def get_success_url(self):
+        return reverse_lazy('account:dashboard', kwargs={'username': self.object})
 
 
 class UserListView(LoginRequiredMixin, ListView):

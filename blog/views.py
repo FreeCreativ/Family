@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
 from django.views.generic.edit import DeleteView, BaseFormView
 
@@ -30,7 +30,7 @@ class PostCreate(LoginRequiredMixin, CreateView):
     model = Post
     template_name = 'blog/blog_create.html'
     form_class = PostForm
-    success_url = '/account/blog/'
+    success_url = reverse_lazy('account:blog:blog_list')
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 

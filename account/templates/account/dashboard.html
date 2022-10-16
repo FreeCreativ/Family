@@ -27,9 +27,9 @@
                                             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                         click to add image
                                     </button>
-                                    <form class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <form class="dropdown-menu" aria-labelledby="dropdownMenuButton1" method="post">
                                         {% csrf_token %}
-                                        {{ imageform.as_p }}
+                                        {{ imageform|crispy }}
                                         <input type="submit" value="Upload">
                                     </form>
                                 </div>
@@ -39,7 +39,7 @@
                             {% endif %}
                         </div>
                         <div class="col-md-9 border border-1">
-                            <ul class="list-group">
+                            <ul class="list-group my-2">
                                 <li class="list-group-item"><span
                                         class="fw-semibold">Name:</span> {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}
                                 </li>
@@ -63,12 +63,15 @@
 
                                 <li class="list-group-item"><span class="fw-semibold">Children:</span>
                                     {% for chil in user.children %}
-                                        <a href="{% url 'account:dashboard' chil %}">{{ chil }}</a> ,{% endfor %}
+                                        <a href="{% url 'account:dashboard' chil %}">{{ chil }}</a> ,
+                                    {% endfor %}
                                 </li>
-
-                                <li class="list-group-item">{{ user.height }}</li>
-                                <li class="list-group-item">{{ user.blood_group }}</li>
-                                <li class="list-group-item">{{ user.genotype }}</li>
+                                <li class="list-group-item"><span
+                                        class="fw-semibold">Height(cm):</span> {{ user.height }}</li>
+                                <li class="list-group-item"><span
+                                        class="fw-semibold">Blood Group:</span> {{ user.blood_group }}</li>
+                                <li class="list-group-item"><span
+                                        class="fw-semibold">Genotype:</span> {{ user.genotype }}</li>
                                 {% if not user.alive %}
                                     <li class="list-group-item">{{ user.date_of_death }}</li>
                                     <li class="list-group-item">{{ user.cause_of_death }}</li>
@@ -81,15 +84,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="container p-0">
-                    <h4 class="h4 text-center">Biography</h4>
-                    <p class="fw-bold fw-100">{{ user.biography }}</p>
-                    {% if user.biography %}
-                        <a href="">edit biography</a>
-                    {% else %}
-                        <a href="">add biography</a>
+                <div class="container">
+                    <div class="row">
+                        <h3 class="text-center">Biography</h3>
+                        <h5 class="text-center fs-6">
+                            {% if user.biography %}
+                                <a href="{% url 'account:b-update' user.username %}" class="link">edit biography</a>
+                            {% else %}
+                                <a href="{% url 'account:b-update' user.username %}" class="">add biography</a>
+                            {% endif %}
+                        </h5>
+                    </div>
 
-                    {% endif %}
+                    <div class="row px-md-2">
+                        <p class="fw-light lh-lg px-4">{{ user.biography }}</p>
+                    </div>
                 </div>
 
                 <div>
@@ -147,22 +156,6 @@
                         </tbody>
                     </table>
                 </div>
-                <h1>OST SECTION</h1>
-                {% for post in post_list %}
-                    <a href="{% url 'blog:detail' slug=post.slug %}">
-                        <h1>{{ post.headline }}</h1>
-                    </a>
-                    <p>
-                        {{ post.content }}
-                        <li>
-                            {% for comment in post.comment_set.all %}
-                                <li>{{ comment }}</li>
-                            {% endfor %}
-                    </li>
-                    </p>
-                {% empty %}
-                    No posts available
-                {% endfor %}
             </div>
             <div class="col-md-2 visible-md px-0">
                 {% include "sidebar.html" %}
