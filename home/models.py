@@ -46,7 +46,7 @@ class MyMedia(models.Manager):
 class Media(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_of_upload = models.DateTimeField(auto_now_add=True)
-    name = models.CharField(max_length=300, default=timezone.now())
+    name = models.CharField(max_length=300, default=timezone.now(), primary_key=True)
     description = models.TextField()
     is_public = models.BooleanField(default=True)
     public = MediaManager()

@@ -1,8 +1,22 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DeleteView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DeleteView, CreateView
 
 from image.models import Image
+
+
+class UploadImageView(LoginRequiredMixin, CreateView):
+    model = Image
+    fields = ['image_file', 'description', ]
+    template_name = 'image/image_create.html'
+    success_url = reverse_lazy('account:my_image_list')
+    slug_field = 'name'
+    slug_url_kwarg = 'slug'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.save()
+        return super(UploadImageView, self).form_valid(form)
 
 
 class ImageListView(LoginRequiredMixin, ListView):

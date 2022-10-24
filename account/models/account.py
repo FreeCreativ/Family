@@ -96,7 +96,7 @@ class UserAccount(AbstractUser):
     gender_choices = [('M', 'Male'), ('F', 'Female')]
     gender = models.CharField(max_length=7, choices=gender_choices, blank=True)
     heights = gen_height()
-    height = models.IntegerField(verbose_name='height (cm)', blank=True, choices=heights)
+    height = models.IntegerField(verbose_name='height (cm)', blank=True, null=True, choices=heights)
     blood_group_choices = [('A', 'A'), ('B', 'B'), ('AB', 'AB'), ('O', 'O')]
     blood_group = models.CharField(max_length=3, blank=True, choices=blood_group_choices)
     geno_type_choices = [('AA', 'AA'), ('AS', 'AS'), ('SS', 'SS')]

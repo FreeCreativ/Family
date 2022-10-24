@@ -2,9 +2,10 @@ from django.urls import path, include
 
 from account.views import EducationCreateView, EducationListView, EducationDetailView, EducationUpdateView, \
     EducationDeleteView, EmailCreateView, EmailListView, EmailDetailView, EmailDeleteView, OccupationCreateView, \
-    OccupationListView, OccupationDetailView, OccupationUpdateView, OccupationDeleteView, Dashboard, ProfileUpdateView, \
+    OccupationListView, OccupationDetailView, OccupationUpdateView, OccupationDeleteView, DashboardView, \
+    ProfileUpdateView, \
     AccountCreateView, UserDetailCreateView, UserListView, DiseaseDetailView, DiseaseUpdateView, DiseaseDeleteView, \
-    DiseaseCreateView, DiseaseListView, ProfilePictureUpdateView, BiographyUpdateView
+    DiseaseCreateView, DiseaseListView, ProfilePictureUpdateView, BiographyUpdateView, ProfileView
 
 app_name = 'account'
 edu = [
@@ -36,7 +37,7 @@ disease = [
 ]
 phone = []
 dash = [
-    path('dashboard', Dashboard.as_view(), name='dashboard'),
+    path('', ProfileView.as_view(), name='profile'),
     path('update', ProfileUpdateView.as_view(), name='update'),
     path('update-picture', ProfilePictureUpdateView.as_view(), name='p-update'),
     path('update-biography', BiographyUpdateView.as_view(), name='b-update'),
@@ -45,12 +46,13 @@ dash = [
     path('occupation/', include(job)),
     path('phonenumber/', include(phone)),
     path('disease/', include(phone)),
-    path('img/', include('image.urls')),
 ]
 urlpatterns = [
-    path('account/<str:username>/', include(dash)),
+    path('account/dashboard/', DashboardView.as_view(), name='dashboard'),
     path('account/register/', AccountCreateView.as_view(), name='register'),
     path('account/register/continue', UserDetailCreateView.as_view(), name='r_continue'),
     path('account/list', UserListView.as_view(), name='user_list'),
+    path('account/<str:username>/', include(dash)),
     path('blog/', include('blog.urls')),
+    path('images/', include('image.urls')),
 ]

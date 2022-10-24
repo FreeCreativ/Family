@@ -14,7 +14,6 @@
                 {% include "account/sidebar.html" %}
             </div>
             <div class="col-md-8 border border-1 px-1">
-                <h3 class="h3 font-weight-bold text-bg-primary px-2 rounded-2 text-md-center">Profile</h3>
                 <div class="container mb-2">
                     <div class="row row-cols-md-2">
                         <div class="col-md-3">
@@ -27,41 +26,61 @@
                                             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                         click to add image
                                     </button>
-                                    <form class="dropdown-menu" aria-labelledby="dropdownMenuButton1" method="post">
+                                    <form class="dropdown-menu" aria-labelledby="dropdownMenuButton1" method="post"
+                                          enctype="multipart/form-data">
                                         {% csrf_token %}
                                         {{ imageform|crispy }}
                                         <input type="submit" value="Upload">
                                     </form>
                                 </div>
-                                <a href="{% url 'account:p-update' user.username %}" class="link text-center d-block">click
-                                    to add
-                                    image</a>
+                                <a href="{% url 'account:p-update' request.user.username %}"
+                                   class="link text-center d-block">click
+                                    to add image
+                                </a>
                             {% endif %}
                         </div>
                         <div class="col-md-9 border border-1">
                             <ul class="list-group my-2">
-                                <li class="list-group-item"><span
-                                        class="fw-semibold">Name:</span> {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}
+                                <li class="list-group-item">
+                                    <span class="fw-semibold">Name:</span>
+                                    {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}
                                 </li>
-                                <li class="list-group-item"><span
-                                        class="fw-semibold">Username:</span> {{ user.username }}</li>
-                                <li class="list-group-item"><span class="fw-semibold">Email:</span> {{ user.email }}
+                                <li class="list-group-item">
+                                    <span class="fw-semibold">Username:</span>
+                                    {{ user.username }}
                                 </li>
-                                <li class="list-group-item"><span class="fw-semibold">Gender:</span> {{ user.gender }}
+                                <li class="list-group-item">
+                                    <span class="fw-semibold">Email:</span>
+                                    {{ user.email }}
                                 </li>
-                                <li class="list-group-item"><span
-                                        class="fw-semibold">Date of birth:</span> {{ user.date_of_birth }}</li>
-                                <li class="list-group-item"><span class="fw-semibold">Age:</span> {{ user.age }}</li>
-                                <li class="list-group-item"><span
-                                        class="fw-semibold">Father:</span> {{ user.get_father }}</li>
-                                <li class="list-group-item"><span
-                                        class="fw-semibold">Mother:</span> {{ user.get_mother }}</li>
-                                <p class="list-group-item"><span class="fw-semibold">Genealogy:</span>
+                                <li class="list-group-item">
+                                    <span class="fw-semibold">Gender:</span>
+                                    {{ user.gender }}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="fw-semibold">Date of birth:</span>
+                                    {{ user.date_of_birth }}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="fw-semibold">Age:</span>
+                                    {{ user.age }}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="fw-semibold">Father:</span>
+                                    {{ user.get_father }}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="fw-semibold">Mother:</span>
+                                    {{ user.get_mother }}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="fw-semibold">Genealogy:</span>
                                     {% for u in user.genealogy %} |
-                                        <a href="{% url 'account:dashboard' u %}">{{ u }}</a> |{% endfor %}
-                                </p>
-
-                                <li class="list-group-item"><span class="fw-semibold">Children:</span>
+                                        <a href="{% url 'account:profile' u %}">{{ u }}</a> |
+                                    {% endfor %}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="fw-semibold">Children:</span>
                                     {% for chil in user.children %}
                                         <a href="{% url 'account:dashboard' chil %}">{{ chil }}</a> ,
                                     {% endfor %}
@@ -88,10 +107,13 @@
                     <div class="row">
                         <h3 class="text-center">Biography</h3>
                         <h5 class="text-center fs-6">
-                            {% if user.biography %}
-                                <a href="{% url 'account:b-update' user.username %}" class="link">edit biography</a>
-                            {% else %}
-                                <a href="{% url 'account:b-update' user.username %}" class="">add biography</a>
+
+                            {% if user.username == request.user.username %}
+                                {% if user.biography %}
+                                    <a href="{% url 'account:b-update' user.username %}" class="link">edit biography</a>
+                                {% else %}
+                                    <a href="{% url 'account:b-update' user.username %}" class="">add biography</a>
+                                {% endif %}
                             {% endif %}
                         </h5>
                     </div>

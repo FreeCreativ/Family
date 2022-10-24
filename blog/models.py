@@ -28,5 +28,6 @@ class Post(models.Model):
             super(Post, self).save()
 
 
+
 class PostComment(Comment):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

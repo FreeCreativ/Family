@@ -28,7 +28,7 @@ class UserDetailCreateView(LoginRequiredMixin, UpdateView):
         return UserAccount.objects.get(username=self.request.user)
 
 
-class Profile(LoginRequiredMixin, DetailView):
+class ProfileView(LoginRequiredMixin, DetailView):
     template_name = 'account/dashboard.html'
     model = UserAccount
     context_object_name = 'user'
@@ -36,7 +36,7 @@ class Profile(LoginRequiredMixin, DetailView):
     slug_url_kwarg = 'username'
 
     def get_context_data(self, **kwargs):
-        context = super(Profile, self).get_context_data()
+        context = super(ProfileView, self).get_context_data()
         user = self.object
         context.update(set_context_data())
         context['education'] = user.education_set.all()
@@ -53,21 +53,21 @@ class ImageForm(forms.ModelForm):
         fields = ['profile_image', ]
 
 
-class Dashboard(Profile, BaseUpdateView):
+class DashboardView(ProfileView, BaseUpdateView):
     fields = ['profile_image', ]
 
+    def get_object(self, queryset=None):
+        return UserAccount.objects.get(username=self.request.user)
+
     def get_context_data(self, **kwargs):
-        context = super(Dashboard, self).get_context_data(**kwargs)
-        context['image_form'] = ImageForm
-        context['biography_form'] = BiographyForm
+        context = super(DashboardView, self).get_context_data(**kwargs)
+        # context['image_form'] = ImageForm
+        # context['biography_form'] = BiographyForm
         return context
 
-    # def get_object(self, queryset=None):
-    #     return UserAccount.objects.get(username=self.request.user)
-
     def form_valid(self, form):
-        super(Dashboard, self).form_valid(form)
-        return reverse_lazy('account:dashboard', kwargs={'username=self.object'})
+        super(DashboardView, self).form_valid(form)
+        return reverse_lazy('account:dashboard', )
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
@@ -87,7 +87,7 @@ class ProfilePictureUpdateView(LoginRequiredMixin, UpdateView):
     slug_url_kwarg = 'username'
 
     def get_success_url(self):
-        return reverse_lazy('account:dashboard', kwargs={'username': self.object})
+        return reverse_lazy('account:dashboard', )
 
 
 class BiographyUpdateView(LoginRequiredMixin, UpdateView):
