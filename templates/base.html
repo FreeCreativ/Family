@@ -10,19 +10,19 @@
     <meta content="Umu-Tawa Dynasty" name="description"/>
     <link href="{% static 'BS5/css/bootstrap.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'BS-icons/bootstrap-icons.css' %}" rel="stylesheet"/>
-    <title>{% block title %} {% endblock %}  Umu-Tawa</title>
+    <title>{% block title %} {% endblock %} Umu-Tawa</title>
 </head>
 <body>
-
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+{% endfor %}
+{% endif %}
 <div id="content">
     {% include 'nav.html' %}
     <!--  MAIN BODY SECTION  -->
     {% block content %}
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
+
 
     {% endblock %}
 </div>

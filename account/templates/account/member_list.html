@@ -1,19 +1,29 @@
 {% extends 'base.html' %}
-{% block content %}
-    <table class="table table-responsive table-bordered container-md">
-        {% for user in user_list %}
-            <tr class="row">
-                <td class="col-3">
-                    {% if user.profile_image %}
-                        <img src="{{ user.profile_image.url }}" alt="{{ user.get_full_name }}"
-                             class="img-thumbnail">
-                    {% endif %}
-                </td>
-                <td class="col-6">{{ user.get_full_name }}</td>
-                <td class="col-3">{{ user.age }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+{% load static %}
 
+{% block title %}
+family members |
+{% endblock %}
+{% block content %}
+    <h3 class="display-6 text-center">Living Family Members</h3>
+    <div class="container text-center">
+        <div class="row  row-cols-md-6 row-cols-sm-3 m-auto">
+            {% for user in user_list %}
+                <div class="card col">
+                    {% if user.profile_image %}
+                        <img src="{{ user.profile_image.url }}" class="card-img-top" alt="{{ user.get_full_name }}">
+                    {% else %}
+                        <img src="{% static "imgs/default.JPG" %}" class="card-img-top" alt="">
+                    {% endif %}
+                    <div class="card-footer">
+                        <a href="{% url 'account:profile' user.username %}"
+                           class="card-link">{{ user.get_full_name }}</a>
+                        <p class="card-subtitle text-muted">{{ user.age }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% include "pagination.html" %}
     {% include "footer.html" %}
 {% endblock %}

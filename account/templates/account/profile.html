@@ -123,7 +123,7 @@
                 </div>
                 <div class="container">
                     <div class="row">
-                        <h3 class="text-center">Biography</h3>
+                        <h4 class="text-center">Biography</h4>
                         <h5 class="text-center fs-6">
                             {% if user.username == request.user.username %}
                                 {% if user.biography %}
@@ -141,7 +141,7 @@
                 </div>
                 <div>
                     <h4 class="text-center">Education</h4>
-                    <table class="table">
+                    <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -165,11 +165,9 @@
                         {% endfor %}
                         {% if user == request.user %}
                             <tr>
-                                <th scope="row"></th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td colspan="2"><a href="{% url 'account:new_education' request.user %}">add new institution</a>
+                                <td colspan="6" class="text-center"><a
+                                        href="{% url 'account:new_education' request.user %}">add new
+                                    institution</a>
                                 </td>
                             </tr>
                         {% endif %}
@@ -178,7 +176,7 @@
                 </div>
 
                 <div>
-                    <h4>Hereditary Diseases</h4>
+                    <h4 class="text-center">Hereditary Diseases</h4>
                     <table class="table">
                         <thead>
                         <tr>
@@ -197,6 +195,14 @@
                                 <td>{{ disease.type }}</td>
                             </tr>
                         {% endfor %}
+                        {% if user == request.user %}
+                            <tr>
+                                <td colspan="4" class="text-center"><a
+                                        href="{% url 'account:new_education' request.user %}">add new
+                                    institution</a>
+                                </td>
+                            </tr>
+                        {% endif %}
                         </tbody>
                     </table>
                 </div>
