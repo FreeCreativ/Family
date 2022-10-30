@@ -16,10 +16,10 @@ class Education(models.Model):
     year_of_graduation = models.DateField(
         verbose_name='Year Graduated', blank=True)
     level_choice = (
-        ('E', 'Elementary'),
-        ('S', 'Secondary'),
-        ('T', 'Tertiary'),
-        ('P', 'Post Graduation'),
+        ('Elementary', 'Elementary'),
+        ('Secondary', 'Secondary'),
+        ('Tertiary', 'Tertiary'),
+        ('Post_Graduation', 'Post Graduation'),
     )
     school_level = models.CharField(max_length=15, choices=level_choice)
 
@@ -31,7 +31,7 @@ class Education(models.Model):
         super(Education, self).save()
 
     def get_absolute_url(self):
-        return reverse('account:education_detail', kwargs={'pk': self.id})
+        return reverse('account:education_detail', kwargs={'username': self.user, 'pk': self.id})
 
     class Meta:
         verbose_name_plural = "Education"

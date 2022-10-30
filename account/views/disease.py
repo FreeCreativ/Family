@@ -1,16 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DeleteView, DetailView, CreateView, UpdateView
+from django.views.generic import DeleteView, DetailView, CreateView, UpdateView
 
 from account.forms import GeneticDiseaseForm
 from account.models import GeneticDisease
-
-
-class DiseaseListView(LoginRequiredMixin, ListView):
-    model = GeneticDisease
-    context_object_name = 'disease_list'
-    template_name = 'disease/disease_list.html'
-    page_kwarg = 'page'
-    ordering = 'date_registered'
 
 
 class DiseaseCreateView(LoginRequiredMixin, CreateView):

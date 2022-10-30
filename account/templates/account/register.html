@@ -2,13 +2,15 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    Sign up
+    Sign up |
 {% endblock %}
 
 {% block content %}
-    <form method="post" class="form-control">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="Submit" class="btn btn-success">
-    </form>
+    <div class="container px-md-5">
+        <form method="post" class="mx-md-5 my-md-2 px-md-5" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" value="Submit" class="btn btn-success">
+        </form>
+    </div>
 {% endblock %}

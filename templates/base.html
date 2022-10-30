@@ -10,20 +10,19 @@
     <meta content="Umu-Tawa Dynasty" name="description"/>
     <link href="{% static 'BS5/css/bootstrap.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'BS-icons/bootstrap-icons.css' %}" rel="stylesheet"/>
-    <title>Umu-tawa.com{% block title %} {% endblock %}</title>
+    <title>{% block title %} {% endblock %}  Umu-Tawa</title>
 </head>
 <body>
 
 <div id="content">
+    {% include 'nav.html' %}
+    <!--  MAIN BODY SECTION  -->
+    {% block content %}
     {% if messages %}
     {% for message in messages %}
     <div class="alert alert-{{ message.tags }}">{{ message }}</div>
     {% endfor %}
     {% endif %}
-    {% include 'nav.html' %}
-
-    <!--  MAIN BODY SECTION  -->
-    {% block content %}
 
     {% endblock %}
 </div>
@@ -33,5 +32,6 @@
 <script src="{% static 'fontawesome/js/all.js' %}"></script>
 <script src="{% static 'BS5/js/bootstrap.bundle.js' %}"></script>
 <script src="{% static 'script/script.min.js' %}"></script>
+
 </body>
 </html>

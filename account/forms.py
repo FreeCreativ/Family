@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 
-from account.models import UserAccount, Education, Occupation, PhoneRecord, AdditionalEmail, GeneticDisease
+from account.models import UserAccount, Education, Occupation, PhoneRecord, GeneticDisease
 
 
 class CreateUserForm(UserCreationForm):
@@ -13,7 +13,7 @@ class CreateUserForm(UserCreationForm):
 class AddUserDetailForm(forms.ModelForm):
     class Meta:
         model = UserAccount
-        fields = ["gender", "dad", "mum"]
+        fields = ["profile_image", "gender", "dad", "mum", "genotype", "blood_group", "height"]
 
 
 class UpdateSuperUserForm(UserChangeForm):
@@ -48,12 +48,6 @@ class PhoneRecordForm(forms.ModelForm):
     class Meta:
         model = PhoneRecord
         exclude = ('user',)
-
-
-class EmailForm(forms.ModelForm):
-    class Meta:
-        model = AdditionalEmail
-        exclude = ('user', 'id',)
 
 
 class GeneticDiseaseForm(forms.ModelForm):

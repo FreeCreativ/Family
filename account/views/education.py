@@ -1,27 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView
 
 from account.forms import EducationForm
 from account.models import Education
-
-
-class EducationListView(LoginRequiredMixin, ListView):
-    model = Education
-    template_name = 'education/education_list.html'
-    context_object_name = 'education_list'
-    page_kwarg = 'page'
-    ordering = 'school_level'
-
-    def get_queryset(self):
-        return Education.objects.filter(user_id=self.request.user)
-
-
-class EducationDetailView(LoginRequiredMixin, DetailView):
-    model = Education
-    template_name = 'education/education_detail.html'
-    context_object_name = 'education_detail'
-    pk_url_kwarg = 'pk'
 
 
 class EducationCreateView(LoginRequiredMixin, CreateView):

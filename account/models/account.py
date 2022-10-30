@@ -2,7 +2,7 @@ import datetime
 
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.datetime_safe import date
 
@@ -111,7 +111,7 @@ class UserAccount(AbstractUser):
         return self.username
 
     def get_absolute_url(self):
-        return reverse('account:dashboard', kwargs={'username': self.username})
+        return reverse_lazy('account:profile', kwargs={'username': self.username})
 
     def children(self):
         if self.gender == 'M':

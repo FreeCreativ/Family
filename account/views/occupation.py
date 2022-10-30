@@ -1,17 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DeleteView, DetailView, CreateView
+from django.views.generic import DeleteView, DetailView, CreateView
 
 from account.forms import OccupationForm
 from account.models import Occupation
-
-
-class OccupationListView(LoginRequiredMixin, ListView):
-    model = Occupation
-    context_object_name = 'occupation_list'
-    template_name = 'occupation/occupation_list.html'
-    page_kwarg = 'page'
-    ordering = 'date_registered'
 
 
 class OccupationCreateView(LoginRequiredMixin, CreateView):
