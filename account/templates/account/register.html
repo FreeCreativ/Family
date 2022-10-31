@@ -6,11 +6,11 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container px-md-5">
-        <form method="post" class="mx-md-5 my-md-2 px-md-5" enctype="multipart/form-data">
+    <div class="container p-md-5">
+        <form method="post" class="mx-md-5 my-md-2 p-md-5" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form|crispy }}
-            <input type="submit" value="Submit" class="btn btn-success">
+            <input type="submit" value="Submit" class="btn btn-success form-control">
         </form>
     </div>
 {% endblock %}

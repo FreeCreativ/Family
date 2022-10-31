@@ -11,7 +11,7 @@ class Education(models.Model):
     id = models.CharField(max_length=50, primary_key=True)
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     name_of_school = models.TextField(
-        verbose_name='Name of school', default='School')
+        verbose_name='Name of school')
     year_of_entrance = models.DateField(verbose_name='Year of Entrance')
     year_of_graduation = models.DateField(
         verbose_name='Year Graduated', blank=True)

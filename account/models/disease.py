@@ -26,10 +26,20 @@ class Disease(models.Model):
     type_of_disease = models.CharField(max_length=50)
 
 
+def age_choices():
+    age = 0
+    choice_list = []
+    while age <= 150:
+        choice_list.append((age, age))
+        age += 1
+    return choice_list
+
+
 class GeneticDisease(models.Model):
+    ages = age_choices()
     id = models.CharField(max_length=50, primary_key=True)
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
-    age_of_infection = models.IntegerField('age of infection')
+    age_of_infection = models.IntegerField('age of infection', choices=ages)
     disease_name = models.CharField(max_length=100)
     date_of_infection = models.DateField('date infected')
     type_choices = [('H', 'Hereditary'), ('A', 'Acquired')]

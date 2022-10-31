@@ -1,7 +1,14 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+    new institution |
+{% endblock %}
 {% block content %}
-    <form action="" method="post">
+    <div class="container p-5">
+    <form action="" method="post" class="p-md-5 m-md-5">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit">
+        {{ form|crispy }}
+        <input type="submit" value="Submit" class="btn btn-primary form-control">
     </form>
+    </div>
 {% endblock %}

@@ -198,8 +198,7 @@
                         {% if user == request.user %}
                             <tr>
                                 <td colspan="4" class="text-center"><a
-                                        href="{% url 'account:new_education' request.user %}">add new
-                                    institution</a>
+                                        href="{% url 'account:disease_create' request.user %}">register new disease</a>
                                 </td>
                             </tr>
                         {% endif %}

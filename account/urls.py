@@ -32,7 +32,7 @@ dash = [
     path('education/', include(edu)),
     path('occupation/', include(job)),
     path('phonenumber/', include(phone)),
-    path('disease/', include(phone)),
+    path('disease/', include(disease)),
 ]
 urlpatterns = [
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
