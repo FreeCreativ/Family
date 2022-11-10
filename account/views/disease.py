@@ -26,6 +26,7 @@ class DiseaseDetailView(LoginRequiredMixin, DetailView):
 class DiseaseDeleteView(LoginRequiredMixin, DeleteView):
     model = GeneticDisease
     template_name = 'disease/disease_delete.html'
+    success_url = '../../'
 
 
 class DiseaseUpdateView(LoginRequiredMixin, UpdateView):

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
+{% load static%}
 
 
 {% block title %}
@@ -25,27 +26,28 @@
                                            data-bs-toggle="dropdown" aria-expanded="false">
                                             click to update
                                         </a>
-                                        <form class="dropdown-menu" enctype="multipart/form-data"
+                                        <form class="dropdown-menu text-center" enctype="multipart/form-data"
                                               method="post">
                                             {% csrf_token %}
                                             {{ form|crispy }}
-                                            <input type="submit" value="upload" class="btn btn-sm">
+                                            <input type="submit" value="upload" class="btn btn-success">
                                         </form>
                                     </div>
 
                                 {% endif %}
                             {% else %}
+                                <img src="{% static "imgs/default.JPG" %}" alt="profile picture" class="img-fluid">
                                 {% if user == request.user %}
                                     <div class="dropdown dropdown-toggle">
                                         <a class="link link-dark " type="button"
                                            data-bs-toggle="dropdown" aria-expanded="false">
                                             click to add image
                                         </a>
-                                        <form class="dropdown-menu" enctype="multipart/form-data"
+                                        <form class="dropdown-menu text-center" enctype="multipart/form-data"
                                               method="post">
                                             {% csrf_token %}
                                             {{ form|crispy }}
-                                            <input type="submit" value="upload" class="btn btn-sm">
+                                            <input type="submit" value="upload" class="btn btn-success">
                                         </form>
                                     </div>
 
@@ -141,7 +143,7 @@
                 </div>
                 <div>
                     <h4 class="text-center">Education</h4>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table-striped table-hover table-sm">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -150,6 +152,7 @@
                             <th scope="col">Duration</th>
                             <th scope="col">Year of entrance</th>
                             <th scope="col">year of graduation</th>
+                            <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -161,11 +164,15 @@
                                 <td>{{ school.duration }}</td>
                                 <td>{{ school.year_of_entrance }}</td>
                                 <td>{{ school.year_of_graduation }}</td>
+                                <td>
+                                    <a href="{% url 'account:education_update' username=request.user pk=school.id %}">edit</a>
+                                    <a href="{% url 'account:education_delete' username=request.user pk=school.id %}">delete</a>
+                                </td>
                             </tr>
                         {% endfor %}
                         {% if user == request.user %}
                             <tr>
-                                <td colspan="6" class="text-center"><a
+                                <td colspan="7" class="text-center"><a
                                         href="{% url 'account:new_education' request.user %}">add new
                                     institution</a>
                                 </td>
@@ -177,32 +184,39 @@
 
                 <div>
                     <h4 class="text-center">Hereditary Diseases</h4>
-                    <table class="table">
+                    <table class="table table-bordered table-striped table-hover table-sm table-responsive">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Disease</th>
                             <th scope="col">date of infection</th>
                             <th scope="col">type</th>
+                            <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for disease in diseases %}
                             <tr>
-                                <th scope="row"></th>
+                                <th scope="row">{{ disease.id }}</th>
                                 <td>{{ disease.disease_name }}</td>
                                 <td>{{ disease.date_of_infection }}</td>
                                 <td>{{ disease.type }}</td>
+                                <td>
+                                    <a href="{% url 'account:disease_update' username=request.user pk=disease.id %}">edit</a>
+                                    <a href="{% url 'account:disease_delete' username=request.user pk=disease.id %}">delete</a>
+                                </td>
                             </tr>
                         {% endfor %}
+                        </tbody>
+                        <tfoot>
                         {% if user == request.user %}
                             <tr>
-                                <td colspan="4" class="text-center"><a
+                                <td colspan="5" class="text-center"><a
                                         href="{% url 'account:disease_create' request.user %}">register new disease</a>
                                 </td>
                             </tr>
                         {% endif %}
-                        </tbody>
+                        </tfoot>
                     </table>
                 </div>
             </div>

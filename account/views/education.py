@@ -1,5 +1,4 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 
 from account.forms import EducationForm
@@ -22,12 +21,12 @@ class EducationUpdateView(LoginRequiredMixin, UpdateView):
     fields = ["name_of_school", "school_level", "year_of_entrance", "year_of_graduation"]
     slug_field = 'id'
     slug_url_kwarg = 'pk'
-    success_url = '/'
+    success_url = '../../../'
 
 
 class EducationDeleteView(LoginRequiredMixin, DeleteView):
     model = Education
-    success_url = reverse_lazy('account:education_list')
+    success_url = '../../'
     slug_field = 'id'
     slug_url_kwarg = 'pk'
     template_name = 'education/education_delete.html'

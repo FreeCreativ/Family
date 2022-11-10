@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.text import slugify
 
 from Family.settings import AUTH_USER_MODEL
 from account.generator import generate_id
@@ -7,10 +8,10 @@ from account.generator import generate_id
 
 class Statistics(models.Manager):
     def hereditary(self):
-        return self.filter(type='H')
+        return self.filter(type='Acquired')
 
     def acquired(self):
-        return self.filter('A')
+        return self.filter('Hereditary')
 
     def disease_average_age_of_occurrence(self, disease_name):
         age_sum = 0
@@ -42,17 +43,17 @@ class GeneticDisease(models.Model):
     age_of_infection = models.IntegerField('age of infection', choices=ages)
     disease_name = models.CharField(max_length=100)
     date_of_infection = models.DateField('date infected')
-    type_choices = [('H', 'Hereditary'), ('A', 'Acquired')]
+    type_choices = [('Hereditary', 'Hereditary'), ('Hereditary', 'Acquired')]
     type = models.CharField(max_length=11, choices=type_choices)
 
     def __str__(self):
         return self.disease_name
 
     def get_absolute_url(self):
-        return reverse('account:', kwargs={'pk': self.id})
+        return reverse('account:profile', kwargs={'username': self.user, })
 
     def create_id(self):
-        return str(self.user) + self.disease_name + self.type + generate_id(self.age_of_infection)[:3]
+        return str(self.user) + slugify(self.disease_name) + self.type + generate_id(self.age_of_infection)[:3]
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         self.id = self.create_id()

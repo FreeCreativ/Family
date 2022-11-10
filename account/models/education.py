@@ -1,5 +1,3 @@
-from datetime import timezone
-
 from django.db import models
 from django.urls import reverse
 
@@ -31,10 +29,11 @@ class Education(models.Model):
         super(Education, self).save()
 
     def get_absolute_url(self):
-        return reverse('account:education_detail', kwargs={'username': self.user, 'pk': self.id})
+        return reverse('account:profile', kwargs={'username': self.user, })
 
     class Meta:
         verbose_name_plural = "Education"
+        ordering = ['year_of_entrance', ]
 
     def __str__(self):
         return f"{self.name_of_school}, {self.year_of_graduation}, {self.school_level}"

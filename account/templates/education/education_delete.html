@@ -1,0 +1,14 @@
+{% extends "education/education_create.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+    delete |
+{% endblock %}
+{% block content %}
+    <div class="container p-5">
+    <form action="" method="post" class="p-md-5 m-md-5">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="delete" class="btn btn-danger form-control">
+    </form>
+    </div>
+{% endblock %}

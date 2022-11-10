@@ -8,7 +8,7 @@ from account.views import EducationCreateView, EducationUpdateView, EducationDel
 app_name = 'account'
 edu = [
     path('new', EducationCreateView.as_view(), name='new_education'),
-    path('<pk>/update', EducationUpdateView.as_view(), name='education_update'),
+    path('<str:pk>/update/', EducationUpdateView.as_view(), name='education_update'),
     path('<pk>/delete', EducationDeleteView.as_view(), name='education_delete'),
 ]
 
