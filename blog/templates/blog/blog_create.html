@@ -2,11 +2,11 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    - blog : new post
+  new post |
 {% endblock %}
 
 {% block content %}
-    <div class="col-md-6" style="margin: 0 auto;">
+    <div class="col-md-6 m-auto">
         {% if success == True %}
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ successmsg | crispy }}
@@ -15,11 +15,10 @@
                 </button>
             </div>
         {% endif %}
-        {#        <form action="{% url 'blog:new_post' %}" method="POST">#}
         <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Submit" class="btn btn-primary">
+            {{ form|crispy }}
+            <input type="submit" value="Submit" class="btn btn-primary m-auto">
         </form>
     </div>
 {% endblock %}

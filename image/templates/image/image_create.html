@@ -2,9 +2,13 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <form enctype="multipart/form-data" method="post">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="Upload" class="btn btn-primary">
-    </form>
+    <div class="container p-5 m-5">
+        <div class="container p-5 mx-5">
+            <form enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" value="Upload" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
 {% endblock %}

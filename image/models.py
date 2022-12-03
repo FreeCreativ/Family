@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from home.models import Comment, Media
 
@@ -9,11 +10,14 @@ from home.models import Comment, Media
 class Image(Media):
     image_file = models.ImageField(upload_to='photos')
 
+    def __str__(self):
+        return self.name
+
     def save(
             self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
         if not self.name:
-            self.name = 'img-' + str(self.date_of_upload)
+            self.name = 'img-' + str(timezone.now())
             super(Image, self).save()
         else:
             super(Image, self).save()

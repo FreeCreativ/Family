@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}
+    video list |
+{% endblock %}
+
+{% block content %}
+    {% for video in video_list %}
+        {{ video.video_file.url }}
+    {% endfor %}
+{% endblock %}

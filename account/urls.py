@@ -41,5 +41,6 @@ urlpatterns = [
     path('members/', UserListView.as_view(), name='user_list'),
     path('blog/', include('blog.urls')),
     path('images/', include('image.urls')),
+    path('videos/', include('video.urls')),
     path('<str:username>/', include(dash)),
 ]
