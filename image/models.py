@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.utils import timezone
 
@@ -8,7 +10,9 @@ from home.models import Comment, Media
 
 
 class Image(Media):
-    image_file = models.ImageField(upload_to='photos')
+    date = datetime.now()
+    datetime_str = "{}-{}-{}/"
+    image_file = models.ImageField(upload_to='photos/' + datetime_str.format(date.year, date.month, date.day))
 
     def __str__(self):
         return self.name

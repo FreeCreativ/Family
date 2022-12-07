@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ video.description }} |
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row-cols-1">
+            <video controls class="img-fluid col w-100 ">
+                <source src='{{ video.video_file.url }}' type='video/mp4'>
+                Your browser does not support the video tag.
+            </video>
+            <p class="text-secondary">{{ video.description }}</p>
+        </div>
+    </div>
+    {% include "footer.html" %}
+{% endblock %}

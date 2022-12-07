@@ -16,7 +16,7 @@
             Recent Videos</h3>
         {% for video in latest_videos %}
         <a class="list-group-item list-group-item-action py-3 lh-sm"
-           href="{% url 'account:blog:blog_detail' post.slug %}">
+           href="{% url 'account:video:video_detail' video.name %}">
             {{ video.description }}</a>
         {% endfor %}
     </div>

@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 
 # Create your models here.
 from Family.settings import AUTH_USER_MODEL

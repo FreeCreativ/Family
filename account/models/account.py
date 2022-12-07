@@ -87,7 +87,7 @@ def gen_height():
 class UserAccount(AbstractUser):
     middle_name = models.CharField(max_length=20)
     alive = models.BooleanField(default=True)
-    profile_image = models.ImageField(upload_to='img', blank=True)
+    profile_image = models.ImageField(upload_to='profileImages', blank=True)
     date_of_birth = models.DateField(verbose_name='Date of birth', blank=True, null=True)
     date_of_death = models.DateField(verbose_name='date of death', null=True, blank=True)
     date_modified = models.DateTimeField(verbose_name='date registered', auto_now=True)
