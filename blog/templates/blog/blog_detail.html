@@ -1,11 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'baseFooter.html' %}
 {% load crispy_forms_tags %}
 {% block title %}
     {{ post.headline }} |
 {% endblock %}
 
 {% block content %}
-
     <div class="container p-5">
         <h3 class="text-center fw-light">{{ post.headline }}</h3>
         <p class="lh-lg">{{ post.content }}</p>
