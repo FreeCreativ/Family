@@ -52,25 +52,9 @@ class Alive(models.Manager):
     def count(self):
         return self.count()
 
+    def new(self):
+        return self.filter(date_joined__gte=timezone.now() - datetime.timedelta(days=365.25))
 
-# class Oldest(models.Manager):
-#     def get_queryset(self):
-#         old_list = super(Oldest, self).get_queryset().filter(alive=True).order_by('date_of_birth')[:10]
-#         new_old_list = super(Oldest, self).get_queryset().filter(alive=True).order_by('date_of_birth')[1:10]
-#
-#         for person in new_old_list:
-#             if person.date_of_birth == old_list.first().date_of_birth:
-#                 return old_list.order_by('date_registered').first()
-#
-#     def get_oldest(self):
-#         current_oldest = OldestAlive.objects.get_current_oldest()
-#         if current_oldest.user_id != self.get_queryset().user:
-#             new_oldest = OldestAlive()
-#             new_oldest.user = self.get_queryset().user
-#             new_oldest.save()
-#             return OldestAlive.objects.get_current_oldest()
-#         else:
-#             return current_oldest
 
 def gen_height():
     h = 30
@@ -124,9 +108,8 @@ class UserAccount(AbstractUser):
             length = calculate_age(self.date_of_death)
             if length == 0:
                 days_in_year = 365.2425
-
-                length = (date.today() - self.date_of_birth).days % days_in_year
-                length = length * 30
+                length = (date.today() - self.date_of_death).days % days_in_year
+                length = int(length / 30)
                 return f"Died {length} months ago"
             else:
                 return f"Died {length} years ago"
@@ -175,10 +158,9 @@ class UserAccount(AbstractUser):
                 lineage.append(parent)
                 parent = get_parent(parent)
             else:
-                lineage.append('Oldest known progenitor', )
                 return lineage
         else:
-            lineage = ['You are the oldest known progenitor', ]
+            lineage = [self, ]
             return lineage
 
     class Meta:

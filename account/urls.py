@@ -3,7 +3,7 @@ from django.urls import path, include
 from account.views import EducationCreateView, EducationUpdateView, EducationDeleteView, \
     OccupationCreateView, OccupationDetailView, OccupationUpdateView, OccupationDeleteView, DashboardView, \
     ProfileUpdateView, AccountCreateView, UserDetailCreateView, UserListView, DiseaseDetailView, DiseaseUpdateView, \
-    DiseaseDeleteView, DiseaseCreateView, BiographyUpdateView, ProfileView
+    DiseaseDeleteView, DiseaseCreateView, BiographyUpdateView, ProfileView, Immortalised
 
 app_name = 'account'
 edu = [
@@ -27,7 +27,7 @@ disease = [
 phone = []
 dash = [
     path('', ProfileView.as_view(), name='profile'),
-    path('update/', ProfileUpdateView.as_view(), name='update'),
+    path('settings/', ProfileUpdateView.as_view(), name='update'),
     path('update-biography/', BiographyUpdateView.as_view(), name='b-update'),
     path('education/', include(edu)),
     path('occupation/', include(job)),
@@ -39,6 +39,7 @@ urlpatterns = [
     path('register/', AccountCreateView.as_view(), name='register'),
     path('register/continue', UserDetailCreateView.as_view(), name='r_continue'),
     path('members/', UserListView.as_view(), name='user_list'),
+    path('immortalised/', Immortalised.as_view(), name='late_list'),
     path('blog/', include('blog.urls')),
     path('images/', include('image.urls')),
     path('videos/', include('video.urls')),

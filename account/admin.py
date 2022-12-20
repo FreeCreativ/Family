@@ -14,7 +14,7 @@ class CustomUserAdmin(BaseUserAdmin):
         ("Personal info", {
             "fields": (
                 "alive", "profile_image", "first_name", "middle_name", "last_name", "email", "date_of_birth",
-                "gender", "blood_group", "genotype", "dad", "mum", "height", "biography"
+                "date_of_death", "gender", "blood_group", "genotype", "dad", "mum", "height", "biography"
             )}),
         (
             "Permissions",

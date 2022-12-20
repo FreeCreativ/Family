@@ -1,23 +1,31 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DeleteView, CreateView
+from django.views.generic import ListView, DeleteView, FormView
 from django_filters.views import FilterView
 
+from image.forms import ImageForm
 from image.models import Image
 
 
-class UploadImageView(LoginRequiredMixin, CreateView):
-    model = Image
-    fields = ['image_file', 'description', ]
+class UploadImageView(LoginRequiredMixin, FormView):
+    form_class = ImageForm
     template_name = 'image/image_create.html'
     success_url = reverse_lazy('account:image:my_image_list')
     slug_field = 'name'
     slug_url_kwarg = 'slug'
 
-    def form_valid(self, form):
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
         form.instance.user = self.request.user
-        form.save()
-        return super(UploadImageView, self).form_valid(form)
+        files = request.FILES.getlist('image_file')
+        if form.is_valid():
+            for f in files:
+                img = Image(image_file=f, user=form.instance.user, description=form.instance.description)
+                img.save()
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 # class ImageListView(LoginRequiredMixin, ListView):
@@ -30,7 +38,7 @@ class UploadImageView(LoginRequiredMixin, CreateView):
 class ImageListView(LoginRequiredMixin, FilterView):
     model = Image
     template_name = 'image/image_list.html'
-    paginate_by = 40
+    paginate_by = 42
     context_object_name = 'image_list'
     ordering = '-date_of_upload'
     page_kwarg = 'page'
@@ -39,9 +47,10 @@ class ImageListView(LoginRequiredMixin, FilterView):
 
 class MyImageListView(LoginRequiredMixin, ListView):
     model = Image
-    paginate_by = 40
+    paginate_by = 42
     template_name = 'image/image_list.html'
     context_object_name = 'image_list'
+    ordering = '-date_of_upload'
 
     def get_queryset(self):
         return Image.objects.my_media(user=self.request.user)

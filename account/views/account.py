@@ -2,13 +2,14 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, UpdateView, CreateView, ListView, TemplateView
+from django.views.generic import DetailView, UpdateView, CreateView, TemplateView
 from django.views.generic.edit import BaseUpdateView
+from django_filters.views import FilterView
 
 from account.forms import CreateUserForm, AddUserDetailForm
 from account.models import UserAccount
 from account.views.recent import set_context_data
-from django_filters.views import FilterView
+from home.models import Log
 
 
 class AccountCreateView(CreateView):
@@ -86,24 +87,25 @@ class BiographyUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('account:profile', kwargs={'username': self.object})
 
 
-# class UserListView(LoginRequiredMixin, ListView):
-#     model = UserAccount
-#     template_name = 'account/member_list.html'
-#     context_object_name = 'user_list'
-#     ordering = 'date_of_birth'
-#     paginate_by = 40
-#     page_kwarg = 'page'
-#     extra_context = {
-#         'page_robots': u'INDEX, NOFOLLOW',
-#         'page_description': u'Napravi novi nalog',
-#         'page_keywords': u'registracija, registriranje, novi nalog, napravi nalog',
-#     }
-
 class UserListView(LoginRequiredMixin, FilterView):
     model = UserAccount
     template_name = 'account/member_list.html'
     context_object_name = 'user_list'
-    ordering = 'date_of_birth'
     paginate_by = 40
     page_kwarg = 'page'
     filterset_fields = ['date_of_birth', 'gender', 'genotype']
+
+    def get_queryset(self):
+        return UserAccount.living.all()
+
+
+class Immortalised(LoginRequiredMixin, FilterView):
+    model = UserAccount
+    template_name = 'account/member_list.html'
+    context_object_name = 'user_list'
+    paginate_by = 40
+    page_kwarg = 'page'
+    filterset_fields = ['date_of_birth', 'gender', 'genotype']
+
+    def get_queryset(self):
+        return UserAccount.objects.filter(alive=False)

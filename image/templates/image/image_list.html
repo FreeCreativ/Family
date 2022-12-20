@@ -18,14 +18,17 @@
             <div class="row">
                 <form method="get">
                     {% csrf_token %}
-                    {{ filter.form|crispy  }}
+                    {{ filter.form|crispy }}
                     <input type="submit" value="done" class="btn btn-sm btn-primary">
                 </form>
             </div>
             <div class="row row-cols-1 row-cols-md-2 row-cols-xl-6 photos" data-bss-baguettebox>
                 {% for image in image_list %}
-                    <div class="col item"><a href="{{ image.image_file.url }}"><img
-                            class="img-fluid" src="{{ image.image_file.url }}"/></a></div>
+                    {% if image.image_file %}
+                        <div class="col item"><a href="{{ image.image_file.url }}">
+                            <img class="img-fluid" src="{{ image.image_file.url }}" alt="{{ image.description }}"/></a>
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

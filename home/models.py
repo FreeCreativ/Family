@@ -53,4 +53,4 @@ class Media(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['date_of_upload']
+        ordering = ['-date_of_upload']

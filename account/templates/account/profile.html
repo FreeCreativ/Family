@@ -84,8 +84,8 @@
                     </li>
                     <li class="list-group-item">
                         <span class="fw-semibold">Genealogy:</span>
-                        {% for u in user.genealogy %} |
-                            <a href="{% url 'account:profile' u %}">{{ u.get_full_name }}</a> |
+                        {% for u in user.genealogy %}
+                            <<a href="{% url 'account:profile' u %}">{{ u.get_full_name }}</a>>
                         {% endfor %}
                     </li>
                     <li class="list-group-item">

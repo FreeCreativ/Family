@@ -1,73 +1,62 @@
-<div class="flex-shrink-0 p-2">
-    <ul class="list-unstyled ps-0">
-        <li class="mb-1 border-bottom py-md-2">
-            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-                    data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
-                Home
-            </button>
-            <div class="collapse" id="home-collapse">
-                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Overview</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Updates</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Reports</a></li>
-                </ul>
-            </div>
-        </li>
-        <li class="mb-1 border-bottom py-md-2">
-            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-                    data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
-                Family
-            </button>
-            <div class="collapse" id="orders-collapse">
-                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">New</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Processed</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Shipped</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Returned</a></li>
-                </ul>
-            </div>
-        </li>
-        <li class="mb-1 border-bottom py-md-2">
-            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-                    data-bs-toggle="collapse" data-bs-target="#image-collapse" aria-expanded="false">
-                Images
-            </button>
-            <div class="collapse" id="image-collapse">
-                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="{% url 'account:image:image_list' %}" class="link-dark d-inline-flex text-decoration-none rounded">Public</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Processed</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Shipped</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Returned</a></li>
-                </ul>
-            </div>
-        </li>
-        <li class="mb-1 border-bottom py-md-2">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#video-collapse" aria-expanded="false">
-          Videos
+<ul class="list-unstyled sticky-top">
+    <li class="mb-1 border-bottom py-md-2">
+        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+            Family
+        </button>
+        <div class="collapse" id="orders-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li class=""><a href="{% url 'account:register' %}"
+                                class="link link-dark d-inline-flex text-decoration-none rounded">register
+                    child</a></li>
+                <li><a href="{% url 'account:late_list' %}" class="link-dark d-inline-flex text-decoration-none rounded">Immortalised</a></li>
+            </ul>
+        </div>
+    </li>
+    <li class="mb-1 border-bottom py-md-2">
+        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                data-bs-toggle="collapse" data-bs-target="#image-collapse" aria-expanded="false">
+            Images
+        </button>
+        <div class="collapse" id="image-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li><a href="{% url 'account:image:image_list' %}"
+                       class="link-dark d-inline-flex text-decoration-none rounded">Public</a></li>
+                <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Processed</a></li>
+                <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Shipped</a></li>
+                <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Returned</a></li>
+            </ul>
+        </div>
+    </li>
+    <li class="mb-1 border-bottom py-md-2">
+        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                data-bs-toggle="collapse" data-bs-target="#video-collapse" aria-expanded="false">
+            Videos
         </button>
         <div class="collapse" id="video-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">New</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Processed</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Shipped</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Returned</a></li>
-          </ul>
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">New</a></li>
+                <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Processed</a></li>
+                <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Shipped</a></li>
+                <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Returned</a></li>
+            </ul>
         </div>
-      </li>
-        <li class="border-top mb-0"></li>
-        <li class="mb-1 border-bottom py-md-2">
-            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-                    data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-                Account
-            </button>
-            <div class="collapse" id="account-collapse">
-                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">New...</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Profile</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded text-warning">Settings</a></li>
-                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded text-danger">Sign out</a></li>
-                </ul>
-            </div>
-        </li>
-    </ul>
-</div>
+    </li>
+    <li class="mb-1 border-bottom py-md-2">
+        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
+            Account
+        </button>
+        <div class="collapse" id="account-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li>
+                    <a href="{% url 'account:update' request.user %}"
+                       class="link-dark d-inline-flex text-decoration-none rounded text-warning">Settings</a>
+                </li>
+                <li><a href="{% url 'logout' %}"
+                       class="link-dark d-inline-flex text-decoration-none rounded text-danger">Sign
+                    out</a></li>
+            </ul>
+        </div>
+    </li>
+</ul>

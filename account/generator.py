@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.utils import timezone
 
 alphabetDictionary = {
@@ -129,12 +131,12 @@ def generate_id(number):
 
 def duration(time1, time2):
     time = (time1 - time2)
-    years = time // timezone.timedelta(days=365.2425)
-    days = time % timezone.timedelta(days=365.2425)
+    years = time // timezone.timedelta(days=365.25)
+    days = time % timezone.timedelta(days=365.25)
     if days < timezone.timedelta(days=30):
         return f"{years} years, {days} days"
     else:
-        months = days / 30
+        months = days // timezone.timedelta(days=30)
         if months == 1:
             return f"{years} years, {months} month"
         else:

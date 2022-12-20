@@ -25,6 +25,9 @@ class Video(Media):
         else:
             super(Video, self).save()
 
+    def thumbnail(self):
+        pass
+
 
 class VideoComment(Comment):
     video = models.ForeignKey(Video, on_delete=models.CASCADE)

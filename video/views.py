@@ -1,12 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, FormView
 
+from video.forms import VideoForm
 from video.models import Video
 
 
-class VideoCreate(LoginRequiredMixin, CreateView):
-    model = Video
+class VideoCreate(LoginRequiredMixin, FormView):
+    form_class = VideoForm
     template_name = 'video/video_create.html'
     fields = ['video_file', 'description']
     success_url = reverse_lazy('account:video:video_list')
@@ -15,6 +16,19 @@ class VideoCreate(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         form.save()
         return super(VideoCreate, self).form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        form.instance.user = self.request.user
+        files = request.FILES.getlist('video_file')
+        if form.is_valid():
+            for f in files:
+                vid = Video(video_file=f, user=form.instance.user, description=form.instance.description)
+                vid.save()
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 class VideoList(LoginRequiredMixin, ListView):
