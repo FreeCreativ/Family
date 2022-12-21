@@ -9,7 +9,6 @@ from django_filters.views import FilterView
 from account.forms import CreateUserForm, AddUserDetailForm
 from account.models import UserAccount
 from account.views.recent import set_context_data
-from home.models import Log
 
 
 class AccountCreateView(CreateView):
@@ -22,7 +21,6 @@ class AccountCreateView(CreateView):
         form.instance.username = form.instance.first_name + str(form.instance.date_of_birth.year)
         user = form.save()
         login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
-        # return super(AccountCreateView, self).form_valid(form)
         return redirect('account:r_continue')
 
 
@@ -98,6 +96,11 @@ class UserListView(LoginRequiredMixin, FilterView):
     def get_queryset(self):
         return UserAccount.living.all()
 
+    def get_context_data(self, **kwargs):
+        context = super(UserListView, self).get_context_data(**kwargs)
+        context.update(set_context_data())
+        return context
+
 
 class Immortalised(LoginRequiredMixin, FilterView):
     model = UserAccount
@@ -109,3 +112,8 @@ class Immortalised(LoginRequiredMixin, FilterView):
 
     def get_queryset(self):
         return UserAccount.objects.filter(alive=False)
+
+    def get_context_data(self, **kwargs):
+        context = super(Immortalised, self).get_context_data(**kwargs)
+        context.update(set_context_data())
+        return context

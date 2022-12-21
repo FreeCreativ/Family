@@ -47,7 +47,8 @@ class Media(models.Model):
     date_of_upload = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=300, primary_key=True)
     description = models.TextField()
-    is_public = models.BooleanField(default=True, choices=[("True", "True"), ("False", "False")])
+    public_choices = [('True', 'True'), ('False', 'False')]
+    is_public = models.BooleanField(default=1)
     public = MediaManager()
     objects = MyMedia()
 

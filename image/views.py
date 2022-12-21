@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, FormView
 from django_filters.views import FilterView
 
+from account.views.recent import set_context_data
 from image.forms import ImageForm
 from image.models import Image
 
@@ -28,13 +29,6 @@ class UploadImageView(LoginRequiredMixin, FormView):
             return self.form_invalid(form)
 
 
-# class ImageListView(LoginRequiredMixin, ListView):
-#     model = Image
-#     template_name = 'image/image_list.html'
-#     paginate_by = 40
-#     context_object_name = 'image_list'
-#     ordering = '-date_of_upload'
-#     page_kwarg = 'page'
 class ImageListView(LoginRequiredMixin, FilterView):
     model = Image
     template_name = 'image/image_list.html'
@@ -43,6 +37,11 @@ class ImageListView(LoginRequiredMixin, FilterView):
     ordering = '-date_of_upload'
     page_kwarg = 'page'
     filterset_fields = ['date_of_upload', 'is_public', 'user']
+
+    def get_context_data(self, **kwargs):
+        context = super(ImageListView, self).get_context_data(**kwargs)
+        context.update(set_context_data())
+        return context
 
 
 class MyImageListView(LoginRequiredMixin, ListView):
@@ -54,6 +53,11 @@ class MyImageListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Image.objects.my_media(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super(MyImageListView, self).get_context_data(**kwargs)
+        context.update(set_context_data())
+        return context
 
 
 class MyImageDeleteView(LoginRequiredMixin, DeleteView):

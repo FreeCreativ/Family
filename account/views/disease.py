@@ -3,6 +3,7 @@ from django.views.generic import DeleteView, DetailView, CreateView, UpdateView
 
 from account.forms import GeneticDiseaseForm
 from account.models import GeneticDisease
+from account.views.recent import set_context_data
 
 
 class DiseaseCreateView(LoginRequiredMixin, CreateView):
@@ -21,6 +22,11 @@ class DiseaseDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'disease_detail'
     slug_field = 'id'
     slug_url_kwarg = 'pk'
+
+    def get_context_data(self, **kwargs):
+        context = super(DiseaseDetailView, self).get_context_data(**kwargs)
+        context.update(set_context_data())
+        return context
 
 
 class DiseaseDeleteView(LoginRequiredMixin, DeleteView):

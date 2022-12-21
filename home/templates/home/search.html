@@ -1,14 +1,22 @@
-{% extends "base.html" %}
+{% extends "baseFooter.html" %}
 
 {% block content %}
-    <ul>
+    <h3 class="text-center border border-bottom">Results</h3>
+    <ul class="list-group list-unstyled">
         {% for result in result_list %}
             {% for item in result %}
-                <li>{{ item }}</li>
+                {% if item.first_name %}
+                    <li class="list-group-item">
+                        <a href="{% url 'account:profile' item %}">{{ item.get_full_name }}</a>
+                    </li>
+                {% endif %}
+                {% if item.headline %}
+                    <li class="list-group-item">
+                        <a href="{% url 'account:blog:blog_detail' slug=item.slug %}">{{ item }}</a>
+                    </li>
+                {% endif %}
             {% endfor %}
         {% endfor %}
     </ul>
-    {% include "rightSideBar.html" %}
     {% include "pagination.html" %}
-    {% include "footer.html" %}
 {% endblock %}
