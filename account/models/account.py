@@ -149,6 +149,9 @@ class UserAccount(AbstractUser):
         grand_father = get_parent(father.dad)
         return tree.append((grand_father, father, me))
 
+    def siblings(self):
+        return UserAccount.objects.filter(dad=self.dad)
+
     def genealogy(self):
 
         if self.dad:

@@ -89,6 +89,12 @@
                         {% endfor %}
                     </li>
                     <li class="list-group-item">
+                        <span class="fw-semibold">Siblings:</span>
+                        {% for sibling in user.siblings %}
+                            <a href="{% url 'account:profile' sibling %}">{{ sibling.get_full_name }}</a> ,
+                        {% endfor %}
+                    </li>
+                    <li class="list-group-item">
                         <span class="fw-semibold">Children:</span>
                         {% for chil in user.children %}
                             <a href="{% url 'account:profile' chil %}">{{ chil.get_full_name }}</a> ,
@@ -106,8 +112,12 @@
                         {% endfor %}
                     </li>
                     {% if not user.alive %}
-                        <li class="list-group-item">{{ user.date_of_death }}</li>
-                        <li class="list-group-item">{{ user.cause_of_death }}</li>
+                        <li class="list-group-item">
+                            <span class="fw-semibold">Date of Death:</span>
+                            {{ user.date_of_death }}</li>
+                        <li class="list-group-item">
+                            <span class="fw-semibold">Cause of Death:</span>
+                            {{ user.cause_of_death }}</li>
                     {% endif %}
                     {% if not user %}
                         <a href="{% url 'account:r_continue' %}">Click Here! to add profile data</a>
