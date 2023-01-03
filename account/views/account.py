@@ -8,7 +8,9 @@ from django_filters.views import FilterView
 
 from account.forms import CreateUserForm, AddUserDetailForm
 from account.models import UserAccount
-from account.views.recent import set_context_data
+from blog.models import Post
+from image.models import Image
+from video.models import Video
 
 
 class AccountCreateView(CreateView):
@@ -35,6 +37,14 @@ class UserDetailCreateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('account:profile', kwargs={'username': self.object})
 
 
+def set_context_data():
+    latest_posts = Post.objects.order_by('-date_created')[:5]
+    latest_images = Image.public.order_by('-date_of_upload')[:10]
+    latest_videos = Video.public.order_by('-date_of_upload')[:10]
+    context = {'latest_posts': latest_posts, 'latest_images': latest_images, 'latest_videos': latest_videos}
+    return context
+
+
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'account/dashboard.html'
 
@@ -55,7 +65,6 @@ class ProfileView(LoginRequiredMixin, DetailView, BaseUpdateView):
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data()
         user = self.object
-        context.update(set_context_data())
         context['education'] = user.education_set.all()
         context['occupation'] = user.occupation_set.all()
         context['phone_record'] = user.phonerecord_set.all()
@@ -96,11 +105,6 @@ class UserListView(LoginRequiredMixin, FilterView):
     def get_queryset(self):
         return UserAccount.living.all()
 
-    def get_context_data(self, **kwargs):
-        context = super(UserListView, self).get_context_data(**kwargs)
-        context.update(set_context_data())
-        return context
-
 
 class Immortalised(LoginRequiredMixin, FilterView):
     model = UserAccount
@@ -112,8 +116,3 @@ class Immortalised(LoginRequiredMixin, FilterView):
 
     def get_queryset(self):
         return UserAccount.objects.filter(alive=False)
-
-    def get_context_data(self, **kwargs):
-        context = super(Immortalised, self).get_context_data(**kwargs)
-        context.update(set_context_data())
-        return context

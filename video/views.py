@@ -2,7 +2,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView
 
-from account.views.recent import set_context_data
 from video.forms import VideoForm
 from video.models import Video
 
@@ -38,11 +37,6 @@ class VideoList(LoginRequiredMixin, ListView):
     context_object_name = 'video_list'
     paginate_by = 20
     page_kwarg = 'page'
-
-    def get_context_data(self, **kwargs):
-        context = super(VideoList, self).get_context_data(**kwargs)
-        context.update(set_context_data())
-        return context
 
 
 class VideoDetail(LoginRequiredMixin, DetailView):

@@ -2,10 +2,7 @@ from django.db.models import Q
 from django.views.generic import TemplateView, ListView
 
 from account.models import UserAccount
-from account.views.recent import set_context_data
 from blog.models import Post
-from image.models import Image
-from video.models import Video
 
 
 # Create your views here.
@@ -13,16 +10,6 @@ from video.models import Video
 
 class Index(TemplateView):
     template_name = 'home/index.html'
-
-    def get_context_data(self, **kwargs):
-        latest_posts = Post.objects.order_by('-date_created')[:5]
-        latest_images = Image.public.order_by('-date_of_upload')[:10]
-        latest_videos = Video.public.order_by('-date_of_upload')[:10]
-        context = super(Index, self).get_context_data()
-        context['latest_posts'] = latest_posts
-        context['latest_images'] = latest_images
-        context['latest_videos'] = latest_videos
-        return context
 
 
 class Search(ListView):
@@ -45,11 +32,6 @@ class Search(ListView):
         add_query_result(post_query)
         add_query_result(user_query)
         return result_list
-
-    def get_context_data(self, **kwargs):
-        context = super(Search, self).get_context_data(**kwargs)
-        context.update(set_context_data())
-        return context
 
 
 class AboutView(TemplateView):

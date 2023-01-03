@@ -3,7 +3,6 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
 from django.views.generic.edit import DeleteView, BaseFormView
 
-from account.views.recent import set_context_data
 from blog.forms import PostForm, CommentForm
 from blog.models import Post
 
@@ -15,11 +14,6 @@ class PostList(LoginRequiredMixin, ListView):
     paginate_by = 20
     ordering = '-date_created'
 
-    def get_context_data(self, **kwargs):
-        context = super(PostList, self).get_context_data(**kwargs)
-        context.update(set_context_data())
-        return context
-
 
 class MyPostList(LoginRequiredMixin, ListView):
     model = Post
@@ -30,11 +24,6 @@ class MyPostList(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return super(MyPostList, self).get_queryset().filter(author=self.request.user)
-
-    def get_context_data(self, **kwargs):
-        context = super(MyPostList, self).get_context_data(**kwargs)
-        context.update(set_context_data())
-        return context
 
 
 class PostCreate(LoginRequiredMixin, CreateView):
@@ -60,7 +49,6 @@ class PostDetail(LoginRequiredMixin, DetailView, BaseFormView):
     def get_context_data(self, **kwargs):
         context = super(PostDetail, self).get_context_data(**kwargs)
         context['post_comments'] = Post.objects.get(slug=self.object.slug).postcomment_set.all()[:20]
-        context.update(set_context_data())
         return context
 
     def get_success_url(self):
