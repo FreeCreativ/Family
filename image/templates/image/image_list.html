@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "baseFooter.html" %}
 {% load crispy_forms_filters %}
 
 {% block title %}
@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="row">
-                <form method="get">
+                <form method="get" class="row-cols-auto">
                     {% csrf_token %}
                     {{ filter.form|crispy }}
                     <input type="submit" value="done" class="btn btn-sm btn-primary">
@@ -34,6 +34,5 @@
         </div>
     </section>
     {% include "pagination.html" %}
-    {% include "footer.html" %}
 {% endblock %}
 

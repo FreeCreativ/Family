@@ -8,8 +8,12 @@
         <div class="row"><h3 class="my-3">New Posts</h3></div>
         <div class="row-cols-md-6">
             {% for post in latest_posts %}
-                <div class="col-md-2 border p-2">
-                    <a class="" href="{% url 'account:blog:blog_detail' post.slug %}">{{ post.headline }}</a>
+                <div class="col-md-2 border p-2 card">
+                   <p class="card-title text-capitalize">
+                        <a href="{% url 'account:blog:blog_detail' slug=post.slug %}">{{ post.headline }}</a>
+                    </p>
+                    <p class="card-text">{{ post.content }}</p>
+                    <p class="card-footer p-0 m-0 text-end pe-2">{{ post.author }}</p>
                 </div>
             {% endfor %}
         </div>
@@ -17,12 +21,25 @@
 
     <div class="container">
         <div class="row"><h3 class="my-3">New Videos</h3></div>
-        <div class="row py-4">
+        <div class="row py-4 px-0 ">
             {% for video in latest_videos %}
-                <div class="col-2 border mx-auto">
+                <div class="col-md-2 border mx-auto text-center card">
                     <video controls class="img-fluid">
                         <source src="{{ video.video_file.url }}" type="video/mp4">
                     </video>
+                    <span class="text-muted p-0 m-0">{{ video.user }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row"><h3 class="my-3">New Pictures</h3></div>
+        <div class="row py-4">
+            {% for image in latest_images %}
+                <div class="col-md-2 card">
+                    <img src="{{ image.image_file.url }}" alt="{{ image.description }}" class="card-img ">
+                    <p class="text-center card-text">{{ image.user }}</p>
                 </div>
             {% endfor %}
         </div>

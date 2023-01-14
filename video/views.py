@@ -1,9 +1,23 @@
+import cv2
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView
 
 from video.forms import VideoForm
 from video.models import Video
+
+
+def thumb(video_file):
+    video = cv2.VideoCapture(video_file)
+    currentframe = 0
+    while True:
+        ret, frame = video.read()
+        if ret:
+            currentframe += 1
+            if currentframe % 200 == 0:
+                video.release()
+                cv2.destroyAllWindows()
+                return frame
 
 
 class VideoCreate(LoginRequiredMixin, FormView):
@@ -37,6 +51,17 @@ class VideoList(LoginRequiredMixin, ListView):
     context_object_name = 'video_list'
     paginate_by = 20
     page_kwarg = 'page'
+
+
+class MyVideoList(LoginRequiredMixin, ListView):
+    model = Video
+    template_name = 'video/video_list.html'
+    context_object_name = 'video_list'
+    paginate_by = 20
+    page_kwarg = 'page'
+
+    def get_queryset(self):
+        return super(MyVideoList, self).get_queryset().filter(user=self.request.user)
 
 
 class VideoDetail(LoginRequiredMixin, DetailView):

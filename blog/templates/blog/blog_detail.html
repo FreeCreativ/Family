@@ -8,24 +8,31 @@
     <div class="container p-5">
         <h3 class="text-center fw-light">{{ post.headline }}</h3>
         <p class="lh-lg">{{ post.content }}</p>
-
         <ul class="list-group">
             {% for post_comment in post_comments %}
-                <li class="list-group-item">{{ post_comment }}</li>
+                {% if post_comment.user == user %}
+                    <li class="list-group-item text-end">
+                        <p class="p-0 m-0">{{ post_comment.comment }}</p>
+                        <span class="text-muted p-0 m-0">{{ post_comment.user }}</span>
+                    </li>
+                {% else %}
+                    <li class="list-group-item">
+                        <p class="p-0 m-0">{{ post_comment.comment }}</p>
+                        <span class="text-muted p-0 m-0">{{ post_comment.user }}</span>
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
         <form method="post" class="mx-5 p-5">
             {% csrf_token %}
             {{ form|crispy }}
-            <input type="submit" value="Send">
+            <div class="text-end">
+                <input type="submit" value="Send" class="btn btn-success">
+                {% if post.author == user %}
+                    <a href="{% url 'account:blog:blog_delete' slug=post.slug %}"
+                       class="btn btn-danger">Delete Post</a>
+                {% endif %}
+            </div>
         </form>
     </div>
-    {% if post.author == user %}
-        <div class="container p-5">
-            <h6 class="text-end"><a href="{% url 'account:blog:blog_delete' slug=post.slug %}"
-                                    class="btn btn-danger">Delete</a>
-            </h6>
-        </div>
-    {% endif %}
-
 {% endblock %}
