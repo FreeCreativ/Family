@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
 {% load static %}
-{% load crispy_forms_tags%}
+{% load crispy_forms_tags %}
 
 {% block title %}
     family members |
@@ -9,9 +9,9 @@
 {% block content %}
     <h3 class="display-6 text-center">Living Family Members</h3>
     <div class="container text-center">
-        <form method="get" class="form-inline">
-            {{ filter.form|crispy }}
-            <input type="submit"/>
+        <form method="get" class="form">
+            {% crispy filter.form %}
+            <input type="submit" class="btn btn-sm btn-secondary" value="filter"/>
         </form>
         <div class="row  row-cols-md-6 row-cols-sm-3 m-auto">
             {% for user in user_list %}

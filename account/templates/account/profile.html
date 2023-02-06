@@ -150,7 +150,6 @@
         <table class="table table-bordered table-striped table-hover table-sm">
             <thead>
             <tr>
-                <th scope="col">#</th>
                 <th scope="col">Name of School</th>
                 <th scope="col">Level</th>
                 <th scope="col">Duration</th>
@@ -162,7 +161,6 @@
             <tbody>
             {% for school in education %}
                 <tr>
-                    <th scope="row">{{ school.id }}</th>
                     <td>{{ school.name_of_school }}</td>
                     <td>{{ school.school_level }}</td>
                     <td>{{ school.duration }}</td>
@@ -191,7 +189,6 @@
         <table class="table table-bordered table-striped table-hover table-sm table-responsive">
             <thead>
             <tr>
-                <th scope="col">#</th>
                 <th scope="col">Disease</th>
                 <th scope="col">date of infection</th>
                 <th scope="col">type</th>
@@ -201,7 +198,6 @@
             <tbody>
             {% for disease in diseases %}
                 <tr>
-                    <th scope="row">{{ disease.id }}</th>
                     <td>{{ disease.disease_name }}</td>
                     <td>{{ disease.date_of_infection }}</td>
                     <td>{{ disease.type }}</td>

@@ -28,6 +28,7 @@
                             <source src='{{ video.video_file.url }}' type='video/mp4'>
                             Your browser does not support the video tag.
                         </video>
+                        <a href="{% url 'account:video:video_detail' video.name %}">{{ video.name }}</a>
                     </div>
                 {% endfor %}
             </div>

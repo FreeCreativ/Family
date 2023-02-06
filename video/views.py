@@ -14,7 +14,7 @@ def thumb(video_file):
         ret, frame = video.read()
         if ret:
             currentframe += 1
-            if currentframe % 200 == 0:
+            if currentframe % 1 == 0:
                 video.release()
                 cv2.destroyAllWindows()
                 return frame
@@ -40,6 +40,9 @@ class VideoCreate(LoginRequiredMixin, FormView):
             for f in files:
                 vid = Video(video_file=f, user=form.instance.user, description=form.instance.description)
                 vid.save()
+                video = Video.objects.get(video_file=f)
+                video.movie_shot = thumb(video.video_file)
+                video.save()
             return self.form_valid(form)
         else:
             return self.form_invalid(form)

@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row-cols-1">
             <video controls class="img-fluid col w-100 ">
-                <source src='{{ video.video_file.url }}' type='video/mp4'>
+                <source src="http://localhost:3000/{{ video.video_file }}" type='video/mp4'>
                 Your browser does not support the video tag.
             </video>
             <p class="text-secondary">{{ video.description }}</p>
