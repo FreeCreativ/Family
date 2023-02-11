@@ -2,6 +2,7 @@ import cv2
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView
+from django_filters.views import FilterView
 
 from video.forms import VideoForm
 from video.models import Video
@@ -48,12 +49,13 @@ class VideoCreate(LoginRequiredMixin, FormView):
             return self.form_invalid(form)
 
 
-class VideoList(LoginRequiredMixin, ListView):
+class VideoList(LoginRequiredMixin, FilterView):
     model = Video
     template_name = 'video/video_list.html'
     context_object_name = 'video_list'
     paginate_by = 20
     page_kwarg = 'page'
+    filterset_fields = ['date_of_upload', 'is_public', ]
 
 
 class MyVideoList(LoginRequiredMixin, ListView):

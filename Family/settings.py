@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'account.apps.AccountConfig',
     'blog.apps.BlogConfig',
-    'chat.apps.ChatConfig',
     'home.apps.HomeConfig',
     'image.apps.ImageConfig',
     'video.apps.VideoConfig',
