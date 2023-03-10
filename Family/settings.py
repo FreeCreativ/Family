@@ -85,7 +85,7 @@ DATABASES = {
     'default': {
         'NAME': 'family',
         'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'postgres',
+        'USER': 'freecreativ',
         'PASSWORD': 'Dontobec12345'
     },
 }

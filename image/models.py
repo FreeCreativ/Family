@@ -12,7 +12,7 @@ from home.models import Comment, Media
 class Image(Media):
     date = datetime.now()
     datetime_str = "{}-{}-{}/"
-    image_file = models.ImageField(upload_to='photos/' + datetime_str.format(date.year, date.month, date.day))
+    image_file = models.ImageField(upload_to='images/' + datetime_str.format(date.year, date.month, date.day))
 
     def __str__(self):
         return self.name
