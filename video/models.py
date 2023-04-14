@@ -56,7 +56,3 @@ class Video(Media):
                         video.release()
                         cv2.destroyAllWindows()
                     return self.movie_shot
-
-
-class VideoComment(Comment):
-    video = models.ForeignKey(Video, on_delete=models.CASCADE)

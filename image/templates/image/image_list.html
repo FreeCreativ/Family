@@ -16,17 +16,32 @@
                 </div>
             </div>
             <div class="row">
-                <form method="get" class="row-cols-auto">
-                    {% csrf_token %}
-                    {{ filter.form|crispy }}
-                    <input type="submit" value="done" class="btn btn-sm btn-primary">
+                <form method="get" class="form">
+                    <div class="row">
+                        <div class="col-md-4 mb-0">
+                            {{ filter.form.date_of_upload|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                            {{ filter.form.is_public|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                            {{ filter.form.user|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <div class="row mx-1">
+                        <input type="submit" class="btn btn-sm btn-success" value="filter"/>
+                    </div>
                 </form>
             </div>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-6 photos" data-bss-baguettebox>
+            <div class="row row-cols-sm-1 row-cols-md-2 row-cols-xl-3 photos" data-bss-baguettebox>
                 {% for image in image_list %}
                     {% if image.image_file %}
-                        <div class="col item"><a href="{{ image.image_file.url }}">
-                            <img class="img-fluid" src="{{ image.image_file.url }}" alt="{{ image.description }}"/></a>
+                        <div class="col card">
+                            <a href="{{ image.image_file.url }}">
+                                <img class="card-img" src="{{ image.image_file.url }}" alt="{{ image.description }}"/>
+                            </a>
+                            <a href="{% url 'account:profile' image.user %}" class="card-link mx-auto">{{ image.user }}</a>
                         </div>
                     {% endif %}
                 {% endfor %}

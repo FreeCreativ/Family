@@ -10,8 +10,8 @@
 
 {% block content %}
     <div class="container mb-2">
-        <div class="row row-cols-md-2">
-            <div class="col-md-3">
+        <div class="row row-cols-md-3">
+            <div class="col-lg-3">
                 {% if user.profile_image %}
                     <img src="{{ user.profile_image.url }}" alt="profile picture" class="img-fluid">
                     {% if user == request.user %}
@@ -48,7 +48,7 @@
                     {% endif %}
                 {% endif %}
             </div>
-            <div class="col-md-9 border border-1">
+            <div class="col-lg-4 border border-1">
                 <ul class="list-group my-2">
                     <li class="list-group-item">
                         <span class="fw-semibold">Name:</span>
@@ -125,6 +125,25 @@
                 </ul>
 
             </div>
+            <div class="COl-lg-5">
+                <canvas id="familyTree" class="w-100 h-75 border">
+
+                </canvas>
+                <script>
+                    const canvas = document.getElementById("familyTree");
+                    const ctx = canvas.getContext("2d");
+                    ctx.beginPath();
+                    ctx.lineWidth = "1";
+                    ctx.moveTo(150, 20);
+                    ctx.lineTo(150, 50);
+                    ctx.lineTo(200, 50);
+                    ctx.rect(200, 50, 60, 20)
+                    ctx.moveTo(200, 50);
+                    ctx.lineTo(100, 50);
+                    ctx.strokeStyle = "#000000";
+                    ctx.stroke();
+                </script>
+            </div>
         </div>
     </div>
     <div class="container">
@@ -145,7 +164,7 @@
             <p class="fw-light lh-lg px-4">{{ user.biography }}</p>
         </div>
     </div>
-    <div>
+    <div class="container">
         <h4 class="text-center">Education</h4>
         <table class="table table-bordered table-striped table-hover table-sm">
             <thead>
@@ -183,8 +202,41 @@
             </tbody>
         </table>
     </div>
-
-    <div>
+    <div class="container">
+        <h4 class="text-center">Occupation</h4>
+        <table class="table table-bordered table-striped table-hover table-sm">
+            <thead>
+            <tr>
+                <th scope="col">Name of Occupation</th>
+                <th scope="col">Description</th>
+                <th scope="col">Address</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for work in occupation %}
+                <tr>
+                    <td>{{ work.occupation_name}}</td>
+                    <td>{{ work.description }}</td>
+                    <td>{{ work.address }}</td>
+                    <td>
+                        <a href="{% url 'account:occupation_update' username=request.user pk=work.id %}">edit</a>
+                        <a href="{% url 'account:occupation_delete' username=request.user pk=work.id %}">delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% if user == request.user %}
+                <tr>
+                    <td colspan="7" class="text-center"><a
+                            href="{% url 'account:occupation_create' request.user %}">
+                        add new occupation</a>
+                    </td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container">
         <h4 class="text-center">Hereditary Diseases</h4>
         <table class="table table-bordered table-striped table-hover table-sm table-responsive">
             <thead>
@@ -211,8 +263,8 @@
             <tfoot>
             {% if user == request.user %}
                 <tr>
-                    <td colspan="5" class="text-center"><a
-                            href="{% url 'account:disease_create' request.user %}">register new disease</a>
+                    <td colspan="5" class="text-center">
+                        <a href="{% url 'account:disease_create' request.user %}">register new disease</a>
                     </td>
                 </tr>
             {% endif %}

@@ -14,9 +14,6 @@ class Image(Media):
     datetime_str = "{}-{}-{}/"
     image_file = models.ImageField(upload_to='images/' + datetime_str.format(date.year, date.month, date.day))
 
-    def __str__(self):
-        return self.name
-
     def save(
             self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
@@ -25,7 +22,3 @@ class Image(Media):
             super(Image, self).save()
         else:
             super(Image, self).save()
-
-
-class ImageComment(Comment):
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)

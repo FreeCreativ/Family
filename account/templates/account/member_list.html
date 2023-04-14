@@ -10,8 +10,21 @@
     <h3 class="display-6 text-center">Living Family Members</h3>
     <div class="container text-center">
         <form method="get" class="form">
-            {% crispy filter.form %}
-            <input type="submit" class="btn btn-sm btn-secondary" value="filter"/>
+            <div class="row">
+                <div class="col-md-4 mb-0">
+                    {{ filter.form.date_of_birth|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ filter.form.gender|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ filter.form.genotype|as_crispy_field }}
+                </div>
+            </div>
+
+            <div class="row mx-1">
+                <input type="submit" class="btn btn-sm btn-success" value="filter"/>
+            </div>
         </form>
         <div class="row  row-cols-md-6 row-cols-sm-3 m-auto">
             {% for user in user_list %}

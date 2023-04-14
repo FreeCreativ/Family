@@ -48,9 +48,12 @@ class Media(models.Model):
     name = models.CharField(max_length=300, primary_key=True)
     description = models.TextField()
     public_choices = [('True', 'True'), ('False', 'False')]
-    is_public = models.BooleanField(default=1)
+    is_public = models.BooleanField(default=True)
     public = MediaManager()
     objects = MyMedia()
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         abstract = True
