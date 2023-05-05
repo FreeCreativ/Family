@@ -11,7 +11,7 @@ class OccupationCreateView(LoginRequiredMixin, CreateView):
     template_name = 'occupation/occupation_create.html'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.author = self.request.user
         form.save()
         return super(OccupationCreateView, self).form_valid(form)
 
@@ -23,7 +23,7 @@ class OccupationUpdateView(LoginRequiredMixin, CreateView):
     slug_url_kwarg = 'pk'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.author = self.request.user
         form.save()
         return super(OccupationUpdateView, self).form_valid(form)
 

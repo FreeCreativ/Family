@@ -10,7 +10,7 @@ class DiseaseCreateView(LoginRequiredMixin, CreateView):
     template_name = 'disease/disease_create.html'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.author = self.request.user
         form.save()
         return super(DiseaseCreateView, self).form_valid(form)
 
@@ -34,6 +34,6 @@ class DiseaseUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'occupation/occupation_update.html'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.author = self.request.user
         form.save()
         return super(DiseaseUpdateView, self).form_valid(form)

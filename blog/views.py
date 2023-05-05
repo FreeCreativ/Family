@@ -15,7 +15,7 @@ class PostList(LoginRequiredMixin, ListView):
     ordering = '-date_created'
 
 
-class MyPostList(LoginRequiredMixin, ListView):
+class UserPostList(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'blog/blog_list.html'
     context_object_name = 'post_list'
@@ -23,7 +23,8 @@ class MyPostList(LoginRequiredMixin, ListView):
     ordering = '-date_created'
 
     def get_queryset(self):
-        return super(MyPostList, self).get_queryset().filter(author=self.request.user)
+        return super(UserPostList, self).get_queryset().filter(author=self.kwargs.get('username'))
+
 
 
 class PostCreate(LoginRequiredMixin, CreateView):
@@ -55,7 +56,7 @@ class PostDetail(LoginRequiredMixin, DetailView, BaseFormView):
         return ''
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.author = self.request.user
         form.instance.post = self.get_object()
         form.save()
         return super(PostDetail, self).form_valid(form)
@@ -64,7 +65,7 @@ class PostDetail(LoginRequiredMixin, DetailView, BaseFormView):
 class PostDelete(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'blog/blog_delete.html'
-    success_url = reverse_lazy('account:blog:my_blog_list')
+    success_url = reverse_lazy('account:blog:user_blog_list')
     extra_context = {
         'message': 'Are you sure you want to delete this post?',
     }

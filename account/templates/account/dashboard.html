@@ -7,26 +7,27 @@
 {% block content %}
     <div class="container">
         <div class="row"><h3 class="my-3">New Posts</h3></div>
-        <div class="container p-0 m-0">
-            <div class="row">
-                {% for post in latest_posts %}
-                    <div class="col-md-2 p-2 card">
-                        <p class="card-title text-capitalize">
-                            <a href="{% url 'account:blog:blog_detail' slug=post.slug %}">{{ post.headline }}</a>
-                        </p>
-                        <p class="card-text">{{ post.content }}</p>
-                        <p class="card-footer p-0 m-0 text-end pe-2">{{ post.author }}</p>
-                    </div>
-                {% endfor %}
-            </div>
+        <div class="container p-0 m-0 mb-3">
+            {% for post in latest_posts %}
+                <div class="row card p-0 mb-1">
+                    <a href="{% url 'account:blog:blog_detail' slug=post.slug %}"
+                       class="text-decoration-none text-bg-dark card-header card-title">{{ post.headline }}</a>
+                    <p class="card-text mb-0">{{ post.content }}</p>
+                    <p class="card-footer py-0 my-1">
+                        <a class="" href="{% url 'account:blog:user_blog_list' username=post.author.id %}">
+                            {{ post.author }}
+                        </a>: {{ post.date_modified }}
+                    </p>
+                </div>
+            {% endfor %}
         </div>
     </div>
 
     <div class="container">
         <div class="row"><h3 class="my-3">New Videos</h3></div>
-        <div class="row py-4 px-0 ">
+        <div class="row py-4 px-0">
             {% for video in latest_videos %}
-                <div class="col-md-2 border mx-auto text-center card">
+                <div class="col-md-2 border text-center card">
                     <a href="{% url 'account:video:video_detail' video.name %}">
                         <img src="{{ video.movie_photo.url }}" alt="{{ video.description }}" class="card-img "></a>
                     <span class="text-muted p-0 m-0 card-text" onload="">{{ video.user }}</span>

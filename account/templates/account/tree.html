@@ -1,0 +1,45 @@
+{% load static %}
+{#<canvas id="familyTree" class="w-100 h-75 border">#}
+{#    <img src="{% static "imgs/img1.jpeg" %}" class="visually-hidden" alt="imgsss" id="image" width="10px" #}
+{#         height="10px">#}
+{#</canvas>#}
+{##}
+{#<script>#}
+{#    const canvas = document.getElementById("familyTree");#}
+{#    const ctx = canvas.getContext("2d");#}
+{#    let imgs = document.getElementById("image")#}
+{#    ctx.beginPath();#}
+{#    ctx.lineWidth = "0";#}
+{#    ctx.rect(120, 5, 60, 20)#}
+{#    ctx.moveTo(150, 25);#}
+{#    ctx.lineTo(150, 35);#}
+{#    ctx.lineTo(200, 35);#}
+{#    ctx.lineTo(200, 45);#}
+{#    ctx.rect(170, 45, 60, 20)#}
+{#    ctx.drawImage(imgs, 1, 1)#}
+{#    ctx.moveTo(150, 35);#}
+{#    ctx.lineTo(100, 35);#}
+{#    ctx.lineTo(100, 45);#}
+{#    ctx.rect(130, 45, -60, 20)#}
+{#    ctx.strokeStyle = "#000000";#}
+{#    ctx.stroke();#}
+{#</script>#}
+
+
+<div class="container">
+    <div class="row pt-5">
+        <div class="col-5">
+            <img src="{% static "imgs/img1.jpeg" %}" alt="imgsss" id="image" class="img-fluid">
+        </div>
+        <div class="col-2"></div>
+        <div class="col-5"></div>
+    </div>
+    <div class="row pt-5">
+        <div class="col-5 pt-0 pe-0">
+            
+        </div>
+        <div class="col-2"></div>
+        <div class="col-5"></div>
+    </div>
+
+</div>

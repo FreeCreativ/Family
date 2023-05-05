@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "baseFooter.html" %}
 {% load crispy_forms_tags %}
 
 {% block title %}
@@ -6,8 +6,8 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container p-5 m-5">
-        <div class="container p-5 mx-5">
+    <div class="container p-5">
+        <div class="container p-5 mx-auto">
             <form enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 {{ form|crispy }}

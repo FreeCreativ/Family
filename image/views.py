@@ -17,11 +17,11 @@ class UploadImageView(LoginRequiredMixin, FormView):
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        form.instance.user = self.request.user
+        form.instance.author = self.request.user
         files = request.FILES.getlist('image_file')
         if form.is_valid():
             for f in files:
-                img = Image(image_file=f, user=form.instance.user, description=form.instance.description)
+                img = Image(image_file=f, user=form.instance.author, description=form.instance.description)
                 img.save()
             return self.form_valid(form)
         else:
@@ -35,7 +35,7 @@ class ImageListView(LoginRequiredMixin, FilterView):
     context_object_name = 'image_list'
     ordering = '-date_of_upload'
     page_kwarg = 'page'
-    filterset_fields = ['date_of_upload', 'is_public', 'user']
+    filterset_fields = ['date_of_upload', ]
 
 
 class MyImageListView(LoginRequiredMixin, ListView):
@@ -55,7 +55,7 @@ class MyImageDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('account:my_image_list')
 
     def form_valid(self, form):
-        if self.request.user == self.object.user:
+        if self.request.user == self.object.author:
             return super(MyImageDeleteView, self).form_valid(form)
         else:
             return self.form_invalid(form)

@@ -1,24 +1,26 @@
-{% extends 'base.html' %}
+{% extends 'baseFooter.html' %}
 {% load crispy_forms_tags %}
 
 {% block title %}
-  new post |
+    new post |
 {% endblock %}
 
 {% block content %}
-    <div class="col-md-6 m-auto">
-        {% if success == True %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ successmsg | crispy }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endif %}
-        <form method="POST">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <input type="submit" value="Submit" class="btn btn-primary m-auto">
-        </form>
+    <div class="container p-5">
+        <div class="container p-5 mx-auto">
+            {% if success == True %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ successmsg | crispy }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" value="Submit" class="btn btn-primary m-auto">
+            </form>
+        </div>
     </div>
 {% endblock %}

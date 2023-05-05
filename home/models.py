@@ -18,25 +18,25 @@ class Log(models.Model):
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
+    author = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     comment = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
-        ordering = ['date_created']
+        ordering = ['-date_created']
 
     def __str__(self):
         return self.comment
 
 
 class MediaManager(models.Manager):
-    def get_queryset(self):
-        return super(MediaManager, self).get_queryset().filter(is_public=True)
+    def date_uploaded(self, year):
+        return self.filter(date_of_upload__year=year)
 
-
-class MyMedia(models.Manager):
+    def month_uploaded(self, year, month):
+        return self.year_uploaded().filter(date_of_upload__month=month)
 
     def my_media(self, user):
         return self.filter(user=user)
@@ -47,10 +47,7 @@ class Media(models.Model):
     date_of_upload = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=300, primary_key=True)
     description = models.TextField()
-    public_choices = [('True', 'True'), ('False', 'False')]
-    is_public = models.BooleanField(default=True)
-    public = MediaManager()
-    objects = MyMedia()
+    objects = MediaManager()
 
     def __str__(self):
         return self.name

@@ -44,13 +44,10 @@ class Alive(models.Manager):
         return self.filter(date_of_birth__lt=timezone.now() - datetime.timedelta(days=9131.25))
 
     def male(self):
-        return self.filter(gender='male')
+        return self.filter(gender='M')
 
     def female(self):
-        return self.filter(gender='female')
-
-    def count(self):
-        return self.count()
+        return self.filter(gender='F')
 
     def new(self):
         return self.filter(date_joined__gte=timezone.now() - datetime.timedelta(days=365.25))
@@ -77,7 +74,7 @@ class UserAccount(AbstractUser):
     date_modified = models.DateTimeField(verbose_name='date registered', auto_now=True)
     biography = models.TextField(blank=True)
     cause_of_death = models.TextField(blank=True)
-    gender_choices = [('M', 'Male'), ('F', 'Female')]
+    gender_choices = [('Male', 'Male'), ('Female', 'Female')]
     gender = models.CharField(max_length=7, choices=gender_choices, blank=True)
     heights = gen_height()
     height = models.IntegerField(verbose_name='height (cm)', blank=True, null=True, choices=heights)
@@ -178,7 +175,6 @@ class OldestManager(models.Manager):
 
 class OldestAlive(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
-    rank = models.IntegerField(verbose_name='Rank', primary_key=True, auto_created=True)
     date_elected = models.DateField(verbose_name='Date Elected', auto_now_add=True)
     date_retired = models.DateField(verbose_name='Date Retired', blank=True)
     objects = OldestManager()

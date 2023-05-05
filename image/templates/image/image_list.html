@@ -21,12 +21,6 @@
                         <div class="col-md-4 mb-0">
                             {{ filter.form.date_of_upload|as_crispy_field }}
                         </div>
-                        <div class="form-group col-md-4 mb-0">
-                            {{ filter.form.is_public|as_crispy_field }}
-                        </div>
-                        <div class="form-group col-md-4 mb-0">
-                            {{ filter.form.user|as_crispy_field }}
-                        </div>
                     </div>
 
                     <div class="row mx-1">
@@ -41,7 +35,8 @@
                             <a href="{{ image.image_file.url }}">
                                 <img class="card-img" src="{{ image.image_file.url }}" alt="{{ image.description }}"/>
                             </a>
-                            <a href="{% url 'account:profile' image.user %}" class="card-link mx-auto">{{ image.user }}</a>
+                            <a href="{% url 'account:profile' image.user %}"
+                               class="card-link mx-auto">{{ image.user }}</a>
                         </div>
                     {% endif %}
                 {% endfor %}

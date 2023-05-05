@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'video.apps.VideoConfig',
     'django_filters',
     'django_shortcuts',
+    'bootstrap_datepicker_plus',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [

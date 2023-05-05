@@ -10,7 +10,7 @@ class EducationCreateView(LoginRequiredMixin, CreateView):
     template_name = 'education/education_create.html'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.author = self.request.user
         form.save()
         return super(EducationCreateView, self).form_valid(form)
 

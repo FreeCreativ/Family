@@ -1,4 +1,11 @@
 <ul class="list-unstyled">
+    <li class="mb-1 border-bottom py-md-2 w-25">
+        <a aria-expanded="false" class="btn btn-toggle d-inline-flex border-0 collapsed">
+            {% if request.user.profile_image %}
+            <img src="{{ request.user.profile_image.url }}" alt="profile" class="img-fluid">
+            {% endif %}
+        </a>
+    </li>
     <li class="mb-1 border-bottom py-md-2">
         <button aria-expanded="false"
                 class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
@@ -25,8 +32,6 @@
                 <a class="d-inline-flex rounded btn btn-dark text-white my-md-1"
                    href="{% url 'account:blog:blog_list' %}">Public</a>
                 <a class="d-inline-flex rounded btn btn-dark text-white my-md-1"
-                   href="{% url 'account:blog:my_blog_list' %}">Personal</a>
-                <a class="d-inline-flex rounded btn btn-dark text-white my-md-1"
                    href="{% url 'account:blog:blog_create' %}">Create</a>
             </ul>
         </div>
@@ -43,8 +48,6 @@
                    href="{% url 'account:image:image_list' %}">Public</a>
                 <a class="d-inline-flex rounded btn btn-dark text-white my-md-1"
                    href="{% url 'account:image:image_create' %}">Upload</a>
-                <a class="d-inline-flex rounded btn btn-dark text-white my-md-1"
-                   href="{% url 'account:image:my_image_list' %}">Personal</a>
             </ul>
         </div>
     </li>
@@ -60,8 +63,6 @@
                    href="{% url 'account:video:video_list' %}">Public</a>
                 <a class="d-inline-flex rounded btn btn-dark text-white my-md-1 btn-sm"
                    href="{% url 'account:video:video_create' %}">Upload</a>
-                <a class="d-inline-flex rounded btn btn-dark text-white my-md-1 btn-sm"
-                   href="{% url 'account:video:my_video_list' %}">Personal</a>
             </ul>
         </div>
     </li>

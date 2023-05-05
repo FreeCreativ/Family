@@ -16,19 +16,19 @@ class VideoCreate(LoginRequiredMixin, FormView):
     success_url = reverse_lazy('account:video:video_list')
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.author = self.request.user
         return super(VideoCreate, self).form_valid(form)
 
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        form.instance.user = self.request.user
+        form.instance.author = self.request.user
         files = request.FILES.getlist('video_file')
         if form.is_valid():
             for video_file in files:
                 name = 'vid-'
                 name += slugify(timezone.now())
-                vid = Video(video_file=video_file, user=form.instance.user, description=form.instance.description,
+                vid = Video(video_file=video_file, user=form.instance.author, description=form.instance.description,
                             name=name)
                 vid.save()
             return self.form_valid(form)
@@ -42,7 +42,7 @@ class VideoList(LoginRequiredMixin, FilterView):
     context_object_name = 'video_list'
     paginate_by = 20
     page_kwarg = 'page'
-    filterset_fields = ['date_of_upload', 'is_public', ]
+    filterset_fields = ['date_of_upload', ]
 
 
 class MyVideoList(LoginRequiredMixin, ListView):

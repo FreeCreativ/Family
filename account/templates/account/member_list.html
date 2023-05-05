@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'baseFooter.html' %}
 {% load crispy_forms_filters %}
 {% load static %}
-{% load crispy_forms_tags %}
+{% load django_bootstrap5 %}
 
 {% block title %}
     family members |
@@ -25,6 +25,8 @@
             <div class="row mx-1">
                 <input type="submit" class="btn btn-sm btn-success" value="filter"/>
             </div>
+            {% bootstrap_button content='clear' button_type="reset" size='sm' button_class='btn-warning' %}
+            {% bootstrap_form filter.form layout='floating' %}
         </form>
         <div class="row  row-cols-md-6 row-cols-sm-3 m-auto">
             {% for user in user_list %}
@@ -44,5 +46,4 @@
         </div>
     </div>
     {% include "pagination.html" %}
-    {% include "footer.html" %}
 {% endblock %}
