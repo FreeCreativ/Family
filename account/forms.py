@@ -35,13 +35,13 @@ class BiographyForm(forms.ModelForm):
 class EducationForm(forms.ModelForm):
     class Meta:
         model = Education
-        exclude = ('author', 'id',)
+        exclude = ('user', 'id',)
 
 
 class OccupationForm(forms.ModelForm):
     class Meta:
         model = Occupation
-        exclude = ('author', 'id',)
+        exclude = ('user', 'id',)
 
 
 class PhoneRecordForm(forms.ModelForm):
@@ -53,4 +53,4 @@ class PhoneRecordForm(forms.ModelForm):
 class GeneticDiseaseForm(forms.ModelForm):
     class Meta:
         model = GeneticDisease
-        exclude = ('author', 'id',)
+        exclude = ('user', 'id',)

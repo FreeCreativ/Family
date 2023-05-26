@@ -10,7 +10,7 @@ class DiseaseCreateView(LoginRequiredMixin, CreateView):
     template_name = 'disease/disease_create.html'
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
+        form.instance.user = self.request.user
         form.save()
         return super(DiseaseCreateView, self).form_valid(form)
 

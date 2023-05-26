@@ -10,8 +10,11 @@ class OccupationCreateView(LoginRequiredMixin, CreateView):
     form_class = OccupationForm
     template_name = 'occupation/occupation_create.html'
 
+    # def get_success_url(self):
+    #     return reverse_lazy('account:profile', kwargs={'username': self.request.user})
+
     def form_valid(self, form):
-        form.instance.author = self.request.user
+        form.instance.user = self.request.user
         form.save()
         return super(OccupationCreateView, self).form_valid(form)
 

@@ -1,12 +1,24 @@
+import django_filters
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.text import slugify
 from django.views.generic import ListView, DetailView, FormView
+from django_filters import FilterSet
 from django_filters.views import FilterView
 
 from video.forms import VideoForm
 from video.models import Video
+
+
+class VideoFilter(FilterSet):
+    date_of_upload = django_filters.NumberFilter(field_name='date_of_upload', lookup_expr='year')
+    month_of_upload = django_filters.NumberFilter(field_name='date_of_upload', lookup_expr='month')
+    day_of_upload = django_filters.NumberFilter(field_name='date_of_upload', lookup_expr='day')
+
+    class Meta:
+        model = Video
+        fields = ['date_of_upload']
 
 
 class VideoCreate(LoginRequiredMixin, FormView):
@@ -42,15 +54,16 @@ class VideoList(LoginRequiredMixin, FilterView):
     context_object_name = 'video_list'
     paginate_by = 20
     page_kwarg = 'page'
-    filterset_fields = ['date_of_upload', ]
+    filterset_class = VideoFilter
 
 
-class MyVideoList(LoginRequiredMixin, ListView):
+class MyVideoList(LoginRequiredMixin, FilterView):
     model = Video
     template_name = 'video/video_list.html'
     context_object_name = 'video_list'
     paginate_by = 20
     page_kwarg = 'page'
+    filterset_class = VideoFilter
 
     def get_queryset(self):
         return super(MyVideoList, self).get_queryset().filter(user=self.request.user)

@@ -14,7 +14,7 @@ edu = [
 
 job = [
     path('new', OccupationCreateView.as_view(), name='occupation_create'),
-    path('<str:pk>', OccupationDetailView.as_view(), name='occupation_detail'),
+    path('<pk>/', OccupationDetailView.as_view(), name='occupation_detail'),
     path('<pk>/update', OccupationUpdateView.as_view(), name='occupation_update'),
     path('<pk>/delete', OccupationDeleteView.as_view(), name='occupation_delete'),
 ]

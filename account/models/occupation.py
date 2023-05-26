@@ -1,8 +1,18 @@
+from datetime import datetime
+
 from django.db import models
 from django.urls import reverse
 
 from Family.settings import AUTH_USER_MODEL
 from account.generator import generate_id
+
+
+def remove(string):
+    ns = ""
+    for i in string:
+        if not i.isspace() and i != ":" and i != ".":
+            ns += i
+    return ns
 
 
 class Occupation(models.Model):
@@ -18,11 +28,14 @@ class Occupation(models.Model):
         return self.occupation_name
 
     def create_id(self):
-        return str(self.user) + generate_id(self.date_registered)[:3]
+        return str(self.user) + generate_id(remove(str(datetime.now())))
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        self.id = self.create_id()
-        super(Occupation, self).save()
+        if not self.id:
+            self.id = self.create_id()
+            super(Occupation, self).save()
+        else:
+            super(Occupation, self).save()
 
     def get_absolute_url(self):
-        return reverse('account:occupation_detail', kwargs={'pk': self.id})
+        return reverse('account:occupation_detail', kwargs={'pk': self.id, 'username': self.user})

@@ -95,9 +95,9 @@ class UserAccount(AbstractUser):
         return reverse_lazy('account:profile', kwargs={'username': self.username})
 
     def children(self):
-        if self.gender == 'M':
+        if self.gender == 'Male':
             return UserAccount.objects.filter(dad=self.id)
-        else:
+        elif self.gender == 'Female':
             return UserAccount.objects.filter(mum=self.id)
 
     def died(self):
@@ -147,7 +147,7 @@ class UserAccount(AbstractUser):
         return tree.append((grand_father, father, me))
 
     def siblings(self):
-        return UserAccount.objects.filter(dad=self.dad)
+        return UserAccount.objects.filter(dad=self.dad).exclude(username=self.username)
 
     def genealogy(self):
 

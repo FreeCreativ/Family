@@ -1,5 +1,5 @@
 {% extends "baseFooter.html" %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
 
 {% block title %}
     videos |
@@ -15,13 +15,18 @@
                 </div>
             </div>
             <div class="row">
-                 <form method="get" class="form">
+                <form method="get" class="form">
                     <div class="row">
-                        <div class="form-group-sm col-md-6 mb-0">
+                        <div class="col-md-4 mb-0">
                             {{ filter.form.date_of_upload|as_crispy_field }}
                         </div>
+                        <div class="col-md-4 mb-0">
+                            {{ filter.form.month_of_upload|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4 mb-0">
+                            {{ filter.form.day_of_upload|as_crispy_field }}
+                        </div>
                     </div>
-
                     <div class="row mx-1">
                         <input type="submit" class="btn btn-sm btn-success" value="filter"/>
                     </div>

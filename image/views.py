@@ -1,10 +1,22 @@
+import django_filters
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DeleteView, FormView
+from django.views.generic import DeleteView, FormView
+from django_filters import FilterSet
 from django_filters.views import FilterView
 
 from image.forms import ImageForm
 from image.models import Image
+
+
+class ImageFilter(FilterSet):
+    date_of_upload = django_filters.NumberFilter(field_name='date_of_upload', lookup_expr='year')
+    month_of_upload = django_filters.NumberFilter(field_name='date_of_upload', lookup_expr='month')
+    day_of_upload = django_filters.NumberFilter(field_name='date_of_upload', lookup_expr='day')
+
+    class Meta:
+        model = Image
+        fields = ['date_of_upload']
 
 
 class UploadImageView(LoginRequiredMixin, FormView):
@@ -35,15 +47,16 @@ class ImageListView(LoginRequiredMixin, FilterView):
     context_object_name = 'image_list'
     ordering = '-date_of_upload'
     page_kwarg = 'page'
-    filterset_fields = ['date_of_upload', ]
+    filterset_class = ImageFilter
 
 
-class MyImageListView(LoginRequiredMixin, ListView):
+class MyImageListView(LoginRequiredMixin, FilterView):
     model = Image
     paginate_by = 42
     template_name = 'image/image_list.html'
     context_object_name = 'image_list'
-    ordering = '-date_of_upload'
+    ordering = 'date_of_upload'
+    filterset_fields = ['date_of_upload', ]
 
     def get_queryset(self):
         return Image.objects.my_media(user=self.request.user)

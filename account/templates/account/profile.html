@@ -85,7 +85,11 @@
                     <li class="list-group-item">
                         <span class="fw-semibold">Genealogy:</span>
                         {% for u in user.genealogy %}
-                            <<a href="{% url 'account:profile' u %}">{{ u.get_full_name }}</a>>
+                            {% if forloop.revcounter == 1 %}
+                                <a href="{% url 'account:profile' u %}">{{ u.get_full_name }}</a>
+                            {% else %}
+                                <a href="{% url 'account:profile' u %}">{{ u.get_full_name }}</a> nwa
+                            {% endif %}
                         {% endfor %}
                     </li>
                     <li class="list-group-item">

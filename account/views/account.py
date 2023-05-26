@@ -4,6 +4,8 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView, CreateView, TemplateView
 from django.views.generic.edit import BaseUpdateView
+import django_filters
+from django_filters import FilterSet
 from django_filters.views import FilterView
 
 from account.forms import CreateUserForm, AddUserDetailForm
@@ -94,13 +96,24 @@ class BiographyUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('account:profile', kwargs={'username': self.object})
 
 
+class MemberFilterSet(FilterSet):
+    date_of_birth = django_filters.NumberFilter(field_name='date_of_birth', lookup_expr='year')
+    month_of_birth = django_filters.NumberFilter(field_name='date_of_birth', lookup_expr='month')
+    day_of_birth = django_filters.NumberFilter(field_name='date_of_birth', lookup_expr='day')
+    last_name = django_filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = UserAccount
+        fields = ['date_of_birth', 'last_name', 'gender', 'genotype']
+
+
 class UserListView(LoginRequiredMixin, FilterView):
     model = UserAccount
     template_name = 'account/member_list.html'
     context_object_name = 'user_list'
     paginate_by = 40
     page_kwarg = 'page'
-    filterset_fields = ['date_of_birth', 'gender', 'genotype']
+    filterset_class = MemberFilterSet
 
     def get_queryset(self):
         return UserAccount.living.all()

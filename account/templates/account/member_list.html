@@ -9,25 +9,34 @@
 {% block content %}
     <h3 class="display-6 text-center">Living Family Members</h3>
     <div class="container text-center">
-        <form method="get" class="form">
-            <div class="row">
-                <div class="col-md-4 mb-0">
-                    {{ filter.form.date_of_birth|as_crispy_field }}
-                </div>
-                <div class="form-group col-md-4 mb-0">
-                    {{ filter.form.gender|as_crispy_field }}
-                </div>
-                <div class="form-group col-md-4 mb-0">
-                    {{ filter.form.genotype|as_crispy_field }}
-                </div>
+        <form method="get" class="form row">
+            <div class="form-group col-md-3 mb-0">
+                {{ filter.form.date_of_birth|as_crispy_field }}
             </div>
-
-            <div class="row mx-1">
-                <input type="submit" class="btn btn-sm btn-success" value="filter"/>
+            <div class="form-group col-md-3 mb-0">
+                {{ filter.form.month_of_birth|as_crispy_field }}
             </div>
-            {% bootstrap_button content='clear' button_type="reset" size='sm' button_class='btn-warning' %}
-            {% bootstrap_form filter.form layout='floating' %}
+            <div class="form-group col-md-3 mb-0">
+                {{ filter.form.day_of_birth|as_crispy_field }}
+            </div>
+            <div class="col-md-3 mb-0">
+                {{ filter.form.gender|as_crispy_field }}
+            </div>
+            <div class="col-md-3 mb-0">
+                {{ filter.form.last_name|as_crispy_field }}
+            </div>
+            <div class="col-md-3 mb-0">
+                {{ filter.form.genotype|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 pt-2 mb-0">
+                <input type="submit" class="btn btn-success my-4" value="filter"/>
+            </div>
+            <div class="form-group col-md-3 pt-2 mb-0 text-start">
+                {% bootstrap_button content='clear' button_type="reset" button_class='btn-warning my-4' %}
+            </div>
         </form>
+    </div>
+    <div class="container">
         <div class="row  row-cols-md-6 row-cols-sm-3 m-auto">
             {% for user in user_list %}
                 <div class="card col">
