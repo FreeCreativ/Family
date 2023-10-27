@@ -34,12 +34,14 @@
             </div>
             <div class="row row-cols-1 row-cols-md-6 row-cols-xl-6" data-bss-baguettebox>
                 {% for video in video_list %}
-                    <div class="col item">
-                        <video controls class="img-fluid">
-                            <source src='{{ video.video_file.url }}' type='video/mp4'>
-                            Your browser does not support the video tag.
-                        </video>
-                        <a href="{% url 'account:video:video_detail' video.name %}">{{ video.name }}</a>
+                    <div class="col border text-center card item">
+                        <a href="{% url 'account:video:video_detail' video.name %}">
+                            <img src="{{ video.movie_photo.url }}" alt="{{ video.description }}"
+                                 class="card-img"></a>
+
+                        <a href="{% url 'account:profile' video.user %}">
+                            <span class="text-muted p-0 m-0 card-text" onload="">{{ video.user }}</span>
+                        </a>
                     </div>
                 {% endfor %}
             </div>

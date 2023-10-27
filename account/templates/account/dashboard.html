@@ -42,7 +42,9 @@
             {% for image in latest_images %}
                 <div class="col-md-2 card">
                     <img src="{{ image.image_file.url }}" alt="{{ image.description }}" class="card-img ">
-                    <p class="text-center card-text">{{ image.user }}</p>
+                    <p class="text-center card-text">
+                        <a href="{% url 'account:image:user_image_list' image.user %}">{{ image.user }}</a>
+                    </p>
                 </div>
             {% endfor %}
         </div>

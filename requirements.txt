@@ -1,3 +1,9 @@
-Django>=4.1.3
-django-filter>=22.1
-opencv-python>=4.7.0.68
+Django
+django-filter
+opencv-python
+psycopg2
+pillow
+crispy_bootstrap5
+bootstrap_datepicker_plus
+django_bootstrap5
+django-crispy-forms

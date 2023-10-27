@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'image.apps.ImageConfig',
     'video.apps.VideoConfig',
     'django_filters',
-    'django_shortcuts',
     'bootstrap_datepicker_plus',
     'django_bootstrap5',
 ]
@@ -85,12 +84,20 @@ WSGI_APPLICATION = 'Family.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'family',
+
         'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'freecreativ',
-        'PASSWORD': 'Dontobec12345'
+        'HOST': 'postgres://freecreativ:XJG8ZpKvRvPGZbFkazw8Qil31lAj2VsG@dpg-ckekvfedkmrc738b33dg-a.oregon-postgres.render.com/familyregistry',
+
     },
 }
+# DATABASES = {
+#     'default': {
+#         'NAME': 'family',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'USER': 'freecreativ',
+#         'PASSWORD': 'Dontobec12345'
+#     },
+# }
 
 # DATABASES = {
 #     'default': {

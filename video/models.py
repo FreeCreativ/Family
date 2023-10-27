@@ -45,7 +45,6 @@ class Video(Media):
                         datetime_str = "{}-{}-{}/"
                         video_shot_directory = os.path.join(BASE_DIR, 'media/videoShots',
                                                             datetime_str.format(date.year, date.month, date.day))
-                        print(video_shot_directory)
                         if not os.path.exists(video_shot_directory):
                             os.makedirs(video_shot_directory)
                         video_shot_location = os.path.join(video_shot_directory, self.name)

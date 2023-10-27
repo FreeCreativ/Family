@@ -38,7 +38,7 @@ class MediaManager(models.Manager):
     def month_uploaded(self, year, month):
         return self.year_uploaded().filter(date_of_upload__month=month)
 
-    def my_media(self, user):
+    def user_media(self, user):
         return self.filter(user=user)
 
 

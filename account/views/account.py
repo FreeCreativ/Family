@@ -35,6 +35,9 @@ class UserDetailCreateView(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         return UserAccount.objects.get(username=self.request.user)
 
+    def form_valid(self, form):
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse_lazy('account:profile', kwargs={'username': self.object})
 
@@ -125,7 +128,7 @@ class Immortalised(LoginRequiredMixin, FilterView):
     context_object_name = 'user_list'
     paginate_by = 40
     page_kwarg = 'page'
-    filterset_fields = ['date_of_birth', 'gender', 'genotype']
+    filterset_class = MemberFilterSet
 
     def get_queryset(self):
         return UserAccount.objects.filter(alive=False)

@@ -3,6 +3,8 @@ from django.views.generic import TemplateView, ListView
 
 from account.models import UserAccount
 from blog.models import Post
+from image.models import Image
+from video.models import Video
 
 
 # Create your views here.
@@ -29,8 +31,12 @@ class Search(ListView):
         user_query = UserAccount.objects.filter(
             Q(first_name__icontains=q) | Q(middle_name__icontains=q) | Q(last_name__icontains=q) | Q(
                 username__icontains=q))
+        video_query = Video.objects.filter(Q(description__contains=q))
+        image_query = Image.objects.filter(Q(description__contains=q))
         add_query_result(post_query)
         add_query_result(user_query)
+        add_query_result(image_query)
+        add_query_result(video_query)
         return result_list
 
 

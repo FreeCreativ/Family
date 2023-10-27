@@ -10,6 +10,20 @@
                         <a href="{% url 'account:profile' item %}">{{ item.get_full_name }}</a>
                     </li>
                 {% endif %}
+                {% if item.video_file %}
+                    <li class="list-group-item">
+                        <a href="{% url 'account:video:video_detail' item %}">
+                            <img src="{{ item.movie_photo.url }}" alt="{{ item.description }}" class="card-img "></a>
+                    </li>
+                {% endif %}
+                {% if item.image_file %}
+                    <li class="list-group-item">
+                        <img src="{{ item.image_file.url }}" alt="{{ item.description }}" class="card-img ">
+                        <a href="{% url 'account:image:user_image_list' item.user %}">
+                            {{ item.user }}
+                        </a>
+                    </li>
+                {% endif %}
                 {% if item.headline %}
                     <li class="list-group-item">
                         <a href="{% url 'account:blog:blog_detail' slug=item.slug %}">{{ item }}</a>

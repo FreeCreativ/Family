@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
 from django.views.generic.edit import DeleteView, BaseFormView
 
+from account.models import UserAccount
 from blog.forms import PostForm, CommentForm
 from blog.models import Post
 
@@ -21,10 +22,12 @@ class UserPostList(LoginRequiredMixin, ListView):
     context_object_name = 'post_list'
     paginate_by = 20
     ordering = '-date_created'
+    slug_field = 'author'
+    slug_url_kwarg = 'username'
 
     def get_queryset(self):
-        return super(UserPostList, self).get_queryset().filter(author=self.kwargs.get('username'))
-
+        username = UserAccount.objects.get(username=self.kwargs.get('username')).id
+        return super().get_queryset().filter(author=username)
 
 
 class PostCreate(LoginRequiredMixin, CreateView):

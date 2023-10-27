@@ -134,6 +134,19 @@
             </div>
         </div>
     </div>
+    <div class="container px-0 mx-0 mb-2">
+        <div class="row row-cols-3 bg-dark mx-0">
+            <div class="col text-center">
+                <a href="{% url 'account:image:user_image_list' user %}" class="text-white fw-bold">Photos</a>
+            </div>
+            <div class="col text-center">
+                <a href="{% url 'account:video:user_video_list' user %}" class="text-white fw-bold">Videos</a>
+            </div>
+            <div class="col text-center">
+                <a href="{% url 'account:blog:user_blog_list' user %}" class="text-white fw-bold">Posts</a>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <h4 class="text-center">Biography</h4>

@@ -5,6 +5,7 @@ from django.views.generic import DeleteView, FormView
 from django_filters import FilterSet
 from django_filters.views import FilterView
 
+from account.models import UserAccount
 from image.forms import ImageForm
 from image.models import Image
 
@@ -56,10 +57,25 @@ class MyImageListView(LoginRequiredMixin, FilterView):
     template_name = 'image/image_list.html'
     context_object_name = 'image_list'
     ordering = 'date_of_upload'
-    filterset_fields = ['date_of_upload', ]
+    filterset_class = ImageFilter
 
     def get_queryset(self):
-        return Image.objects.my_media(user=self.request.user)
+        return Image.objects.user_media(user=self.request.user)
+
+
+class UserImageListView(LoginRequiredMixin, FilterView):
+    model = Image
+    paginate_by = 42
+    template_name = 'image/image_list.html'
+    context_object_name = 'image_list'
+    ordering = 'date_of_upload'
+    slug_field = 'user'
+    slug_url_kwarg = 'username'
+    filterset_class = ImageFilter
+
+    def get_queryset(self):
+        username = UserAccount.objects.get(username=self.kwargs.get('username')).id
+        return super().get_queryset().filter(user=username)
 
 
 class MyImageDeleteView(LoginRequiredMixin, DeleteView):
