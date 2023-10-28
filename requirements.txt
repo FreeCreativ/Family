@@ -4,7 +4,6 @@ opencv-python
 psycopg
 pillow
 crispy_bootstrap5
-bootstrap_datepicker_plus
 django_bootstrap5
 django-crispy-forms
 dj-database-url
