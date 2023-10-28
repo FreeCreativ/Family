@@ -7,3 +7,4 @@ crispy_bootstrap5
 django_bootstrap5
 django-crispy-forms
 dj-database-url
+gunicorn
