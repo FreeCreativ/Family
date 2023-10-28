@@ -82,14 +82,17 @@ WSGI_APPLICATION = 'Family.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'familyregistry',
+#         'USER': 'freecreativ',
+#         'PASSWORD': 'XJG8ZpKvRvPGZbFkazw8Qil31lAj2VsG12345678',
+#         'HOST': 'https://dashboard.render.com/d/dpg-ckekvfedkmrc738b33dg-a',
+#         'PORT': '5432'
+#     }
+# }
 
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': 'postgres://freecreativ:XJG8ZpKvRvPGZbFkazw8Qil31lAj2VsG@dpg-ckekvfedkmrc738b33dg-a.oregon-postgres.render.com/familyregistry',
-
-    },
-}
 # DATABASES = {
 #     'default': {
 #         'NAME': 'family',
@@ -160,3 +163,8 @@ LOGOUT_REDIRECT_URL = 'login'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+import dj_database_url
+DATABASES={
+    'default': dj_database_url.parse("postgres://freecreativ:XJG8ZpKvRvPGZbFkazw8Qil31lAj2VsG@dpg-ckekvfedkmrc738b33dg-a/familyregistry")
+}
