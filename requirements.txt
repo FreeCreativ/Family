@@ -1,7 +1,7 @@
 Django
 django-filter
 opencv-python
-psycopg
+psycopg2
 pillow
 crispy_bootstrap5
 django_bootstrap5
