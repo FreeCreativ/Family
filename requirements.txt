@@ -8,3 +8,4 @@ django_bootstrap5
 django-crispy-forms
 dj-database-url
 gunicorn
+django-bootstrap-datepicker-plus
