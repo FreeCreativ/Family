@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.utils.datetime_safe import date
+from datetime import datetime
 
 from Family.settings import AUTH_USER_MODEL
 from account.generator import duration
