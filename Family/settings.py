@@ -155,5 +155,5 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 import dj_database_url
 DATABASES={
-    'default': dj_database_url.parse("postgresql://family_z8fj_user:NaNL5a1FRujHp1Xcz8iZWcIOzcgCGxod@dpg-ctvtpsbtq21c73ak25n0-a/family_z8fj")
+    'default': dj_database_url.parse("postgresql://postgresql://family_ew99_user:56fmxQi6wXRhQQriQCXe10Dcz6lmbiNg@dpg-cukumodumphs73bil7q0-a/family_ew99")
 }
